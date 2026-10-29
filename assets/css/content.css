@@ -1,12 +1,11 @@
 /* ==========================================================================
-   PRISM page: content components on the cream body
+   Grana page: content components on the cream body
    (overview, paper references, findings, tables, method details, gallery)
    ========================================================================== */
 
 :root {
   --surface-2: #efe9e2;            /* nominal strip in the supervision chart */
   --supervision-ours: #23866f;     /* constructed target line (data colour, not brand) */
-  --supervision-ours-text: #1b715c; /* small target labels on light surfaces */
   --supervision-failure: #f3d5d3;  /* regressed band (= --q-bad-bg) */
   --supervision-cursor: #b9433f;   /* playhead and regressed accents (= --q-bad) */
   --credit: #8a8f96;               /* retained-credit dashed line */
@@ -303,7 +302,7 @@ main { display: block; }
 .gpt6-note strong { font-weight: 600; }
 
 /* --------------------------------------------------------------------------
-   Scorecard tables (base in site.css) — PRISM specifics
+   Scorecard tables (base in site.css) — Grana specifics
    -------------------------------------------------------------------------- */
 .scorecard-card { margin: 0; }
 /* Tabular figures only in value cells: Inter's tnum also widens hyphens. */
@@ -374,7 +373,7 @@ main { display: block; }
   color: var(--sc-muted);
   vertical-align: bottom;
 }
-.data-table thead th small { display: block; margin-top: 0.15rem; font-size: 0.74rem; letter-spacing: 0; text-transform: none; color: var(--sc-muted); }
+.data-table thead th small { display: block; margin-top: 0.15rem; font-size: 0.74rem; letter-spacing: 0; text-transform: none; color: var(--faint); }
 .data-table tbody th { font-weight: 600; color: var(--text); }
 .data-table small { display: block; margin-top: 0.1rem; font-size: 0.8rem; font-weight: 400; line-height: 1.4; color: var(--muted); }
 .data-table .num { text-align: right; font-variant-numeric: tabular-nums; }
@@ -522,7 +521,7 @@ main { display: block; }
 .target-algorithm-branches > div p { font-size: 0.9rem; }
 .target-algorithm-branches [data-supervision-branch].is-active { border-left-color: var(--supervision-ours); background: color-mix(in srgb, var(--supervision-ours) 7%, var(--surface)); }
 .target-algorithm-accumulate.is-active { background: color-mix(in srgb, var(--supervision-cursor) 6%, transparent); }
-.target-algorithm-accumulate h5 { color: var(--supervision-ours-text); }
+.target-algorithm-accumulate h5 { color: var(--supervision-ours); }
 
 /* --------------------------------------------------------------------------
    Pretraining task gallery

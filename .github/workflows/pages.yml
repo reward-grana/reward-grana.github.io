@@ -31,7 +31,7 @@ jobs:
           test -s index.html
           test -f .nojekyll
           mkdir _site
-          cp index.html .nojekyll _site/
+          cp ./*.html .nojekyll _site/
           if [ -d assets ]; then
             cp -R assets _site/assets
           fi

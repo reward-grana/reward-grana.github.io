@@ -1,5 +1,5 @@
 /* ==========================================================================
-   PRISM page: synchronized players
+   Grana page: synchronized players
    Policy rollouts (dark band) · reward predictions · supervision example
    ========================================================================== */
 
@@ -333,7 +333,7 @@
   color: var(--muted);
 }
 .supervision-target-link > span { white-space: nowrap; }
-.supervision-target-link strong { color: var(--supervision-ours-text); font-weight: 600; font-variant-numeric: tabular-nums; }
+.supervision-target-link strong { color: var(--supervision-ours); font-weight: 600; font-variant-numeric: tabular-nums; }
 
 .supervision-segment {
   display: grid; align-content: start; gap: 0.28rem;

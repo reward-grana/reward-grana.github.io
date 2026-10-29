@@ -1,5 +1,5 @@
 /* ==========================================================================
-   PRISM page: editorial base layer
+   Grana page: editorial base layer
    Cream body · serif headings · mono UI · dark full-bleed media bands.
    Fonts: self-hosted in assets/fonts (latin + latin-ext subsets of Inter,
    Newsreader and IBM Plex Mono; SIL OFL 1.1, see assets/fonts/OFL.txt), so
@@ -117,8 +117,8 @@
 
   /* Quality semantics (light chips) */
   --q-good: #2f8f78;   --q-good-bg: #d9ebe5;   --q-good-text: #226551;
-  --q-warn: #a8741a;   --q-warn-bg: #f1e3c8;   --q-warn-text: #805514;
-  --q-bad: #b9433f;    --q-bad-bg: #f3d5d3;    --q-bad-text: #a23633;
+  --q-warn: #a8741a;   --q-warn-bg: #f1e3c8;
+  --q-bad: #b9433f;    --q-bad-bg: #f3d5d3;
   /* Quality semantics (on dark glass) */
   --qd-warn: #e3a72f;
   --qd-bad: #ec5b52;
@@ -362,7 +362,7 @@ sub, sup { line-height: 0; }
 .navbar.scrolled a, .navbar.scrolled button,
 .navbar:focus-within a, .navbar:focus-within button { pointer-events: auto; }
 
-/* Small prism mark at the top of the rail (links to the overview) */
+/* Small grana mark at the top of the rail (links to the overview) */
 .nav-brand {
   display: inline-flex; align-items: center; gap: 0.55rem;
   margin: 0 0 1.4rem 0.1rem;
@@ -1144,8 +1144,8 @@ dialog.media-modal[open], div.media-modal.open { display: flex; }
 
 .q { display: inline-block; padding: 0 0.4em; border-radius: var(--r-input); font-weight: 600; white-space: nowrap; }
 .q--good { color: var(--q-good-text); background: var(--q-good-bg); }
-.q--warn { color: var(--q-warn-text); background: var(--q-warn-bg); }
-.q--bad { color: var(--q-bad-text); background: var(--q-bad-bg); }
+.q--warn { color: var(--q-warn); background: var(--q-warn-bg); }
+.q--bad { color: var(--q-bad); background: var(--q-bad-bg); }
 
 .bullets { margin: 0; padding: 0; list-style: none; max-width: 52rem; }
 .bullets li { position: relative; padding-left: 1.5rem; margin-bottom: 1.1rem; color: var(--muted); line-height: 1.7; }
@@ -1165,7 +1165,7 @@ dialog.media-modal[open], div.media-modal.open { display: flex; }
   transition: color var(--t-fast);
 }
 .disclosure > summary::-webkit-details-marker { display: none; }
-.disclosure > summary:hover { color: var(--accent-text); }
+.disclosure > summary:hover { color: var(--accent-ink); }
 .sum-meta { margin-left: auto; font-family: var(--font-mono); font-size: var(--fs-micro); font-weight: 500; letter-spacing: 0.02em; color: var(--muted); }
 .disclosure > summary::after {
   content: ""; flex: none;

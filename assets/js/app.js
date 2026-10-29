@@ -1,6 +1,6 @@
 (() => {
   "use strict";
-  const DATA = window.PRISM_DATA || {};
+  const DATA = window.GRANA_DATA || {};
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
@@ -136,9 +136,9 @@
   }
 
   /* KaTeX: loaded here rather than as deferred <script> tags, so a slow or
-     delayed math resource never holds up DOMContentLoaded (and the scripts that wait
+     blocked CDN never holds up DOMContentLoaded (and the scripts that wait
      for it). async=false keeps katex.min.js before auto-render.min.js. */
-  const KATEX = "assets/vendor/katex/";
+  const KATEX = "https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/";
   function loadScript(src) {
     const script = document.createElement("script");
     script.src = src;
