@@ -1,0 +1,80 @@
+/* Grana "stages" (2026-10-30): a light page with three dark screening stages, Fig. 1, post-training and MPC, all in
+   the films' warm graphite, all rounded panels the width of the text column (no full-bleed bands). Loaded last, on
+   top of the site's own light page and its dark component variants (.band-dark). Accents: Grana's teal -> gold. No violet. */
+
+:root {
+  --stage-bg: #0f0e0d;                         /* the films' warm graphite (their own ink is #080807) */
+  --stage-surface: #171614;
+  --stage-surface-2: #1d1c19;
+  --stage-text: #ebe7df;
+  --stage-muted: #aea99f;
+  --stage-line: rgba(255, 246, 230, 0.09);
+  --stage-line-strong: rgba(255, 246, 230, 0.17);
+  --stage-radius: 20px;
+  --stage-shadow: inset 0 0 0 1px rgba(255, 246, 230, 0.06), 0 28px 70px -30px rgba(15, 14, 13, 0.55);
+  --hero-bg: #090807;                          /* the cover film's letterbox: its own ink, not violet-black */
+  --ink-video: #090807;
+}
+
+/* post-training and MPC: from full-bleed bands to rounded stages in the text column */
+main .band-dark.policy-band {
+  --text: var(--stage-text); --muted: var(--stage-muted);
+  --line: var(--stage-line); --line-strong: var(--stage-line-strong);
+  --panel: var(--stage-surface); --dark-panel: var(--stage-surface); --dark-panel-2: var(--stage-surface-2);
+  --dark-text: var(--stage-text); --dark-muted: var(--stage-muted);
+  --dark-line: var(--stage-line); --dark-line-strong: var(--stage-line-strong);
+  width: calc(100% - 2 * var(--gutter));
+  max-width: calc(var(--max-wide) - 2 * var(--gutter));
+  margin: 0 auto;
+  padding: clamp(1.25rem, 2.6vw, 2rem) 0;
+  border-radius: var(--stage-radius);
+  background:
+    radial-gradient(65% 55% at 6% 0%, rgba(30, 187, 155, 0.07), transparent 72%),
+    radial-gradient(55% 60% at 100% 100%, rgba(251, 201, 89, 0.05), transparent 72%),
+    var(--stage-bg);
+  box-shadow: var(--stage-shadow);
+}
+main .band-dark.policy-band > .container { max-width: none; padding-left: clamp(0.9rem, 1.8vw, 1.25rem); padding-right: clamp(0.9rem, 1.8vw, 1.25rem); }
+.pt-band .pt-gallery { gap: 0.8rem; }                 /* the cards keep their width inside the stage's padding */
+.pt-open { white-space: nowrap; }
+.section--band { padding-bottom: var(--section-pad); }
+
+/* Fig. 1: the same graphite as the other two stages; Grana's subtask ramp (teal -> gold) instead of the spectrum */
+.f2d {
+  --f2d-bg: var(--stage-bg);
+  --f2d-ink: #f3efe7; --f2d-ink-2: #d2ccc1; --f2d-ink-3: #aaa499;
+  --f2d-s1: #1ebb9b; --f2d-s2: #47c18f; --f2d-s3: #66c582; --f2d-s4: #82c875; --f2d-s5: #9dca69;
+  --f2d-s6: #b7cb5e; --f2d-s7: #cfcb57; --f2d-s8: #e6ca55; --f2d-s9: #fbc959;
+  --f2d-wire: rgba(255, 246, 230, 0.2); --f2d-arrow: rgba(255, 246, 230, 0.6);
+  --f2d-p-plain: #f3efe7; --f2d-p-cam: #e6eef0; --f2d-p-feat: #f1ece2; --f2d-curve: #f3efe7;
+  --f2d-tag: rgba(9, 8, 7, 0.8); --f2d-bead: var(--stage-surface);
+}
+.f2d-card {
+  border-radius: var(--stage-radius);
+  background:
+    radial-gradient(65% 55% at 6% 0%, rgba(30, 187, 155, 0.10), transparent 72%),
+    radial-gradient(55% 60% at 100% 100%, rgba(251, 201, 89, 0.08), transparent 72%),
+    var(--f2d-bg);
+  box-shadow: var(--stage-shadow);
+}
+.f2d-desc { background: rgba(20, 19, 17, 0.94); box-shadow: 0 0 0 4px rgba(9, 8, 7, 0.55), 0 0 26px -8px var(--c); }
+.f2d-feats i { background: rgba(255, 246, 230, 0.14); }
+
+/* MPC: Grana's judging in Grana gold (the film's GRANA box), not violet */
+#mpc-player { --mpc-plan: #fbc959; --mpc-plan-soft: rgba(251, 201, 89, 0.5); }
+.mpc-gcard.is-relay[data-phase="judge"] .mpc-half[data-tone="bad"] .mpc-half-media { box-shadow: inset 0 0 0 2px rgba(251, 201, 89, 0.95), 0 0 30px rgba(251, 201, 89, 0.35); }
+.mpc-gcard.is-relay[data-phase="fix"] .mpc-half[data-tone="bad"] .mpc-half-media { box-shadow: inset 0 0 0 2px rgba(251, 201, 89, 0.55); }
+.mpc-judge-gem { color: #fbc959; text-shadow: 0 0 10px rgba(251, 201, 89, 0.7); }
+.mpc-judge-scan { background: linear-gradient(180deg, transparent, rgba(251, 201, 89, 0.3) 60%, rgba(255, 236, 190, 0.8) 64%, transparent 68%); }
+.pt-row.is-grana .pt-val b { color: var(--stage-text); }
+.mpc-judge { background: radial-gradient(120% 90% at 50% 0%, rgba(120, 92, 30, 0.5), rgba(9, 8, 7, 0.97) 72%); }   /* was a violet glow */
+.mpc-judge-head { color: #fcda86; }
+
+/* hero letterbox edges and the focus-revealed rail: the film's ink */
+.hero:not(.hero--full)::before { background: linear-gradient(90deg, var(--hero-bg), rgba(9, 8, 7, 0)); }
+.hero:not(.hero--full)::after { background: linear-gradient(270deg, var(--hero-bg), rgba(9, 8, 7, 0)); }
+.navbar.focus-reveal { background: rgba(9, 8, 7, 0.86); }
+
+@media (max-width: 640px) {
+  main .band-dark.policy-band { width: calc(100% - 1.5rem); --stage-radius: 16px; }
+}

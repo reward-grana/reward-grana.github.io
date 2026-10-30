@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Grana: Compositional Reward Modeling for Long-Horizon Robot Manipulation. Videos, reward-prediction experiments, and policy-learning results." />
-    <meta name="theme-color" content="#0b0a16" />
+    <meta name="theme-color" content="#f2ece6" />
     <meta property="og:title" content="Grana: Compositional Reward Modeling for Long-Horizon Robot Manipulation" />
     <meta property="og:description" content="Grana: Compositional Reward Modeling for Long-Horizon Robot Manipulation. Videos, reward-prediction experiments, and policy-learning results." />
     <meta property="og:type" content="website" />
@@ -59,12 +59,13 @@
     <link rel="stylesheet" href="assets/draft/css/posttrain.css?v=e179ab3040f9" />
     <link rel="stylesheet" href="assets/draft/css/charts.css?v=d181eb68c244" />
     <script defer src="assets/draft/js/fig2-data.js?v=615ecfc1a7f5"></script>
-    <script defer src="assets/draft/js/fig2.js?v=e8bb2f25d9ba"></script>
-    <script defer src="assets/draft/js/mpc-data.js?v=69839f591d32"></script>
+    <script defer src="assets/draft/js/fig2.js?v=5f32a8099d52"></script>
+    <script defer src="assets/draft/js/mpc-data.js?v=d182915bb27d"></script>
     <script defer src="assets/draft/js/mpc-player.js?v=65057ba5bb49"></script>
-    <script defer src="assets/draft/js/posttrain-section.js?v=41d8a67f9edb"></script>
-    <script defer src="assets/draft/js/charts.js?v=d4f63591e856"></script>
+    <script defer src="assets/draft/js/posttrain-section.js?v=91358d833cb8"></script>
+    <script defer src="assets/draft/js/charts.js?v=e829742e74d0"></script>
     <script defer src="assets/draft/js/topic-accordion.js?v=c80d65a3162f"></script>
+    <link rel="stylesheet" href="assets/css/theme-stage.css?v=1c42097e8780" /><!-- light page; Fig. 1, post-training and MPC as dark stages in the films' graphite -->
   </head>
   <body>
     <a class="skip-link" href="#overview">Skip to content</a>
@@ -115,8 +116,8 @@
              and ?preview=light show the poster until the visitor clicks Play.
              The Grana film (opening, pretraining wall, post-training, MPC, title; graded footage); 720 is picked at <= 900 px.
              Bump ?v= whenever the cover files change (browsers cache them for 10 min). -->
-        <source data-cover-src="assets/draft/video/cover_chain_1080.mp4?v=g1" type="video/mp4" />
-        <source data-cover-src="assets/draft/video/cover_chain_720.mp4?v=g1" type="video/mp4" />
+        <source data-cover-src="assets/draft/video/cover_chain_1080.mp4?v=g2" type="video/mp4" />
+        <source data-cover-src="assets/draft/video/cover_chain_720.mp4?v=g2" type="video/mp4" />
       </video>
       <button class="hero-play" type="button" hidden>
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.52.85l10.4-6.5a1 1 0 0 0 0-1.7L9.52 4.65A1 1 0 0 0 8 5.5z" /></svg>
@@ -203,12 +204,11 @@
                     <p class="f2d-sub">+ subtask descriptions</p>
                   </div>
 
-                  <div class="f2d-node f2d-sel" title="Query 1: Grana's own VLM selects the subtask by default; any other subtask selector can be used">
+                  <div class="f2d-node f2d-sel" title="Query 1: the Grana Subtask Selector picks the subtask; any other subtask selector can be used">
                     <div class="f2d-head-row">
-                      <p class="f2d-title">Subtask selector</p>
+                      <p class="f2d-title">Grana Subtask Selector</p>
                       <span class="f2d-count" aria-hidden="true"><b>1</b> / 9</span>
                     </div>
-                    <p class="f2d-selector-default">Default: <strong>Grana’s own VLM</strong></p>
                     <div class="f2d-pills-wrap">
                       <span class="f2d-halo" aria-hidden="true"></span>
                       <ol class="f2d-pills" aria-label="Subtasks">
@@ -289,27 +289,12 @@
                     <li><i class="f2d-sw f2d-sw--frozen"></i>Frozen</li>
                     <li><i class="f2d-sw f2d-sw--train"></i>Trainable</li>
                   </ul>
-                  <p class="f2d-src">Grana outputs · one selected held-out episode</p>
-                  <div class="f2d-ctrl" role="group" aria-label="Animation controls">
-                    <button class="f2d-btn f2d-play" type="button" aria-label="Pause animation" aria-pressed="false">
-                      <svg class="f2d-i-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="3.6" height="14" rx="1" /><rect x="13.9" y="5" width="3.6" height="14" rx="1" /></svg>
-                      <svg class="f2d-i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.52.85l10.4-6.5a1 1 0 0 0 0-1.7L9.52 4.65A1 1 0 0 0 8 5.5z" /></svg>
-                    </button>
-                    <button class="f2d-btn" type="button" data-act="prev" aria-label="Previous subtask"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 1 0 1.4L10.4 12l4.3 4.3a1 1 0 1 1-1.4 1.4l-5-5a1 1 0 0 1 0-1.4l5-5a1 1 0 0 1 1.4 0z" /></svg></button>
-                    <button class="f2d-btn" type="button" data-act="next" aria-label="Next subtask"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.3 6.3a1 1 0 0 1 1.4 0l5 5a1 1 0 0 1 0 1.4l-5 5a1 1 0 1 1-1.4-1.4l4.3-4.3-4.3-4.3a1 1 0 0 1 0-1.4z" /></svg></button>
-                    <button class="f2d-btn" type="button" data-act="restart" aria-label="Restart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5a7 7 0 1 1-6.93 8h2.03A5 5 0 1 0 12 7v2.6a.4.4 0 0 1-.66.3L7.6 6.6a.4.4 0 0 1 0-.6l3.74-3.3a.4.4 0 0 1 .66.3V5z" /></svg></button>
-                    <select class="f2d-rate" aria-label="Playback speed relative to real time">
-                      <option value="0.5">3×</option>
-                      <option value="1" selected>6×</option>
-                      <option value="1.5">9×</option>
-                    </select>
-                  </div>
                 </div>
               </div>
               <img class="f2d-fallback" src="assets/img/fig2-method-2500.webp?v=2292831df7dc" width="2500" height="887" alt="Architecture overview: task and subtask descriptions plus multi-view observations feed a shared vision-language model; subtask selection and local progress are composed into whole-task progress." loading="lazy" decoding="async" />
             </div>
             <p class="sr-only" id="f2d-desc">Task context (assemble an airplane model, with its nine subtask descriptions) and four camera views go into a frozen vision–language model with trainable LoRA. By default, Grana’s own VLM selects the unfinished subtask and passes its description to the model; any other subtask selector can be used. A trainable progress head, shared across subtasks, predicts that subtask’s local progress from 0 to 1. Composition adds one share of credit for every completed subtask: global progress equals k plus local progress, divided by K. The animation replays the outputs of Grana, adapted to airplane assembly, on one selected held-out episode at six times speed by default, with light smoothing; this episode is not in the paper. Grana moves through all nine subtasks, its local progress restarts at each new subtask, and global progress climbs to 0.99 without losing the credit of completed subtasks.</p>
-            <figcaption><b>From local to global task progress.</b> By default, Grana’s own vision–language model selects the unfinished subtask; any other subtask selector can be used. The shared model estimates progress for the selected description, and composition adds credit for completed subtasks. <span class="f2d-cap-live">Default playback: 6× real time. Grana is adapted to airplane assembly; this replay uses one held-out episode (<i>K</i>&nbsp;=&nbsp;9) with lightly smoothed scores and is not included in the paper.</span> <button class="f2d-link" type="button" data-expand="assets/img/fig2-method-2500.webp?v=2292831df7dc" data-expand-alt="Architecture overview: task and subtask descriptions plus multi-view observations feed a shared vision-language model; subtask selection and local progress are composed into whole-task progress." aria-label="View the static figure">View the static figure</button></figcaption>
+            <figcaption><b>From local to global task progress.</b> By default, Grana’s own vision–language model selects the unfinished subtask; any other subtask selector can be used. The shared model estimates progress for the selected description, and composition adds credit for completed subtasks. <span class="f2d-cap-live">Playback: 9× real time. Grana is adapted to airplane assembly; this replay uses one held-out episode (<i>K</i>&nbsp;=&nbsp;9) with lightly smoothed scores and is not included in the paper.</span> <button class="f2d-link" type="button" data-expand="assets/img/fig2-method-2500.webp?v=2292831df7dc" data-expand-alt="Architecture overview: task and subtask descriptions plus multi-view observations feed a shared vision-language model; subtask selection and local progress are composed into whole-task progress." aria-label="View the static figure">View the static figure</button></figcaption>
           </figure>
         </div>
       </section>

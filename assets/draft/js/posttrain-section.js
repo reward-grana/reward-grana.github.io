@@ -19,9 +19,9 @@
       bars: [["Grana", 65.0, "13/20"], ["RoboMeter (finetuned)", 50.0, "10/20"]], note: "20 trials · zero-shot", dec: 1 },
     { id: "tube", title: "Tube transfer", method: "Offline RL", speed: "×5", tag: "✓ success", dur: "0:33",
       bars: [["Grana", 66.7, "8/12"], ["RoboMeter (finetuned)", 41.7, "5/12"]], note: "12 trials · zero-shot · SARM2 also 41.7 %", dec: 1 },
-    { id: "airplane", title: "Airplane model", method: "Weighted cloning", speed: "×20", tag: "✓ assembled", dur: "2:47",
+    { id: "airplane", title: "Airplane model", method: "Weighted BC", speed: "×20", tag: "✓ assembled", dur: "2:47",
       bars: [["Grana-weighted", 75.0, "9/12"], ["Unweighted", 50.0, "6/12"]], note: "12 trials · Iter2", dec: 1 },
-    { id: "car", title: "Car model", method: "Weighted cloning", speed: "×30", tag: "✓ assembled", dur: "4:22",
+    { id: "car", title: "Car model", method: "Weighted BC", speed: "×30", tag: "✓ assembled", dur: "4:22",
       bars: [["Grana-weighted", 66.7, "8/12"], ["Unweighted", 41.7, "5/12"]], note: "12 trials · Iter2", dec: 1 },
   ];
 
@@ -45,7 +45,7 @@
   /* ---------- the film ---------- */
   const small = window.matchMedia && window.matchMedia("(max-width: 900px), (max-height: 500px)").matches;
   const film = el("video", { class: "pt-film-video", muted: true, loop: true, playsinline: true, preload: "none",
-    poster: abs("assets/draft/video/posttrain_poster.jpg"), "data-pt-src": abs(`assets/draft/video/posttrain_${small ? 720 : 1080}.mp4?v=p2`),
+    poster: abs("assets/draft/video/posttrain_poster.jpg?v=p3"), "data-pt-src": abs(`assets/draft/video/posttrain_${small ? 720 : 1080}.mp4?v=p3`),
     "aria-label": "Film: how Grana's progress trains the policy, then the results (33 seconds, no sound)" });
   film.muted = true;
   film.id = "pt-film-video";
@@ -61,7 +61,6 @@
   });
   const filmFig = el("figure", { class: "pt-film" },
     el("div", { class: "pt-film-media" }, film),
-    el("div", { class: "pt-film-controls" }, filmToggle, full),
     el("figcaption", { class: "pt-film-cap" },
       el("strong", { text: "Progress-based policy training." }),
       el("span", { text: " In this rollout, predicted progress decreases when the wing slips. Progress differences are converted into rewards or imitation weights." }),
@@ -95,7 +94,7 @@
     card.addEventListener("click", (e) => { if (!e.target.closest(".pt-open")) return; openTask(t, open); });
     gallery.append(card);
   });
-  host.append(filmFig, galleryControls, gallery);
+  host.append(filmFig, gallery);                        // (no playback buttons on the page: the user, 10-30)
 
   /* ---------- the four-camera player in a dialog ---------- */
   const dialog = el("dialog", { class: "pt-dialog", "aria-label": "Four synchronized camera views" });

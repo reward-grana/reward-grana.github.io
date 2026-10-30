@@ -139,6 +139,7 @@
       wire: v("--f2d-wire"), arrow: v("--f2d-arrow"), spark: v("--f2d-spark"),
       plain: v("--f2d-p-plain"), cam: v("--f2d-p-cam"), feat: v("--f2d-p-feat"),
       grid: v("--f2d-grid"), curve: v("--f2d-curve"), tag: v("--f2d-tag"), bead: v("--f2d-bead"),
+      blend: cs.getPropertyValue("--f2d-fx-blend").trim() || "lighter",   // flow particles: additive on a dark card
     };
     const fam = (n, d) => cs.getPropertyValue(n).trim() || d;
     F = {
@@ -152,7 +153,7 @@
   const RM = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : { matches: false };
   let userPaused = RM.matches;                                     // the visitor's Play / Pause (reduced motion: paused)
   let T = RM.matches ? T_STILL : 0;                                // the clock, in video seconds
-  let rate = 1, loops = 0, holdUntil = 0, holdLeft = 0, inView = false, raf = 0, lastNow = 0, fadeIn = 1;
+  let rate = 1.5, loops = 0, holdUntil = 0, holdLeft = 0, inView = false, raf = 0, lastNow = 0, fadeIn = 1;
   let scrubbing = false, curK = -1, prevLocal = null, chartKey = "", tileKey = -9;
   const shown = { k: "", p: "", g: "", n: "", f: new Array(K).fill(-1) };
   const dirty = { wires: true, dyn: true };
@@ -434,7 +435,7 @@
     fxClear = false;
     c.setTransform(FXDPR, 0, 0, FXDPR, 0, 0);
     c.clearRect(0, 0, W, H);
-    c.globalCompositeOperation = "lighter";
+    c.globalCompositeOperation = PAL.blend;
     if (live) {
       Object.keys(WIRES).forEach((id) => {
         const w = WIRES[id], f = FLOW[id];
@@ -465,8 +466,22 @@
         return true;
       });
     } else pulses = [];
+    eraseHoles(c);
     c.globalAlpha = 1;
     c.globalCompositeOperation = "source-over";
+  }
+  /* The flow never crosses text: cut it out of every box that holds some (nodes, the description chip, captions, the k). */
+  const HOLES = $$(".f2d-node, .f2d-desc, .f2d-featcap");
+  function eraseHoles(c) {
+    const cb = card.getBoundingClientRect(), pad = 3;
+    c.globalCompositeOperation = "destination-out"; c.globalAlpha = 1; c.fillStyle = "#000";
+    HOLES.forEach((el) => {
+      const r = el.getBoundingClientRect();
+      if (r.width && r.height) c.fillRect(r.left - cb.left - pad, r.top - cb.top - pad, r.width + 2 * pad, r.height + 2 * pad);
+    });
+    if (WIRES.k && WIRES.k.on && BEAD) {
+      c.beginPath(); c.arc(BEAD[0], BEAD[1], (L === "narrow" ? 9 : 11.5) + pad, 0, 6.2832); c.fill();
+    }
   }
 
   /* ------------------------------------------------------------------ charts */
@@ -718,7 +733,8 @@
   function endOfLoop() {
     holdUntil = 0;
     loops += 1;
-    if (loops >= LOOPS) { loops = 0; seekEp(epT(T_STILL)); setPaused(true); return; }   // rest on the paper's example
+    if (playBtn && loops >= LOOPS) { loops = 0; seekEp(epT(T_STILL)); setPaused(true); return; }   // rest on the paper's example
+                                                                   // (without a Play button, keep looping while in view)
     T = 0; fadeIn = 0; prevLocal = null; curK = -1;
     if (videoOK && videoReady) { setVideoTime(0); playVideo(); }
   }
@@ -808,7 +824,7 @@
   }
   function setPaused(p) {
     userPaused = p;
-    playBtn.setAttribute("aria-pressed", String(p));
+    if (playBtn) playBtn.setAttribute("aria-pressed", String(p));
     sync();
   }
   function seekEp(t) {                                             // t: episode seconds
@@ -828,30 +844,30 @@
     if (raf && videoReady && !videoWaiting) playVideo();
   }
 
-  /* ------------------------------------------------------------------ controls */
-  playBtn.setAttribute("aria-pressed", String(userPaused));
-  playBtn.addEventListener("click", () => {
+  /* ------------------------------------------------------------------ controls (the page shows none since 10-30: fixed 9x) */
+  playBtn?.setAttribute("aria-pressed", String(userPaused));
+  playBtn?.addEventListener("click", () => {
     loops = 0;
     if (userPaused && videoBlocked) { videoBlocked = false; }      // a tap may start what autoplay could not
     if (userPaused && T >= VDUR - 0.03) seekEp(T0);               // pressing Play at the end starts over
     setPaused(!userPaused);
   });
-  $('[data-act="prev"]').addEventListener("click", () => {
+  $('[data-act="prev"]')?.addEventListener("click", () => {
     const s = stateAt(T), into = (s.t - WIN[s.k].t0) / SPEED;     // seconds of animation into this subtask
     jumpTo(into > 1 || s.k === 0 ? s.k : s.k - 1);
   });
-  $('[data-act="next"]').addEventListener("click", () => {
+  $('[data-act="next"]')?.addEventListener("click", () => {
     const s = stateAt(T);
     if (holdUntil || T >= VDUR - 0.03) { loops = 0; seekEp(T0); return; }
     if (s.k < K - 1) jumpTo(s.k + 1);
     else { loops = 0; seekEp(DUR); }
   });
-  $('[data-act="restart"]').addEventListener("click", () => {
+  $('[data-act="restart"]')?.addEventListener("click", () => {
     loops = 0; videoBlocked = false;
     seekEp(T0);
     setPaused(false);
   });
-  rateSel.addEventListener("change", () => {
+  rateSel?.addEventListener("change", () => {
     rate = +rateSel.value || 1;
     video.defaultPlaybackRate = video.playbackRate = rate;
   });

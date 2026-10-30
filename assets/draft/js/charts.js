@@ -85,7 +85,7 @@
       ],
     },
     weightedbc: {
-      type: "multiples", dark: true, pct: true, title: "Progress-weighted behavior cloning",
+      type: "multiples", dark: true, pct: true, title: "Progress-weighted BC",
       sub: "Policy success rate · two iterations · 12 trials per policy · initial BC success: 25 % · paper Fig. 6",
       panels: [
         { title: "Airplane · Iter1", meta: "same parent", max: 100, rows: [["Unweighted", 41.7], ["SARM2", 33.3], ["Grana", 58.3, "ours"]] },

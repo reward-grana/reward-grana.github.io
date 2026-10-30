@@ -27,8 +27,8 @@ window.GRANA_DRAFT.mpc = {
       meta: "Opens drawer first",
       title: "Put the banana in the drawer",
       dur: 31.4,
-      src: { hd: "assets/draft/video/mpc_banana_1080.mp4", sd: "assets/draft/video/mpc_banana_720.mp4" },
-      poster: "assets/draft/video/mpc_banana_poster.jpg",
+      src: { hd: "assets/draft/video/mpc_banana_1080.mp4?v=b1", sd: "assets/draft/video/mpc_banana_720.mp4?v=b1" },
+      poster: "assets/draft/video/mpc_banana_poster.jpg?v=b1",
       context: [
         { tone: "bad", label: "Policy alone", text: "Goes for the banana while the drawer is still closed." },
         { tone: "good", label: "With MPC", text: "Backs up and opens the drawer first, then puts the banana in and shuts the drawer." },
@@ -61,8 +61,8 @@ window.GRANA_DRAFT.mpc = {
       meta: "Grips knob firmly",
       title: "Put the apple in the fridge",
       dur: 29.133,
-      src: { hd: "assets/draft/video/mpc_fridge_1080.mp4", sd: "assets/draft/video/mpc_fridge_720.mp4" },
-      poster: "assets/draft/video/mpc_fridge_poster.jpg",
+      src: { hd: "assets/draft/video/mpc_fridge_1080.mp4?v=b1", sd: "assets/draft/video/mpc_fridge_720.mp4?v=b1" },
+      poster: "assets/draft/video/mpc_fridge_poster.jpg?v=b1",
       context: [
         { tone: "bad", label: "Policy alone", text: "Never grips the knob." },
         { tone: "good", label: "With MPC", text: "Grips the knob firmly and pulls the door open; later it puts the apple in and shuts the door." },
@@ -93,8 +93,8 @@ window.GRANA_DRAFT.mpc = {
       meta: "Takes small wheel",
       title: "Assemble the tractor",
       dur: 69.133,
-      src: { hd: "assets/draft/video/mpc_tractor_1080.mp4", sd: "assets/draft/video/mpc_tractor_720.mp4" },
-      poster: "assets/draft/video/mpc_tractor_poster.jpg",
+      src: { hd: "assets/draft/video/mpc_tractor_1080.mp4?v=b1", sd: "assets/draft/video/mpc_tractor_720.mp4?v=b1" },
+      poster: "assets/draft/video/mpc_tractor_poster.jpg?v=b1",
       context: [
         { tone: "bad", label: "Policy alone", text: "Takes the big rear wheel to the front axle, where the small wheel belongs." },
         { tone: "good", label: "With MPC", text: "Three times, all four imagined futures go for a big wheel, and Grana rates them too risky. The futures chosen instead pull away, then head for the small wheel. It ends assembled and upright." },
