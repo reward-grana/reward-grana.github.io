@@ -370,9 +370,8 @@ sub, sup { line-height: 0; }
   letter-spacing: 0.06em;
   color: var(--text);
 }
-.nav-brand svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-.nav-brand .beam { stroke: var(--accent); }
-.nav-brand .beam--in { stroke-opacity: 0.5; }
+.grana-mark { display: block; flex: 0 0 auto; object-fit: contain; }
+.nav-brand .grana-mark { width: 26px; height: 28px; }
 .nav-brand.on-dark { color: #fff; }
 
 .nav-links {
@@ -454,9 +453,10 @@ sub, sup { line-height: 0; }
   max-width: var(--max-wide); margin: 0 auto; padding: 0.4rem var(--gutter);
   display: flex; align-items: center; justify-content: space-between; gap: 1rem;
 }
-.project-wordmark { display: flex; align-items: center; gap: 1.1rem; color: inherit; font-weight: 700; letter-spacing: 0.04em; }
+.project-wordmark { display: flex; align-items: center; gap: 0.6rem; color: inherit; font-weight: 700; letter-spacing: 0.04em; }
+.project-wordmark .grana-mark { width: 28px; height: 30px; }
 .project-wordmark:hover { color: #fff; }
-.project-wordmark span { color: #c6cad3; font-size: 0.875rem; font-weight: 400; letter-spacing: 0; }
+.project-wordmark span { margin-left: 0.5rem; color: #c6cad3; font-size: 0.875rem; font-weight: 400; letter-spacing: 0; }
 .project-resource-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
 .project-resource-actions .btn { min-height: 44px; padding: 0.4rem 0.85rem; border-color: rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.06); }
 .project-resource-actions .btn:hover { background: rgba(255, 255, 255, 0.15); border-color: rgba(255, 255, 255, 0.55); }
@@ -1248,10 +1248,8 @@ dialog.media-modal[open], div.media-modal.open { display: flex; }
 .footer-inner { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 2rem; }
 .footer-brand { display: flex; flex-direction: column; gap: 0.35rem; }
 .footer-mark { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--font-serif); font-weight: 700; font-size: 1.8rem; letter-spacing: 0.01em; line-height: 1.65; color: var(--text); }
-.footer-mark svg, .mark-inline { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-.footer-mark svg { width: 30px; height: 30px; }
-.footer-mark .beam, .mark-inline .beam { stroke: var(--accent); }
-.mark-inline { display: inline-block; width: 15px; height: 15px; vertical-align: -3px; margin-right: 0.15rem; }
+.footer-mark .grana-mark { width: 36px; height: 38px; }
+.mark-inline { display: inline-block; width: 16px; height: 16px; vertical-align: -3px; margin-right: 0.15rem; }
 .footer-tag { font-size: 0.9rem; color: var(--muted); }
 .footer-links { display: flex; flex-wrap: wrap; gap: 1.6rem; }
 .footer-links a {

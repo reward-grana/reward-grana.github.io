@@ -1,7 +1,7 @@
 /* Grana page: shared behaviour (no dependencies, ES5-compatible).
  *
  *  - Accent switch: ?brand=anon | green  ->  <html data-brand="...">; the
- *    favicon follows, and the footer swatches show only with ?brand=.
+ *    footer swatches show only with ?brand=. The Grana clover keeps its colours.
  *  - Scroll chrome: 3px progress bar, left rail that docks once the hero is
  *    scrolled past (hero bottom - 96px), scroll spy at 32% of the viewport,
  *    light rail ink while the rail overlaps a dark band (or while keyboard
@@ -29,20 +29,12 @@
   var doc = document;
   var root = doc.documentElement;
   var BRANDS = { green: true, anon: true };
-  var FAVICON_BEAM = { green: "%2376b900", anon: "%235b50d6" };
 
   /* ---------- Brand (runs immediately; the <head> script does the same before first paint) ---------- */
-  function setFavicon(b) {
-    var link = doc.querySelector("link[rel~='icon']");
-    var href = link && link.getAttribute("href");
-    if (!href || href.indexOf("data:image/svg+xml") !== 0) return;
-    link.setAttribute("href", href.replace(/(M20 19h11' stroke=')%23[0-9a-f]{6}/i, "$1" + FAVICON_BEAM[b]));
-  }
   function setBrand(b) {
     b = String(b || "").toLowerCase();
     if (!BRANDS[b]) return false;
     root.setAttribute("data-brand", b);
-    setFavicon(b);
     return true;
   }
   try {

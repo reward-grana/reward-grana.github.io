@@ -12,7 +12,9 @@
     <meta property="og:url" content="https://reward-grana.github.io/" />
     <link rel="canonical" href="https://reward-grana.github.io/" />
     <title>Grana: Compositional Reward Modeling for Long-Horizon Robot Manipulation</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M15 4 26 28H4Z' fill='%23f2ece6' stroke='%231b1e23' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M1 16h8.6l10.4 3' fill='none' stroke='%231b1e23' stroke-width='1.8'/%3E%3Cpath d='M20 19l11-5' stroke='%23177c87' stroke-width='2.2'/%3E%3Cpath d='M20 19h11' stroke='%2376b900' stroke-width='2.2'/%3E%3Cpath d='M20 19l11 5' stroke='%23c98500' stroke-width='2.2'/%3E%3C/svg%3E" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32x32.png?v=bc6913ad18dc" />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="assets/brand/grana-favicon.svg?v=891e1c379781" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/brand/apple-touch-icon.png?v=05d06793b632" />
     <script>
       /* DRAFT: the animated Fig. 2 (assets/draft/js/fig2.js) takes the figure slot from first paint. If that
          script never marks the figure live (missing data, blocked script), the static figure comes back. */
@@ -30,8 +32,6 @@
           document.documentElement.classList.add("brand-ui");
           if (b !== "anon" && b !== "green") return;
           document.documentElement.setAttribute("data-brand", b);
-          var icon = document.querySelector("link[rel~='icon']");
-          if (icon && b === "anon") icon.setAttribute("href", icon.getAttribute("href").replace("%2376b900", "%235b50d6"));
         } catch (e) {}
       })();
     </script>
@@ -43,10 +43,10 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" crossorigin="anonymous" media="print" onload="this.media='all'" />
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" crossorigin="anonymous" /></noscript>
-    <link rel="stylesheet" href="assets/css/site.css?v=5e7469a61193" />
+    <link rel="stylesheet" href="assets/css/site.css?v=e2657bef6cbe" />
     <link rel="stylesheet" href="assets/css/content.css?v=170b457f88c1" />
     <link rel="stylesheet" href="assets/css/players.css?v=92742d806d50" />
-    <script defer src="assets/js/site.js?v=3b74a577d27e"></script>
+    <script defer src="assets/js/site.js?v=79df09bfc513"></script>
     <script defer src="assets/js/data/tasks.js?v=23486a073bc1"></script>
     <script defer src="assets/draft/js/tasks-draft.js?v=6909cbc701cc"></script><!-- DRAFT: drops the long-instruction tasks from the gallery (before app.js renders it) -->
     <script defer src="assets/js/data/predictions.js?v=c3b4802b6bab"></script>
@@ -74,12 +74,6 @@
     <div class="scroll-progress" aria-hidden="true"></div>
 
     <svg style="display:none" aria-hidden="true">
-      <symbol id="mark" viewBox="0 0 32 32">
-        <path d="M16 3.5 27.5 30H4.5Z" />
-        <path class="beam" d="M1 16.5H10.4" />
-        <path class="beam beam--in" d="M10.4 16.5 22.4 18.2" />
-        <path class="beam" d="M22.4 18.2l8.6 2.8M22.4 18.2l7.9 4.4M22.4 18.2l6.9 5.8" />
-      </symbol>
       <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="8" y1="13" x2="16" y2="13" /><line x1="8" y1="17" x2="13" y2="17" /></symbol>
       <symbol id="i-play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><polygon points="10 8 16 12 10 16 10 8" /></symbol>
       <symbol id="i-braces" viewBox="0 0 24 24"><path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5a2 2 0 0 0 2 2h1" /><path d="M16 21h1a2 2 0 0 0 2-2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1" /></symbol>
@@ -90,7 +84,7 @@
 
     <nav class="navbar" aria-label="Sections">
       <a class="nav-brand" href="#overview" aria-label="Grana project website">
-        <svg aria-hidden="true"><use href="#mark" /></svg>
+        <img class="grana-mark" src="assets/brand/grana-mark.svg?v=8d7e01b7c333" width="250" height="265" alt="" aria-hidden="true" />
         <span>Grana</span>
       </a>
       <div class="nav-links">
@@ -107,9 +101,9 @@
 
     <nav class="project-resources" aria-label="Project resources">
       <div class="project-resources-inner">
-        <a class="project-wordmark" href="#overview">Grana<span>Reward modeling for long-horizon robot manipulation</span></a>
+        <a class="project-wordmark" href="#overview"><img class="grana-mark" src="assets/brand/grana-mark.svg?v=8d7e01b7c333" width="250" height="265" alt="" aria-hidden="true" />Grana<span>Reward modeling for long-horizon robot manipulation</span></a>
         <div class="project-resource-actions">
-          <a class="btn btn--sm" href="assets/paper/reward_PRISM_arxiv_v1.pdf?v=00c680be3ee2" aria-label="Main paper (PDF)">
+          <a class="btn btn--sm" href="assets/paper/reward_PRISM_arxiv_v1.pdf?v=cb7ddac5324d" aria-label="Main paper (PDF)">
             <svg class="btn-ico" aria-hidden="true"><use href="#i-doc" /></svg>Paper
           </a>
           <button class="btn btn--sm" type="button" data-expand="assets/video/prism-overview-release-clean-1080.mp4" data-expand-poster="assets/video/prism-overview-release-clean.jpg" aria-label="Play the overview video full screen, with sound">
@@ -175,7 +169,7 @@
             <p class="author-note-line"><span><sup>*</sup>Equal contribution</span><span aria-hidden="true">·</span><span><sup>†</sup>Project leads</span></p>
           </div>
           <div class="intro-actions">
-            <a class="btn" href="assets/paper/reward_PRISM_arxiv_v1.pdf?v=00c680be3ee2" aria-label="Main paper (PDF)">
+            <a class="btn" href="assets/paper/reward_PRISM_arxiv_v1.pdf?v=cb7ddac5324d" aria-label="Main paper (PDF)">
               <svg class="btn-ico" aria-hidden="true"><use href="#i-doc" /></svg>
               Paper (PDF)
             </a>
@@ -321,10 +315,10 @@
                   </div>
                 </div>
               </div>
-              <img class="f2d-fallback" src="assets/img/fig2-method-2500.webp" width="2500" height="888" alt="Figure 2: task and subtask descriptions plus multi-view observations feed a shared vision-language model; subtask selection and local progress are composed into whole-task progress." loading="lazy" decoding="async" />
+              <img class="f2d-fallback" src="assets/img/fig2-method-2500.webp?v=2292831df7dc" width="2500" height="887" alt="Figure 2: task and subtask descriptions plus multi-view observations feed a shared vision-language model; subtask selection and local progress are composed into whole-task progress." loading="lazy" decoding="async" />
             </div>
             <p class="sr-only" id="f2d-desc">Task context (assemble an airplane model, with its nine subtask descriptions) and four camera views go into a frozen vision–language model with trainable LoRA. The subtask selector picks the unfinished subtask and passes its description to the model. A trainable progress head, shared across subtasks, predicts that subtask’s local progress from 0 to 1. Composition adds one share of credit for every completed subtask: global progress equals k plus local progress, divided by K. The animation replays the outputs of Grana, adapted to airplane assembly, on one selected held-out episode at six times speed, with light smoothing; this episode is not in the paper. Grana moves through all nine subtasks, its local progress restarts at each new subtask, and global progress climbs to 0.99 without losing the credit of completed subtasks.</p>
-            <figcaption><b>Fig. 2 · From local to global task progress.</b> A shared vision–language model selects the unfinished subtask and estimates its progress from the selected description; composition adds credit for completed subtasks. <span class="f2d-cap-live">Replay at 6×: Grana, adapted to airplane assembly, on one selected held-out episode (<i>K</i>&nbsp;=&nbsp;9); scores lightly smoothed; not in the paper.</span> <button class="f2d-link" type="button" data-expand="assets/img/fig2-method-2500.webp" data-expand-alt="Figure 2: task and subtask descriptions plus multi-view observations feed a shared vision-language model; subtask selection and local progress are composed into whole-task progress." aria-label="View the static figure">View the static figure</button></figcaption>
+            <figcaption><b>Fig. 2 · From local to global task progress.</b> A shared vision–language model selects the unfinished subtask and estimates its progress from the selected description; composition adds credit for completed subtasks. <span class="f2d-cap-live">Replay at 6×: Grana, adapted to airplane assembly, on one selected held-out episode (<i>K</i>&nbsp;=&nbsp;9); scores lightly smoothed; not in the paper.</span> <button class="f2d-link" type="button" data-expand="assets/img/fig2-method-2500.webp?v=2292831df7dc" data-expand-alt="Figure 2: task and subtask descriptions plus multi-view observations feed a shared vision-language model; subtask selection and local progress are composed into whole-task progress." aria-label="View the static figure">View the static figure</button></figcaption>
           </figure>
           <p class="predictor-invariant callout callout--inline f2-invariant"><strong>Same everywhere</strong><span>One architecture and one language interface for pretraining, adaptation and inference.</span></p>
         </div>
@@ -865,17 +859,17 @@
     <footer class="footer">
       <div class="container container--wide footer-inner">
         <div class="footer-brand">
-          <span class="footer-mark"><svg aria-hidden="true"><use href="#mark" /></svg>Grana</span>
+          <span class="footer-mark"><img class="grana-mark" src="assets/brand/grana-mark.svg?v=8d7e01b7c333" width="250" height="265" alt="" aria-hidden="true" />Grana</span>
           <span class="footer-tag">Compositional Reward Modeling for Long-Horizon Robot Manipulation</span>
         </div>
         <nav class="footer-links" aria-label="Footer">
-          <a href="assets/paper/reward_PRISM_arxiv_v1.pdf?v=00c680be3ee2"><svg class="footer-ico" aria-hidden="true"><use href="#i-doc" /></svg>Paper</a>
+          <a href="assets/paper/reward_PRISM_arxiv_v1.pdf?v=cb7ddac5324d"><svg class="footer-ico" aria-hidden="true"><use href="#i-doc" /></svg>Paper</a>
           <a href="assets/video/prism-overview-release-clean-1080.mp4" data-expand="assets/video/prism-overview-release-clean-1080.mp4" data-expand-poster="assets/video/prism-overview-release-clean.jpg"><svg class="footer-ico" aria-hidden="true"><use href="#i-play" /></svg>Video</a>
           <a href="#bibtex"><svg class="footer-ico" aria-hidden="true"><use href="#i-braces" /></svg>BibTeX</a>
         </nav>
       </div>
       <div class="container container--wide footer-affil">
-        <p><svg class="mark-inline" aria-hidden="true"><use href="#mark" /></svg> Grana · NVIDIA · The University of Texas at Austin · University of Washington</p>
+        <p><img class="mark-inline" src="assets/brand/grana-favicon.svg?v=891e1c379781" width="16" height="16" alt="" aria-hidden="true" /> Grana · NVIDIA · The University of Texas at Austin · University of Washington</p>
         <span class="brand-switch" role="group" aria-label="Accent colour">
           <button type="button" data-set-brand="green"><i aria-hidden="true"></i>green</button>
           <button type="button" data-set-brand="anon"><i aria-hidden="true"></i>violet</button>
