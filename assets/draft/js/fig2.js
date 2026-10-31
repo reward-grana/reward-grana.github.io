@@ -41,7 +41,7 @@
      carry each one's full description as the model gets it, "[From <start state>] <instruction>" (the user's task
      config; its "Fastern" is spelled "Fasten" here). */
   const NAMES = ["Place bottom wing", "Insert bottom screw", "Drill bottom screw", "Hand off the drill",
-                 "Flip the plane", "Place top wing", "Insert top screw", "Fasten top screw", "Drill to the desk"];
+                 "Flip the plane", "Place top wing", "Insert top screw", "Fasten top screw", "Return drill to desk"];
   const FROM = [
     "0/2 red wings installed on plane body",
     "1/2 wings (with wheels) is on flipped plane body but no screw inserted",

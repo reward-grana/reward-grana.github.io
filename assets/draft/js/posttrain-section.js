@@ -1,5 +1,5 @@
 /* Grana draft · section 02 "Post-training with Grana" (draft.html #policy).
- *   - The film: assets/draft/video/posttrain_{1080,720}.mp4, the cover film's post-training segment (33 s): how
+ *   - The film: assets/draft/video/posttrain_{1080,720}.mp4, the long film's post-training segment (45 s; 10-31: with a baseline beside Grana and the before / after): how
  *     Grana's progress becomes the training signal, then the results. Muted; it plays while in view.
  *   - One card per task. Each shows the post-trained policy's real rollout (front view, sped up; one selected
  *     successful evaluation episode) and its success rate against the alternative, from the paper (Sec. 4.5,
@@ -45,8 +45,8 @@
   /* ---------- the film ---------- */
   const small = window.matchMedia && window.matchMedia("(max-width: 900px), (max-height: 500px)").matches;
   const film = el("video", { class: "pt-film-video", muted: true, loop: true, playsinline: true, preload: "none",
-    poster: abs("assets/draft/video/posttrain_poster.jpg?v=p3"), "data-pt-src": abs(`assets/draft/video/posttrain_${small ? 720 : 1080}.mp4?v=p3`),
-    "aria-label": "Film: how Grana's progress trains the policy, then the results (33 seconds, no sound)" });
+    poster: abs("assets/draft/video/posttrain_poster.jpg?v=p3"), "data-pt-src": abs(`assets/draft/video/posttrain_${small ? 720 : 1080}.mp4?v=p6`),
+    "aria-label": "Film: how Grana's progress trains the policy, then the results (45 seconds, no sound)" });
   film.muted = true;
   film.id = "pt-film-video";
   const filmToggle = el("button", { class: "pt-playback pt-film-toggle", type: "button", "aria-controls": film.id });
@@ -63,8 +63,8 @@
     el("div", { class: "pt-film-media" }, film),
     el("figcaption", { class: "pt-film-cap" },
       el("strong", { text: "Progress-based policy training." }),
-      el("span", { text: " In this rollout, predicted progress decreases when the wing slips. Progress differences are converted into rewards or imitation weights." }),
-      el("span", { class: "pt-film-dur", text: "0:33 · no sound" })));
+      el("span", { text: " In this rollout, Grana's predicted progress drops when the wing comes off, while a baseline reward model's does not. Progress differences are converted into rewards or imitation weights." }),
+      el("span", { class: "pt-film-dur", text: "0:45 · no sound" })));
   playback.push({ video: film, state: filmState, inView: false, pending: false });
 
   /* ---------- the cards ---------- */

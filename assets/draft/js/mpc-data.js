@@ -6,7 +6,7 @@
  * `say`, where present, is what the page shows instead.
  *
  * kind: setup | alone (policy alone) | mpc | imagine | judge (Grana scores) |
- *       wrong (wrong step) | reject (Grana: all four too risky) | chosen | run | done
+ *       wrong (wrong step) | reject (Grana rejects all four) | chosen | run | done
  *
  * Presentation (the user's decision, 2026-10-24): Grana is presented as the judge, with no "illustrative"
  * notes. Each round's provenance is recorded with the film (PRISM_cover_film/README.md).
@@ -19,7 +19,7 @@ window.GRANA_DRAFT.mpc = {
   stories: [
     {
       id: "banana",
-      card: { judge: { cells: [["bad", "banana"], ["bad", "banana"], ["good", "pick"], ["bad", "banana"]],
+      card: { judge: { cells: [["bad", ""], ["bad", ""], ["good", "pick"], ["bad", ""]],
                      foot: "✓ Grana's pick: the drawer first" },
               alone: { text: "Grabs the banana while the drawer is still closed", speed: "×2" },
               mpc: { text: "Opens the drawer first, then puts the banana in", speed: "fast-forward" } },   /* the before/after card (clips: assets/draft/video/cards/banana_{alone,mpc}.mp4) */
@@ -27,7 +27,7 @@ window.GRANA_DRAFT.mpc = {
       meta: "Opens drawer first",
       title: "Put the banana in the drawer",
       dur: 31.4,
-      src: { hd: "assets/draft/video/mpc_banana_1080.mp4?v=b1", sd: "assets/draft/video/mpc_banana_720.mp4?v=b1" },
+      src: { hd: "assets/draft/video/mpc_banana_1080.mp4?v=b4", sd: "assets/draft/video/mpc_banana_720.mp4?v=b4" },
       poster: "assets/draft/video/mpc_banana_poster.jpg?v=b1",
       context: [
         { tone: "bad", label: "Policy alone", text: "Goes for the banana while the drawer is still closed." },
@@ -53,7 +53,7 @@ window.GRANA_DRAFT.mpc = {
     },
     {
       id: "fridge",
-      card: { judge: { cells: [["bad", "jams knob"], ["bad", "half grip"], ["good", "pick"], ["bad", "lets go"]],
+      card: { judge: { cells: [["bad", ""], ["bad", ""], ["good", "pick"], ["bad", ""]],
                      foot: "✓ Grana's pick: a firm grip" },
               alone: { text: "Reaches for the knob but never grips it", speed: "×3" },
               mpc: { text: "Grips the knob, opens the door, puts the apple in", speed: "fast-forward" } },   /* the before/after card (clips: assets/draft/video/cards/fridge_{alone,mpc}.mp4) */
@@ -61,7 +61,7 @@ window.GRANA_DRAFT.mpc = {
       meta: "Grips knob firmly",
       title: "Put the apple in the fridge",
       dur: 29.133,
-      src: { hd: "assets/draft/video/mpc_fridge_1080.mp4?v=b1", sd: "assets/draft/video/mpc_fridge_720.mp4?v=b1" },
+      src: { hd: "assets/draft/video/mpc_fridge_1080.mp4?v=b4", sd: "assets/draft/video/mpc_fridge_720.mp4?v=b4" },
       poster: "assets/draft/video/mpc_fridge_poster.jpg?v=b1",
       context: [
         { tone: "bad", label: "Policy alone", text: "Never grips the knob." },
@@ -85,32 +85,32 @@ window.GRANA_DRAFT.mpc = {
     },
     {
       id: "tractor",
-      card: { judge: { cells: [["bad", "big wheel"], ["bad", "big wheel"], ["bad", "big wheel"], ["bad", "big wheel"]],
-                      foot: "✕ all 4 too risky → imagine again" },
+      card: { judge: { cells: [["bad", ""], ["bad", ""], ["bad", ""], ["bad", ""]],
+                      foot: "✕ Grana rejects all 4 → imagine again" },
               alone: { text: "Takes the big rear wheel to the front axle", speed: "×2" },
               mpc: { text: "Puts the small wheel on the front axle", speed: "×2" } },   /* the before/after card (clips: assets/draft/video/cards/tractor_{alone,mpc}.mp4) */
       tab: "Tractor assembly",
       meta: "Takes small wheel",
       title: "Assemble the tractor",
       dur: 69.133,
-      src: { hd: "assets/draft/video/mpc_tractor_1080.mp4?v=b1", sd: "assets/draft/video/mpc_tractor_720.mp4?v=b1" },
+      src: { hd: "assets/draft/video/mpc_tractor_1080.mp4?v=b4", sd: "assets/draft/video/mpc_tractor_720.mp4?v=b4" },
       poster: "assets/draft/video/mpc_tractor_poster.jpg?v=b1",
       context: [
         { tone: "bad", label: "Policy alone", text: "Takes the big rear wheel to the front axle, where the small wheel belongs." },
-        { tone: "good", label: "With MPC", text: "Three times, all four imagined futures go for a big wheel, and Grana rates them too risky. The futures chosen instead pull away, then head for the small wheel. It ends assembled and upright." },
+        { tone: "good", label: "With MPC", text: "Three times, all four imagined futures go for a big wheel, and Grana rejects them all. The futures chosen instead pull away, then head for the small wheel. It ends assembled and upright." },
       ],
       beats: [
         { t0: 0.47, t1: 1.8, kind: "setup", text: "same start" },
         { t0: 2.15, t1: 6.03, kind: "alone", text: "✕ policy alone: the big rear wheel to the front axle" },
         { t0: 6.23, t1: 8.13, kind: "mpc", text: "with MPC" },
         { t0: 8.13, t1: 10.63, kind: "imagine", text: "imagined: all grab the big wheel" },
-        { t0: 10.63, t1: 12.93, kind: "reject", text: "✕ Grana: all too risky, imagine again" },
+        { t0: 10.63, t1: 12.93, kind: "reject", text: "✕ Grana rejects all 4, imagine again" },
         { t0: 13.03, t1: 14.78, kind: "imagine", text: "new futures: pull away" },
         { t0: 14.78, t1: 16.33, kind: "chosen", text: "chosen: pull away" },
         { t0: 18.17, t1: 20.03, kind: "run", text: "the policy goes back" },
         { t0: 20.03, t1: 22.87, kind: "run", text: "next round: right hand over a big wheel" },
         { t0: 23.42, t1: 25.42, kind: "imagine", text: "again: all reach for it" },
-        { t0: 25.42, t1: 27.72, kind: "reject", text: "✕ Grana: too risky again" },
+        { t0: 25.42, t1: 27.72, kind: "reject", text: "✕ Grana rejects all 4 again" },
         { t0: 27.82, t1: 30.07, kind: "imagine", text: "new: slide to the corner wheel" },
         { t0: 30.07, t1: 31.62, kind: "chosen", text: "chosen: small wheel" },
         { t0: 37.45, t1: 39.45, kind: "run", text: "on the front axle" },
@@ -118,7 +118,7 @@ window.GRANA_DRAFT.mpc = {
         { t0: 43.78, t1: 44.85, kind: "run", text: "flip" },
         { t0: 44.85, t1: 46.88, kind: "run", text: "a big wheel again" },
         { t0: 47.43, t1: 49.68, kind: "imagine", text: "again: all grab the big wheel" },
-        { t0: 49.68, t1: 51.98, kind: "reject", text: "✕ Grana: too risky" },
+        { t0: 49.68, t1: 51.98, kind: "reject", text: "✕ Grana rejects all 4" },
         { t0: 52.08, t1: 54.08, kind: "imagine", text: "new: to the small wheel" },
         { t0: 54.08, t1: 55.63, kind: "chosen", text: "chosen: small wheel" },
         { t0: 59.23, t1: 61.93, kind: "run", text: "on the front axle again" },

@@ -210,7 +210,7 @@
 }
 .mpc-legend-list dt { font: 600 0.875rem/1.6 var(--font-mono); color: var(--text); }
 .mpc-legend-list [data-tone="bad"] dt { color: var(--mpc-bad-ink); }
-.mpc-legend-list [data-tone="good"] dt { color: var(--mpc-pick); text-transform: uppercase; letter-spacing: 0.04em; }
+.mpc-legend-list [data-tone="good"] dt { color: var(--mpc-pick); }   /* no uppercase: the name is "Grana", never GRANA (the user, 10-31) */
 .mpc-legend-list dd { margin: 0; font-size: 0.95rem; line-height: 1.6; color: var(--muted); }
 .mpc-context .mpc-legend-strip { margin-top: 0.8rem; font-size: 0.95rem; line-height: 1.6; color: var(--muted); }
 .mpc-key { white-space: nowrap; color: var(--text); }

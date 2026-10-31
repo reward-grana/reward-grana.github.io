@@ -119,7 +119,7 @@
         "The bar under each video follows the captions: ",
         el("span", { class: "mpc-key", "data-tone": "plan", text: "imagining" }), ", ",
         el("span", { class: "mpc-key", "data-tone": "good", text: "chosen or done" }), ", ",
-        el("span", { class: "mpc-key", "data-tone": "bad", text: "a failure or too risky" }), ", ",
+        el("span", { class: "mpc-key", "data-tone": "bad", text: "a failure or rejected" }), ", ",
         el("span", { class: "mpc-key", "data-tone": "plain", text: "the robot acts" }), ".")));
   const context = el("div", { class: "policy-task-context mpc-context" }, compare, note, legend);
 
@@ -155,7 +155,7 @@
         poster: abs(`assets/draft/video/cards/${s.id}_judge.jpg`), "data-src": abs(`assets/draft/video/cards/${s.id}_judge.mp4`) });
       jv.muted = true;
       const cells = J.cells.map(([tone, txt], k) => el("span", { class: "mpc-judge-cell", "data-tone": tone, style: `--k:${k}` },
-        el("span", { class: "mpc-judge-stamp" }, el("b", { text: tone === "good" ? "✓" : "✕" }), el("span", { text: txt }))));
+        el("span", { class: "mpc-judge-stamp" }, el("b", { text: tone === "good" ? "✓" : "✕" }), ...(txt ? [el("span", { text: txt })] : []))));
       a.node.querySelector(".mpc-half-media").append(el("div", { class: "mpc-judge", "aria-hidden": "true" },
         el("span", { class: "mpc-judge-head" }, el("span", { class: "mpc-judge-gem", text: "◆" }), el("span", {}, "Grana scores 4 ", el("span", { class: "mpc-judge-im", text: "predicted " }), "rollouts")),
         el("div", { class: "mpc-judge-stage" }, jv, el("div", { class: "mpc-judge-grid" }, ...cells), el("span", { class: "mpc-judge-scan" })),
