@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
 /* Grana draft: the pretraining gallery (#task-gallery). Loaded after assets/js/data/tasks.js (a published file, left
  * untouched) and before assets/js/app.js, which renders what is left.
  *  - 20 tiles (4 full rows of 5): the five tasks with the longest instructions (23-48 words) stay out (the user, 2026-10-24).

@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
 /* Grana draft · section 02 "Post-training with Grana" (draft.html #policy).
  *   - The film: assets/draft/video/posttrain_{1080,720}.mp4, the long film's post-training segment (45 s; 10-31: with a baseline beside Grana and the before / after): how
  *     Grana's progress becomes the training signal, then the results. Muted; it plays while in view.

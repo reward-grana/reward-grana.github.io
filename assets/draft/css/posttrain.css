@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
 /* Grana draft · section 02 "Post-training with Grana" (assets/draft/js/posttrain-section.js).
    The film, one card per task (real rollout + Grana-vs-alternative bars), the four-camera player in a dialog.
    Card language follows the MPC gallery (mpc.css). Colours: Grana violet (the film's), the alternative grey;

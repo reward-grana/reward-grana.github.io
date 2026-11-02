@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
 /* Grana "stages" (2026-10-30): a light page with three dark screening stages, Fig. 1, post-training and MPC, all in
    the films' warm graphite, all rounded panels the width of the text column (no full-bleed bands). Loaded last, on
    top of the site's own light page and its dark component variants (.band-dark). Accents: Grana's teal -> gold. No violet. */

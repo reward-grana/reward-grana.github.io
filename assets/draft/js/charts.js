@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
 /* Grana draft · result charts (HTML + CSS; labels are text, so they stay readable on phones).
  * Every number is the paper's (Figs. 5-7 and Tables 3-5 and 9); the five-task chart reports Table 3,
  * with 15 adaptation trajectories (D15) for learned reward models and 24-30 test trajectories per task.

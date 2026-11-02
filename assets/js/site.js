@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
 /* Grana page: shared behaviour (no dependencies, ES5-compatible).
  *
  *  - Accent switch: ?brand=anon | green  ->  <html data-brand="...">; the

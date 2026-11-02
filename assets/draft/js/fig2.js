@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
 /* Grana draft · Fig. 2 "From local to global task progress", animated.
  *   markup: draft.html #fig2 · styles: assets/draft/css/fig2.css · data: assets/draft/js/fig2-data.js
  *   media: assets/draft/video/fig2-airplane-views.mp4, -start.jpg, -poster.jpg

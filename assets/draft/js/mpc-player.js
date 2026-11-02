@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
 /* Grana draft: MPC examples player (section 03, #mpc-player).
  *
  * Built like the policy player (assets/js/policy.js) and with its classes: story tabs (name, meta,

@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
 /* Grana draft · the two topic modules (#predictions, #details) on phones and short screens: there the topic menu of
  * assets/js/evaluation-nav.js is not active and every topic would stack, so each topic folds behind its title
  * (the first one open). On roomy screens the toggles are hidden and the menu works as before (charts.css). */

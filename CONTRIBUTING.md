@@ -7,6 +7,13 @@ and any modifications in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Add
 their license details and links to full license texts in
 [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
 
+Preserve existing source comments, copyright years, and upstream notices.
+NVIDIA-authored JavaScript and CSS require the C-style `/* ... */` SPDX header
+shown in [README.md](README.md#source-headers-and-contributions). Apply it only
+where NVIDIA authorship is established. HTML, YAML, SVG, and Markdown are exempt
+from this header requirement. Retain third-party notices and terms; do not alter
+full license texts or insert comment headers into binary assets.
+
 ## Signing Your Work
 
 Every contributor must sign off each commit under the
@@ -34,10 +41,10 @@ Commits without the required sign-off will not be accepted.
 This repository is a static website: [index.html](index.html) and [assets/](assets/)
 contain its pages, styles, scripts, fonts, images, and videos. The
 [GitHub Pages workflow](https://github.com/reward-grana/reward-grana.github.io/blob/main/.github/workflows/pages.yml)
-copies root-level HTML files, `.nojekyll`, `assets/`, and the five policy documents
-(`LICENSE`, `CONTRIBUTING.md`, `SECURITY.md`, `THIRD_PARTY_LICENSES.md`, and
-`THIRD_PARTY_NOTICES.md`) into the published site. It runs on pushes to `main`
-and can also be dispatched manually for `main`.
+copies root-level HTML files, `.nojekyll`, `assets/`, and the seven project documents
+(`LICENSE`, `NOTICE`, `README.md`, `CONTRIBUTING.md`, `SECURITY.md`,
+`THIRD_PARTY_LICENSES.md`, and `THIRD_PARTY_NOTICES.md`) into the published site.
+It runs on pushes to `main` and can also be dispatched manually for `main`.
 
 1. Fork the repository and create a feature branch from `main`.
 2. From the repository root, preview the site with Python 3:

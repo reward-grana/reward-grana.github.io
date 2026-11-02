@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
 /* Grana draft: data for the MPC examples (assets/draft/js/mpc-player.js): the gallery cards and the full player.
  *
  * Beat times are the film's own caption timeline in each clip (the fast cut of the cover film's MPC
