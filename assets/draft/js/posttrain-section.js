@@ -3,7 +3,7 @@
  *     Grana's progress becomes the training signal, then the results. Muted; it plays while in view.
  *   - One card per task. Each shows the post-trained policy's real rollout (front view, sped up; one selected
  *     successful evaluation episode) and its success rate against the alternative, from the paper (Sec. 4.5,
- *     Figs. 5-6; the alternative is the strongest other reward source, named as in Fig. 5). The bars fill when the cards come into view.
+ *     Figs. 6-7; the alternative is the strongest other reward source, named as in Fig. 6). The bars fill when the cards come into view.
  *   - "All four cameras" opens the four-camera player (assets/js/policy.js, built in #policy-player) in a dialog,
  *     on that task. No control of the old section is lost.
  */
@@ -16,9 +16,9 @@
   const reduceMQ = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : { matches: false };
   const TASKS = [
     { id: "star", title: "Star insertion", method: "Offline RL", speed: "×2", tag: "✓ success", dur: "0:15",
-      bars: [["Grana", 65.0, "13/20"], ["RoboMeter (finetuned)", 50.0, "10/20"]], note: "20 trials · zero-shot", dec: 1 },
+      bars: [["Grana", 65.0, "13/20"], ["RoboMeter (finetuned)", 50.0, "10/20"]], note: "20 trials · zero-shot reward model", dec: 1 },
     { id: "tube", title: "Tube transfer", method: "Offline RL", speed: "×5", tag: "✓ success", dur: "0:33",
-      bars: [["Grana", 66.7, "8/12"], ["RoboMeter (finetuned)", 41.7, "5/12"]], note: "12 trials · zero-shot · SARM2 also 41.7 %", dec: 1 },
+      bars: [["Grana", 66.7, "8/12"], ["RoboMeter (finetuned)", 41.7, "5/12"]], note: "12 trials · zero-shot reward model · SARM2 also 41.7 %", dec: 1 },
     { id: "airplane", title: "Airplane model", method: "Weighted BC", speed: "×20", tag: "✓ assembled", dur: "2:47",
       bars: [["Grana-weighted", 75.0, "9/12"], ["Unweighted", 50.0, "6/12"]], note: "12 trials · Iter2", dec: 1 },
     { id: "car", title: "Car model", method: "Weighted BC", speed: "×30", tag: "✓ assembled", dur: "4:22",

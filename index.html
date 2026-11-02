@@ -48,7 +48,7 @@
     <script defer src="assets/js/site.js?v=79df09bfc513"></script>
     <script defer src="assets/js/data/tasks.js?v=23486a073bc1"></script>
     <script defer src="assets/draft/js/tasks-draft.js?v=6909cbc701cc"></script><!-- DRAFT: drops the long-instruction tasks from the gallery (before app.js renders it) -->
-    <script defer src="assets/js/data/predictions.js?v=c3b4802b6bab"></script>
+    <script defer src="assets/js/data/predictions.js?v=e52f7f258d93"></script>
     <script defer src="assets/js/app.js?v=77a07d3380b5"></script>
     <script defer src="assets/js/evaluation-nav.js?v=82b55fb690cd"></script>
     <script defer src="assets/js/policy.js?v=17abef6d8a6f"></script>
@@ -62,8 +62,8 @@
     <script defer src="assets/draft/js/fig2.js?v=92d4f66dc14a"></script>
     <script defer src="assets/draft/js/mpc-data.js?v=1c3d2246363c"></script>
     <script defer src="assets/draft/js/mpc-player.js?v=0da5d162dca3"></script>
-    <script defer src="assets/draft/js/posttrain-section.js?v=fcb9245429d4"></script>
-    <script defer src="assets/draft/js/charts.js?v=e829742e74d0"></script>
+    <script defer src="assets/draft/js/posttrain-section.js?v=acb314af2a35"></script>
+    <script defer src="assets/draft/js/charts.js?v=9e2a904346a9"></script>
     <script defer src="assets/draft/js/topic-accordion.js?v=c80d65a3162f"></script>
     <link rel="stylesheet" href="assets/css/theme-stage.css?v=1c42097e8780" /><!-- light page; Fig. 1, post-training and MPC as dark stages in the films' graphite -->
   </head>
@@ -100,7 +100,7 @@
       <div class="project-resources-inner">
         <a class="project-wordmark" href="#overview"><img class="grana-mark" src="assets/brand/grana-mark.svg?v=891e1c379781" width="32" height="32" alt="" aria-hidden="true" />Grana<span>Reward modeling for long-horizon robot manipulation</span></a>
         <div class="project-resource-actions">
-          <a class="btn btn--sm" href="assets/paper/reward_PRISM_arxiv_v1.pdf?v=072a0f4ef282" aria-label="Paper and appendix (PDF)">
+          <a class="btn btn--sm" href="assets/paper/reward_Grana_arxiv_v1.pdf?v=2a82748a0532" aria-label="Paper and appendix (PDF)">
             <svg class="btn-ico" aria-hidden="true"><use href="#i-doc" /></svg>Paper
           </a>
           <button class="btn btn--sm" type="button" data-expand="assets/video/grana-film-long-1080.mp4?v=l7" data-expand-poster="assets/video/grana-film-long.jpg?v=l1" aria-label="Play the Grana film full screen">
@@ -166,7 +166,7 @@
             <p class="author-note-line"><span><sup>*</sup>Equal contribution</span><span aria-hidden="true">·</span><span><sup>†</sup>Project leads</span></p>
           </div>
           <div class="intro-actions">
-            <a class="btn" href="assets/paper/reward_PRISM_arxiv_v1.pdf?v=072a0f4ef282" aria-label="Paper and appendix (PDF)">
+            <a class="btn" href="assets/paper/reward_Grana_arxiv_v1.pdf?v=2a82748a0532" aria-label="Paper and appendix (PDF)">
               <svg class="btn-ico" aria-hidden="true"><use href="#i-doc" /></svg>
               Paper + Appendix (PDF)
             </a>
@@ -293,7 +293,7 @@
               </div>
               <img class="f2d-fallback" src="assets/img/fig2-method-2500.webp?v=2292831df7dc" width="2500" height="887" alt="Architecture overview: task and subtask descriptions plus multi-view observations feed a shared vision-language model; subtask selection and local progress are composed into whole-task progress." loading="lazy" decoding="async" />
             </div>
-            <p class="sr-only" id="f2d-desc">Task context (assemble an airplane model, with its nine subtask descriptions) and four camera views go into a frozen vision–language model with trainable LoRA. By default, Grana’s own VLM selects the unfinished subtask and passes its description to the model; any other subtask selector can be used. A trainable progress head, shared across subtasks, predicts that subtask’s local progress from 0 to 1. Composition adds one share of credit for every completed subtask: global progress equals k plus local progress, divided by K. The animation replays the outputs of Grana, adapted to airplane assembly, on one selected held-out episode at six times speed by default, with light smoothing; this episode is not in the paper. Grana moves through all nine subtasks, its local progress restarts at each new subtask, and global progress climbs to 0.99 without losing the credit of completed subtasks.</p>
+            <p class="sr-only" id="f2d-desc">Task context (assemble an airplane model, with its nine subtask descriptions) and four camera views go into a frozen vision–language model with trainable LoRA. By default, Grana’s own VLM selects the unfinished subtask and passes its description to the model; any other subtask selector can be used. A trainable progress head, shared across subtasks, predicts that subtask’s local progress from 0 to 1. Composition adds one share of credit for every completed subtask: global progress equals k plus local progress, divided by K. The animation replays the outputs of Grana, adapted to airplane assembly, on one selected held-out episode at nine times speed by default, with light smoothing; this episode is not in the paper. Grana moves through all nine subtasks, its local progress restarts at each new subtask, and global progress climbs to 0.99 without losing the credit of completed subtasks.</p>
             <figcaption><b>From local to global task progress.</b> By default, Grana’s own vision–language model selects the unfinished subtask; any other subtask selector can be used. The shared model estimates progress for the selected description, and composition adds credit for completed subtasks. <span class="f2d-cap-live">Playback: 9× real time. Grana is adapted to airplane assembly; this replay uses one held-out episode (<i>K</i>&nbsp;=&nbsp;9) with lightly smoothed scores and is not included in the paper.</span> <button class="f2d-link" type="button" data-expand="assets/img/fig2-method-2500.webp?v=2292831df7dc" data-expand-alt="Architecture overview: task and subtask descriptions plus multi-view observations feed a shared vision-language model; subtask selection and local progress are composed into whole-task progress." aria-label="View the static figure">View the static figure</button></figcaption>
           </figure>
         </div>
@@ -331,9 +331,9 @@
                 <details class="disclosure pc-fold">
                   <summary>Show the table</summary>
                   <div class="scorecard-card">
-                    <div class="scorecard-wrap" role="region" aria-label="Long-task adaptation (paper Table 3)" tabindex="0">
+                    <div class="scorecard-wrap" role="region" aria-label="Long-task adaptation (paper Table 4)" tabindex="0">
                       <table class="scorecard" style="--sc-min: 560px" aria-label="Long-task adaptation: RMSE in subtask units, lower is better">
-                        <caption>Long-task adaptation · RMSE in subtask units ↓ · paper Table 3</caption>
+                        <caption>Long-task adaptation · RMSE in subtask units ↓ · paper Table 4</caption>
                         <thead>
                           <tr><th class="sc-metric-head" rowspan="2" scope="col">Method</th><th class="sc-group" colspan="2" scope="colgroup">Airplane (9 subtasks)</th><th class="sc-group" colspan="2" scope="colgroup">Car (10 subtasks)</th></tr>
                           <tr><th scope="col">15 traj.</th><th scope="col">100 traj.</th><th scope="col">15 traj.</th><th scope="col">100 traj.</th></tr>
@@ -364,23 +364,23 @@
                       <th class="sc-group" colspan="5" scope="colgroup" id="prediction-evaluation-metric">RMSE on 24–30 unseen test trajectories per task ↓</th>
                     </tr>
                     <tr>
-                      <th scope="col" data-col="0">Pupgo car<br />assembly <span class="prediction-subtask-count sc-sub">(up to 18 subtasks)</span></th>
+                      <th scope="col" data-col="0">Circuit<br />assembly <span class="prediction-subtask-count sc-sub">(up to 3 subtasks)</span></th>
                       <th scope="col" data-col="1">Firetruck<br />assembly <span class="prediction-subtask-count sc-sub">(up to 9 subtasks)</span></th>
-                      <th scope="col" data-col="2">Circuit assembly<br />and switch activation <span class="prediction-subtask-count sc-sub">(up to 3 subtasks)</span></th>
-                      <th scope="col" data-col="3">Airplane<br />assembly <span class="prediction-subtask-count sc-sub">(up to 9 subtasks)</span></th>
-                      <th scope="col" data-col="4">Red car<br />assembly <span class="prediction-subtask-count sc-sub">(up to 10 subtasks)</span></th>
+                      <th scope="col" data-col="2">Airplane<br />assembly <span class="prediction-subtask-count sc-sub">(up to 9 subtasks)</span></th>
+                      <th scope="col" data-col="3">Red car<br />assembly <span class="prediction-subtask-count sc-sub">(up to 10 subtasks)</span></th>
+                      <th scope="col" data-col="4">Pupgo car<br />assembly <span class="prediction-subtask-count sc-sub">(up to 18 subtasks)</span></th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr><th scope="row">GPT6: Composition</th><td>1.8135</td><td>0.2914</td><td>0.2920</td><td>0.4505</td><td>0.5240</td></tr>
-                    <tr><th scope="row">SARM (D15)</th><td>0.4042</td><td>0.5406</td><td>0.3612</td><td>0.7474</td><td>1.1240</td></tr>
-                    <tr><th scope="row">SARM2 (D15)</th><td>0.3885</td><td>0.5166</td><td>0.2975</td><td>0.4980</td><td>0.6290</td></tr>
-                    <tr><th scope="row">RoboMeter (D15)</th><td>0.3189</td><td>0.5202</td><td>0.1864</td><td>0.4930</td><td>0.6580</td></tr>
-                    <tr class="sc-ours-row prediction-evaluation-ours"><th scope="row">Ours (D15)</th><td class="sc-best"><strong>0.2561</strong></td><td class="sc-best"><strong>0.2264</strong></td><td class="sc-best"><strong>0.1563</strong></td><td class="sc-best"><strong>0.3080</strong></td><td class="sc-best"><strong>0.3940</strong></td></tr>
+                    <tr><th scope="row">GPT6: Composition</th><td>0.2920</td><td>0.2914</td><td>0.4505</td><td>0.5240</td><td>1.8135</td></tr>
+                    <tr><th scope="row">SARM (D15)</th><td>0.3612</td><td>0.5406</td><td>0.7474</td><td>1.1240</td><td>0.4042</td></tr>
+                    <tr><th scope="row">SARM2 (D15)</th><td>0.2975</td><td>0.5166</td><td>0.4980</td><td>0.6290</td><td>0.3885</td></tr>
+                    <tr><th scope="row">RoboMeter (D15)</th><td>0.1864</td><td>0.5202</td><td>0.4930</td><td>0.6580</td><td>0.3189</td></tr>
+                    <tr class="sc-ours-row prediction-evaluation-ours"><th scope="row">Ours (D15)</th><td class="sc-best"><strong>0.1563</strong></td><td class="sc-best"><strong>0.2264</strong></td><td class="sc-best"><strong>0.3080</strong></td><td class="sc-best"><strong>0.3940</strong></td><td class="sc-best"><strong>0.2561</strong></td></tr>
                   </tbody>
                 </table>
               </div>
-              <div class="sr-desc" id="prediction-evaluation-scope-desc" hidden>We extend the paper's airplane and red car evaluation (Sec. 4.3, Table 3) with three additional reward-prediction tasks: Firetruck assembly, Circuit assembly and switch activation, and Pupgo car assembly.</div>
+              <div class="sr-desc" id="prediction-evaluation-scope-desc" hidden>All five tasks are evaluated in the paper (Sec. 4.3.2, Table 3): Circuit assembly, Firetruck assembly, Airplane assembly, Red car assembly, and Pupgo car assembly. Learned reward models use 15 adaptation trajectories per task (D15); GPT6 composition is a zero-shot reference. Evaluation uses 24–30 unseen test trajectories per task, with RMSE in subtask units.</div>
               <div class="sc-legend">
                 <span class="sc-legend-ours">Ours (D15)</span>
                 <span><i class="sw sw-ours" aria-hidden="true"></i>Best in column</span>
@@ -393,7 +393,7 @@
                 <figure class="pc" data-pc="composition"></figure>
                 <details class="disclosure pc-fold">
                   <summary>Show the tables · selection accuracy and RMSE</summary>
-                  <p class="inference-accuracy-caption mono-meta" id="inference-accuracy-caption">Car model assembly · RMSE in subtask units ↓ · paper Table 8</p>
+                  <p class="inference-accuracy-caption mono-meta" id="inference-accuracy-caption">Car model assembly · RMSE in subtask units ↓ · paper Table 9</p>
               <div class="inference-accuracy-content">
                 <section class="inference-accuracy-group" aria-labelledby="accuracy-qwen-title">
                   <h4 class="h4 group-title" id="accuracy-qwen-title"><span class="group-index" aria-hidden="true">A</span>Zero-shot · Qwen3.5-4B</h4>
@@ -416,7 +416,7 @@
                     <div class="inference-interpretation">
                       <!-- Keep the full table interpretations available to assistive technology. -->
                       <div class="sr-desc" id="accuracy-qwen-desc" hidden>Composition improves whole-task progress prediction. With the same base Qwen3.5-4B model, our compositional workflow lowers RMSE from 4.541 to 3.068. Pretraining improves zero-shot transfer to car assembly. Our pretrained compositional predictor lowers RMSE further, from 3.068 to 1.380, without task-related adaptation.</div>
-                      <div class="sr-desc" id="inference-accuracy-note-desc" hidden>For the composition, pretraining, and adaptation comparisons, see Sec. 4.4 and Table 8 of the paper. GPT6-selected results combine API subtask selection with local progress prediction.</div>
+                      <div class="sr-desc" id="inference-accuracy-note-desc" hidden>For the composition, pretraining, and adaptation comparisons, see Sec. 4.4 and Table 9 of the paper. GPT6-selected results combine API subtask selection with local progress prediction.</div>
                     </div>
                   </div>
                 </section>
@@ -559,7 +559,7 @@
           <div class="container container--wide">
             <div id="pt-section"></div>
             <details class="disclosure pc-fold pc-fold--dark">
-              <summary>Compare reward sources and training iterations · Figs. 5–6</summary>
+              <summary>Compare reward sources and training iterations · Figs. 6–7</summary>
               <div class="pc-stack">
                 <figure class="pc" data-pc="offlinerl"></figure>
                 <figure class="pc" data-pc="weightedbc"></figure>
@@ -630,7 +630,7 @@
           <span class="footer-tag">Compositional Reward Modeling for Long-Horizon Robot Manipulation</span>
         </div>
         <nav class="footer-links" aria-label="Footer">
-          <a href="assets/paper/reward_PRISM_arxiv_v1.pdf?v=072a0f4ef282"><svg class="footer-ico" aria-hidden="true"><use href="#i-doc" /></svg>Paper</a>
+          <a href="assets/paper/reward_Grana_arxiv_v1.pdf?v=2a82748a0532"><svg class="footer-ico" aria-hidden="true"><use href="#i-doc" /></svg>Paper</a>
           <a href="assets/video/grana-film-long-1080.mp4?v=l7" data-expand="assets/video/grana-film-long-1080.mp4?v=l7" data-expand-poster="assets/video/grana-film-long.jpg?v=l1"><svg class="footer-ico" aria-hidden="true"><use href="#i-play" /></svg>Video</a>
           <a href="#bibtex"><svg class="footer-ico" aria-hidden="true"><use href="#i-braces" /></svg>BibTeX</a>
         </nav>

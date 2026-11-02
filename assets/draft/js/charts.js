@@ -1,6 +1,6 @@
 /* Grana draft · result charts (HTML + CSS; labels are text, so they stay readable on phones).
- * Every number is the paper's (arXiv v1: Fig. 4, Tables 3, 4 and 8, Figs. 5-6); the five-task chart uses the page's own
- * table (airplane and car = Table 3, D15; three more tasks go beyond the paper).
+ * Every number is the paper's (Figs. 5-7 and Tables 3-5 and 9); the five-task chart reports Table 3,
+ * with 15 adaptation trajectories (D15) for learned reward models and 24-30 test trajectories per task.
  * Readability rules (the user, 2026-10-24: "I can't tell at a glance what it is"): one message per chart, at most ~6 bars,
  * plain-language labels at 16 px, the value on every bar, Grana in the accent colour with a callout, axes from 0.
  *   <figure class="pc" data-pc="zeroshot"></figure>  ->  rendered from CHARTS below.
@@ -14,14 +14,14 @@
       max: 0.3, fmt: 3,
       rows: [{ label: "RoboMeter", meta: "official release", v: 0.279, kind: "ref" }, { label: "SARM", v: 0.268 }, { label: "SARM2", v: 0.237 },
              { label: "RoboMeter", meta: "fine-tuned on our 200 tasks", v: 0.227, kind: "best" }, { label: "Grana", v: 0.180, kind: "ours", callout: "−20.7 %" }],
-      note: "All models except the official release are trained on the same 200 tasks. Paper Fig. 4(a).",
+      note: "All models except the official release are trained on the same 200 tasks. Paper Fig. 5(a).",
     },
     pretrain: {
       title: "Effect of pretraining task count",
       sub: "Grana pretrained on 15, 30 or 200 tasks, tested on the same 50 unseen tasks.",
       max: 0.3, fmt: 3,
       rows: [{ label: "15 tasks", v: 0.278 }, { label: "30 tasks", v: 0.222 }, { label: "200 tasks", v: 0.180, kind: "ours", callout: "−35.3 %" }],
-      note: "Paper Fig. 4(b).",
+      note: "Paper Fig. 5(b).",
     },
     longtask: {
       title: "Lower RMSE with 15 adaptation trajectories",
@@ -37,20 +37,20 @@
           { label: "Grana", meta: "15 trajectories", v: 0.394, kind: "ours", callout: "−17 %" },
           { label: "Grana", meta: "100 trajectories", v: 0.319, kind: "ours-lite" }] },
       ],
-      note: "Paper Table 3. The table below lists every method and budget.",
+      note: "Paper Table 4. The table below lists every method and budget.",
     },
     fivetask: {
       title: "RMSE reduction across five long-horizon tasks",
-      sub: "Relative RMSE reduction against the lowest-error baseline on each task. Grana is adapted with 15 trajectories; comparison models are listed beside each bar.",
+      sub: "Relative reduction in subtask-unit RMSE against the lowest-error baseline on each task. Learned reward models use 15 adaptation trajectories (D15).",
       max: 40, pctlower: true,
       rows: [
-        { label: "Pupgo car", meta: "18 subtasks · vs RoboMeter", v: 19.7, kind: "ours" },
-        { label: "Firetruck", meta: "9 subtasks · vs GPT6 composition", v: 22.3, kind: "ours" },
-        { label: "Circuit + switch", meta: "3 subtasks · vs RoboMeter", v: 16.1, kind: "ours" },
-        { label: "Airplane model", meta: "9 subtasks · vs GPT6 composition", v: 31.6, kind: "ours" },
-        { label: "Car model", meta: "10 subtasks · vs GPT6 composition", v: 24.8, kind: "ours" },
+        { label: "Circuit assembly", meta: "3 subtasks · vs RoboMeter", v: 16.1, kind: "ours" },
+        { label: "Firetruck assembly", meta: "9 subtasks · vs GPT6 composition", v: 22.3, kind: "ours" },
+        { label: "Airplane assembly", meta: "9 subtasks · vs GPT6 composition", v: 31.6, kind: "ours" },
+        { label: "Red car assembly", meta: "10 subtasks · vs GPT6 composition", v: 24.8, kind: "ours" },
+        { label: "Pupgo car assembly", meta: "18 subtasks · vs RoboMeter", v: 19.7, kind: "ours" },
       ],
-      note: "Airplane and car are from the paper's Table 3; the other three tasks go beyond the paper.",
+      note: "All five tasks are reported in paper Table 3, with 24–30 test trajectories per task. Comparison models are named beside each bar.",
     },
     composition: {
       title: "Effect of subtask composition and Grana pretraining",
@@ -61,7 +61,7 @@
         { label: "+ Composition", meta: "select the subtask, predict its progress", v: 3.068, kind: "best", callout: "−32 %" },
         { label: "+ Grana pretraining", meta: "same procedure with Grana-pretrained weights", v: 1.380, kind: "ours", callout: "−55 %" },
       ],
-      note: "With GPT6, composition reduces RMSE from 1.578 to 0.524. Paper Table 8.",
+      note: "With GPT6, composition reduces RMSE from 1.578 to 0.524. Paper Table 9.",
     },
     embodiment: {
       title: "18.7 % lower RMSE than RoboMeter on Tianji",
@@ -69,7 +69,7 @@
       max: 1.25, fmt: 3,
       rows: [{ label: "SARM2", v: 1.167 }, { label: "SARM", v: 0.919 }, { label: "RoboMeter", v: 0.556, kind: "best" },
              { label: "Grana", v: 0.452, kind: "ours", callout: "−18.7 %" }],
-      note: "30 Tianji test trajectories. Paper Table 4.",
+      note: "30 Tianji test trajectories. Paper Table 5.",
     },
     cost: {
       type: "stats", title: "88× faster per query, and no API bill",
@@ -78,7 +78,7 @@
     },
     offlinerl: {
       type: "multiples", dark: true, pct: true, title: "Offline RL with different reward sources",
-      sub: "Policy success rate · shared BC rollouts within each task · paper Fig. 5",
+      sub: "Policy success rate · shared BC rollouts within each task · paper Fig. 6",
       panels: [
         { title: "Star insertion", meta: "20 trials", max: 100, rows: [["BC", 20.0], ["Sparse", 30.0], ["SARM2", 45.0], ["RoboMeter (official)", 45.0], ["RoboMeter (finetuned)", 50.0], ["Grana", 65.0, "ours"]] },
         { title: "Tube transfer", meta: "12 trials", max: 100, rows: [["BC", 33.3], ["Sparse", 33.3], ["SARM2", 41.7], ["RoboMeter (official)", 33.3], ["RoboMeter (finetuned)", 41.7], ["Grana", 66.7, "ours"]] },
@@ -86,7 +86,7 @@
     },
     weightedbc: {
       type: "multiples", dark: true, pct: true, title: "Progress-weighted BC",
-      sub: "Policy success rate · two iterations · 12 trials per policy · initial BC success: 25 % · paper Fig. 6",
+      sub: "Policy success rate · two iterations · 12 trials per policy · initial BC success: 25 % · paper Fig. 7",
       panels: [
         { title: "Airplane · Iter1", meta: "same parent", max: 100, rows: [["Unweighted", 41.7], ["SARM2", 33.3], ["Grana", 58.3, "ours"]] },
         { title: "Airplane · Iter2", meta: "best Iter1 parent", max: 100, rows: [["Unweighted", 50.0], ["Grana", 75.0, "ours"]] },

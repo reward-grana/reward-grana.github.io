@@ -2,14 +2,14 @@ window.GRANA_DATA = window.GRANA_DATA || {};
 window.GRANA_DATA.predictions = {
   items: [
     {
-      id: "pupgo",
+      id: "circuit",
       defaultPlaybackRate: 2,
-      title: "Pupgo car assembly",
-      event: "Wheel drop and retry",
-      description: "Follow the wheel drop and retry, and compare how the predictions track the setback and renewed progress.",
-      subtaskCount: 18,
-      duration: 17.566667,
-      plot: {"width": 960, "height": 604, "bounds": [86.4, 60.96, 940.8, 552.48], "timeSpan": 17.533333333333335, "fps": 30.0, "frames": 527},
+      title: "Circuit assembly",
+      event: "Failure and recovery",
+      description: "Connect the circuit, then turn on the switch. Follow the attempt through failure and human-assisted recovery, and compare the resulting progress predictions.",
+      subtaskCount: 3,
+      duration: 58.233333,
+      plot: {"width": 960, "height": 572, "bounds": [86.4, 60.32, 940.8, 521.12], "timeSpan": 58.2, "fps": 30.0, "frames": 1747},
     },
     {
       id: "firetruck",
@@ -20,16 +20,6 @@ window.GRANA_DATA.predictions = {
       subtaskCount: 9,
       duration: 8.7,
       plot: {"width": 960, "height": 558, "bounds": [86.4, 60.96, 940.8, 506.4], "timeSpan": 8.666666666666666, "fps": 30.0, "frames": 261},
-    },
-    {
-      id: "circuit",
-      defaultPlaybackRate: 2,
-      title: "Circuit assembly and switch activation",
-      event: "Failure and recovery",
-      description: "Connect the circuit, then turn on the switch. Follow the attempt through failure and human-assisted recovery, and compare the resulting progress predictions.",
-      subtaskCount: 3,
-      duration: 58.233333,
-      plot: {"width": 960, "height": 572, "bounds": [86.4, 60.32, 940.8, 521.12], "timeSpan": 58.2, "fps": 30.0, "frames": 1747},
     },
     {
       id: "airplane",
@@ -50,6 +40,16 @@ window.GRANA_DATA.predictions = {
       subtaskCount: 10,
       duration: 3,
       plot: {"width": 960, "height": 536, "bounds": [86.4, 60.96, 940.8, 483.36], "timeSpan": 3, "fps": 30.0, "frames": 90},
+    },
+    {
+      id: "pupgo",
+      defaultPlaybackRate: 2,
+      title: "Pupgo car assembly",
+      event: "Wheel drop and retry",
+      description: "Follow the wheel drop and retry, and compare how the predictions track the setback and renewed progress.",
+      subtaskCount: 18,
+      duration: 17.566667,
+      plot: {"width": 960, "height": 604, "bounds": [86.4, 60.96, 940.8, 552.48], "timeSpan": 17.533333333333335, "fps": 30.0, "frames": 527},
     }
   ]
 };
