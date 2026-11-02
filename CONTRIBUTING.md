@@ -1,10 +1,11 @@
-# Contributing to Grana
+# Contributing to the Grana website
 
-Contributions to Grana are accepted under the [Apache License 2.0](LICENSE).
+Contributions to the Grana website are accepted under the [Apache License 2.0](LICENSE).
 Preserve existing upstream copyright and license notices. When adding or
-adapting third-party code, document its source, revision, license, and any
-modifications in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md), and include
-its required license text in [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
+adapting third-party code or assets, document their source, revision, license,
+and any modifications in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Add
+their license details and links to full license texts in
+[THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
 
 ## Signing Your Work
 
@@ -30,42 +31,48 @@ Commits without the required sign-off will not be accepted.
 
 ## Development workflow
 
+This repository is a static website: [index.html](index.html) and [assets/](assets/)
+contain its pages, styles, scripts, fonts, images, and videos. The
+[GitHub Pages workflow](https://github.com/reward-grana/reward-grana.github.io/blob/main/.github/workflows/pages.yml)
+copies root-level HTML files, `.nojekyll`, `assets/`, and the five policy documents
+(`LICENSE`, `CONTRIBUTING.md`, `SECURITY.md`, `THIRD_PARTY_LICENSES.md`, and
+`THIRD_PARTY_NOTICES.md`) into the published site. It runs on pushes to `main`
+and can also be dispatched manually for `main`.
+
 1. Fork the repository and create a feature branch from `main`.
-2. Follow the [README](README.md) to install the qualified runtime. The setup
-   currently targets Linux aarch64, Python 3.12, CUDA 13, and NVIDIA GB300;
-   other hardware requires its own validation.
-3. Keep changes focused on the cached-data training, inference, and annotation
-   workflows. Add or update tests when behavior changes, and describe the
-   expected behavior and validation in your pull request.
-4. Run the relevant tests while developing. Before submitting a change, run
-   the complete suite in the configured environment:
+2. From the repository root, preview the site with Python 3:
 
    ```bash
-   bash scripts/setup_env.sh
-   source .venv-qwen35-unsloth/bin/activate
-   python -m pip install -r requirements/annotation.txt
-   python -m pytest tests
+   python3 -m http.server 8000 --bind 127.0.0.1
    ```
 
-   Annotation API tests use local fixtures or mocks; do not include credentials
-   or private robot recordings in a test or pull request. GPU training and
-   external API runs are separate from the unit-test suite. Report their
-   configuration and results when they are relevant to your change.
-5. For packaging changes, build and inspect the source archive:
+   Open `http://127.0.0.1:8000/` in a browser. Stop the preview with `Ctrl+C`
+   when finished. The website has no local build or package-install step.
+3. Keep changes focused on website content, presentation, or behavior. Place
+   new static assets under `assets/` and use paths that work on GitHub Pages.
+   If you change a file referenced with a `?v=` cache version, update the
+   corresponding references. Ensure any new published paths are included by
+   the Pages workflow.
+4. Check the affected pages at desktop and mobile widths. Verify navigation,
+   links, images, and any changed charts or video controls. Check keyboard
+   access and reduced-motion behavior when changing interactive content, and
+   inspect the browser console and network panel for errors or missing files.
+5. Before submitting, run these basic repository checks:
 
    ```bash
-   python scripts/package_release.py --output dist/grana-source.tar.gz
+   git diff --check
+   test -s index.html
+   test -f .nojekyll
    ```
 
-   The packager uses an explicit source allowlist. Update it when new public
-   source files are required; datasets, model weights, virtual environments,
-   credentials, and local run artifacts do not belong in the release.
+   Confirm that new or changed local links resolve and that each added asset
+   is approved for public distribution with the required attribution and
+   license notices. Do not commit credentials or unpublished material.
 6. Open a pull request against `main` describing the problem, the resulting
-   behavior, and the checks you ran. Preserve the distinction between an API
-   annotation suggestion and a reviewed training annotation.
+   behavior, and the checks you ran. Include screenshots for visual changes
+   and note any browser-specific limitations or external dependencies.
 
-Follow [SECURITY.md](SECURITY.md) for private vulnerability reports and handling
-of credentials, recordings, model artifacts, and local services. Contributors
+Follow [SECURITY.md](SECURITY.md) for private vulnerability reports. Contributors
 are expected to communicate respectfully and professionally.
 
 ## Full text of the DCO

@@ -1,10 +1,10 @@
 # Reporting Security Vulnerabilities
 
-Report suspected vulnerabilities in Grana privately using NVIDIA's
-[security vulnerability submission form](https://www.nvidia.com/object/submit-security-vulnerability.html)
+Report suspected vulnerabilities in the Grana project website privately using NVIDIA's
+[security vulnerability reporting page](https://www.nvidia.com/object/submit-security-vulnerability.html)
 or email [psirt@nvidia.com](mailto:psirt@nvidia.com). For sensitive email,
-use the [NVIDIA public PGP key](https://www.nvidia.com/en-us/security/pgp-key).
-Include the repository URL, affected commit or version, vulnerability type,
+use the [NVIDIA public PGP key](https://www.nvidia.com/en-us/security/pgp-key/).
+Include the repository and affected page URLs, commit if known, browser version,
 reproduction steps or a proof of concept, and the potential security impact.
 Do not publish vulnerability details in a public GitHub issue or pull request.
 
@@ -13,42 +13,35 @@ for coordinated disclosure information and
 [NVIDIA Product Security](https://www.nvidia.com/en-us/security/) for other
 security-related concerns.
 
-## Deployment boundaries
+## Website scope and local previews
 
-Grana's inference and annotation-review servers are local research tools.
-They require an IPv4 loopback bind and do not provide application-level user
-authentication or TLS. Access a remote server through an authenticated SSH
-port forward. If you place a gateway in front of a service, keep the Grana
-backend on loopback and enforce authentication, authorization, and TLS at the
-gateway; only trusted users should reach it. Do not bypass the server's
-loopback or request-validation checks to expose it publicly.
+This repository contains the public Grana website: HTML, CSS, browser JavaScript,
+and static media deployed through GitHub Pages. Its security scope includes
+page scripts, third-party browser dependencies, published assets, and the Pages
+deployment workflow.
 
-Inference review media is served from an explicit file allowlist. Only add
-recordings approved for the intended reviewers. Review pages and API responses
-may contain private task descriptions, images, annotations, or model outputs.
-Restrict access to the host, forwarded ports, and artifact directories.
+Run local previews from the website directory and bind the preview server to
+loopback, for example `python3 -m http.server 8000 --bind 127.0.0.1`. The preview
+server can expose files in that directory and is intended for local development.
+Use an authenticated SSH port forward when previewing from a remote host.
 
-## Credentials and artifacts
+## Browser code and dependencies
 
-- Keep API keys, access tokens, and W&B credentials outside the repository.
-  Supply credentials through the documented environment variables or an
-  external secret manager, and avoid including them in command arguments,
-  configuration files, prompts, logs, screenshots, or reports.
-- Keep private datasets, robot recordings, cache payloads, checkpoints, and
-  machine-specific paths out of commits and release archives. Treat local
-  annotation receipts and review artifacts as private unless approved for
-  sharing.
-- API annotation sends selected visual evidence and task context to the
-  configured provider. Use an approved provider endpoint and only submit
-  material you are authorized to share. Configure W&B destinations and
-  checkpoint uploads according to the same data-sharing requirements.
-- Load datasets, checkpoints, model code, and configuration only from sources
-  you trust. A local research environment is not a sandbox for untrusted
-  artifacts. Keep dependency versions and their licenses under review when
-  changing the runtime.
-- If a credential is exposed, revoke and rotate it. Removing the latest file
-  or commit does not remove copies from repository history or external logs.
+The website loads KaTeX JavaScript and CSS from jsDelivr using versioned URLs.
+Review changes to external scripts and dependency versions: CDN scripts execute
+in visitors' browsers with access to the page. Treat URL parameters and other
+external input as untrusted; avoid inserting them as HTML or executable code.
 
-Grana produces model predictions and annotation suggestions; it does not
-provide a safety controller for robot actuation. Integrations that use these
-outputs to command hardware need their own operator controls and safety checks.
+## Public assets and credentials
+
+Treat every file included in the Pages deployment as public, including files
+that are not linked from a page. Publish only media and documents approved for
+public sharing, and check their metadata for private information. Keep private
+recordings, unpublished data, and local working files out of the repository and
+deployment artifact.
+
+Keep API keys, access tokens, and deployment credentials out of HTML, JavaScript,
+assets, commits, and logs. Use GitHub Actions secrets for any deployment secrets;
+never embed them in the published site. If a credential is exposed, revoke and
+rotate it; removing a file or commit does not remove copies from repository
+history or caches.
