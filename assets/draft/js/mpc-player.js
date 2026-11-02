@@ -107,8 +107,8 @@
   const note = el("p", { class: "policy-caption mpc-note" });
   const legendRows = [
     ["bad", "✕ policy alone", "The same start, without MPC."],
-    ["good", "✓ Grana's pick", "The candidate rollout selected using Grana and executed on the robot."],
-    ["bad", "✕ Grana", "All four candidate rollouts were rejected based on Grana scores."],
+    ["good", "✓ Grana's pick", "From an accepted batch, the candidate with the highest final predicted whole-task progress is executed on the robot."],
+    ["bad", "✕ Grana", "Predicted progress trends downward for all four candidates, so Grana rejects the batch and requests new futures."],
     ["plain", "×N · fast-forward · MPC idle", "Sped up, or no planning in that stretch."],
   ];
   const legend = el("details", { class: "disclosure mpc-legend" },

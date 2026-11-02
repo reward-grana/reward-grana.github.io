@@ -97,7 +97,7 @@ window.GRANA_DRAFT.mpc = {
       poster: "assets/draft/video/mpc_tractor_poster.jpg?v=b1",
       context: [
         { tone: "bad", label: "Policy alone", text: "Takes the big rear wheel to the front axle, where the small wheel belongs." },
-        { tone: "good", label: "With MPC", text: "Three times, all four imagined futures go for a big wheel, and Grana rejects them all. The futures chosen instead pull away, then head for the small wheel. It ends assembled and upright." },
+        { tone: "good", label: "With MPC", text: "In three shown rounds, all four imagined futures go for a big wheel. Predicted progress trends downward for all four candidates, so Grana rejects each batch and requests new futures. The futures chosen instead pull away, then head for the small wheel. It ends assembled and upright." },
       ],
       beats: [
         { t0: 0.47, t1: 1.8, kind: "setup", text: "same start" },
