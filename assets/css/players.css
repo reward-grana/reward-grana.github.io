@@ -4,7 +4,7 @@
  */
 /* ==========================================================================
    Grana page: synchronized players
-   Policy rollouts (dark band) · reward predictions · supervision example
+   Policy rollouts (dark band) · reward predictions
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -283,98 +283,6 @@
 .prediction-section-note { max-width: var(--max-prose); margin-top: 0.85rem; font-size: var(--fs-small); line-height: 1.6; color: var(--muted); }
 
 /* --------------------------------------------------------------------------
-   Supervision example (constructed target, synced with the video)
-   -------------------------------------------------------------------------- */
-.supervision-heading { max-width: var(--max-prose); margin-bottom: 1.1rem; }
-.supervision-heading .supervision-context { margin-bottom: 0.4rem; letter-spacing: 0.02em; color: var(--muted); }
-.supervision-stage { container-type: inline-size; min-width: 0; }
-.supervision-media { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; align-items: start; }
-.supervision-media > .supervision-video-frame { width: 100%; max-width: 24rem; justify-self: start; }
-.supervision-media > .supervision-transport { order: 1; margin-top: 0; }
-.supervision-media > .supervision-plot { order: 2; }
-.supervision-segments { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.5rem; margin-top: 0.85rem; }
-@container (min-width: 680px) {
-  .supervision-media { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); }
-  .supervision-media > .supervision-video-frame { max-width: none; }
-  .supervision-media > .supervision-plot { order: 0; }
-  .supervision-media > .supervision-transport { grid-column: 1 / -1; }
-  .supervision-segments { grid-column: 1 / -1; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-.supervision-video-frame { min-width: 0; overflow: hidden; border-radius: var(--r-md); background: #000; box-shadow: var(--shadow-frame); }
-#supervision-video { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; background: #000; }
-
-.supervision-plot {
-  min-width: 0;
-  padding: 0.8rem 0.85rem 0.75rem;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--r-md);
-}
-.supervision-legend { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; padding-left: 0.2rem; font-size: 0.78rem; line-height: 1.5; color: var(--muted); }
-.supervision-swatch { display: inline-block; width: 18px; height: 3px; margin-right: 0.35rem; vertical-align: middle; }
-.supervision-swatch--ours { background: var(--supervision-ours); }
-.supervision-swatch--credit { height: 0; border-top: 2px dashed var(--credit); }
-.supervision-swatch--failure { height: 10px; background: var(--supervision-failure); }
-[data-supervision-chart] svg { display: block; width: 100%; overflow: visible; }
-.supervision-chart text { fill: var(--muted); font: 12.5px var(--font-sans); }
-.supervision-chart .supervision-plot-title { fill: var(--text); font-weight: 600; }
-.supervision-chart .supervision-axis { stroke: var(--sc-rule); stroke-width: 1; }
-.supervision-chart .supervision-credit { stroke: var(--credit); stroke-dasharray: 5 4; stroke-width: 1.5; }
-.supervision-chart .supervision-curve { stroke: var(--supervision-ours); stroke-width: 3; stroke-linejoin: round; fill: none; }
-.supervision-chart .supervision-future { opacity: 0.2; }
-.supervision-chart .supervision-cursor { stroke: var(--supervision-cursor); stroke-width: 1.5; }
-.supervision-chart .supervision-dot { fill: var(--supervision-ours); stroke: #fff; stroke-width: 1.5; }
-.supervision-chart .supervision-active-annotation { fill: none; stroke: var(--supervision-ours); stroke-width: 2; }
-.supervision-chart .supervision-active-window { fill: var(--supervision-ours); fill-opacity: 0.055; stroke: var(--supervision-ours); stroke-width: 1; stroke-opacity: 0.4; }
-[data-segment="failure"] .supervision-chart .supervision-active-annotation,
-[data-segment="failure"] .supervision-chart .supervision-active-window { stroke: var(--supervision-cursor); }
-[data-segment="failure"] .supervision-chart .supervision-active-window { fill: var(--supervision-cursor); }
-.supervision-target-link {
-  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center;
-  gap: 0.25rem 0.8rem;
-  margin-top: 0.45rem;
-  font-size: 0.86rem; line-height: 1.5;
-  color: var(--muted);
-}
-.supervision-target-link > span { white-space: nowrap; }
-.supervision-target-link strong { color: var(--supervision-ours); font-weight: 600; font-variant-numeric: tabular-nums; }
-
-.supervision-segment {
-  display: grid; align-content: start; gap: 0.28rem;
-  min-width: 0; width: 100%;
-  padding: 0.7rem 0.8rem;
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--line-strong);
-  border-radius: 6px;
-  background: var(--surface);
-  color: var(--muted);
-  text-align: left; font: inherit; font-size: 0.84rem; line-height: 1.4;
-  cursor: pointer;
-  transition: background var(--t-fast), border-color var(--t-fast);
-}
-.supervision-segment:hover { border-color: var(--line-strong); }
-.supervision-segment-label { font: 600 0.68rem/1.3 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
-.supervision-segment strong { font-size: 0.9rem; font-weight: 600; color: var(--text); }
-.supervision-segment-window { font: 500 0.72rem/1.4 var(--font-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
-.supervision-segment-value { font-size: 1.05rem; color: var(--text); font-variant-numeric: tabular-nums; }
-.supervision-segment-value sub { font-size: 0.7em; }
-.supervision-segment[aria-pressed="true"] {
-  border-color: color-mix(in srgb, var(--supervision-ours) 45%, transparent);
-  border-left-color: var(--supervision-ours);
-  background: color-mix(in srgb, var(--supervision-ours) 8%, var(--surface));
-}
-.supervision-segment[data-supervision-segment="failure"][aria-pressed="true"] {
-  border-color: color-mix(in srgb, var(--supervision-cursor) 40%, transparent);
-  border-left-color: var(--supervision-cursor);
-  background: var(--supervision-failure);
-}
-.supervision-transport { margin-top: 0.9rem; }
-.supervision-explanation { margin-top: 1.1rem; }
-.supervision-state { margin-top: 0.55rem; font-size: 0.88rem; line-height: 1.5; color: var(--text-2); }
-.supervision-error { margin-top: 0.35rem; font-size: 0.88rem; color: var(--supervision-cursor); }
-.supervision-error[hidden] { display: none; }
-
-/* --------------------------------------------------------------------------
    Phones
    -------------------------------------------------------------------------- */
 @media (max-width: 640px) {
@@ -391,5 +299,5 @@
   .policy-grid::after, .prediction-camera-wrap::after { width: 48px; height: 48px; margin: -24px 0 0 -24px; background-size: 18px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .policy-grid::after, .prediction-camera-wrap::after, .policy-task-tab, .prediction-tab, .supervision-segment { transition: none; }
+  .policy-grid::after, .prediction-camera-wrap::after, .policy-task-tab, .prediction-tab { transition: none; }
 }

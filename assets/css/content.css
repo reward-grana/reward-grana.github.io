@@ -7,14 +7,6 @@
    (overview, paper references, findings, tables, method details, gallery)
    ========================================================================== */
 
-:root {
-  --surface-2: #efe9e2;            /* nominal strip in the supervision chart */
-  --supervision-ours: #23866f;     /* constructed target line (data colour, not brand) */
-  --supervision-failure: #f3d5d3;  /* regressed band (= --q-bad-bg) */
-  --supervision-cursor: #b9433f;   /* playhead and regressed accents (= --q-bad) */
-  --credit: #8a8f96;               /* retained-credit dashed line */
-}
-
 main { display: block; }
 .section[id] { scroll-margin-top: 0; }
 .section--band { padding-bottom: 0; }
@@ -169,7 +161,6 @@ main { display: block; }
 }
 .evaluation-nav a:hover { color: var(--text); }
 .evaluation-nav a[aria-current="location"] { color: var(--text); border-bottom-color: var(--accent); }
-.supervision-nav { margin-bottom: 0; }
 
 @media (max-width: 768px), (max-height: 600px) {
   .evaluation-nav { position: static; flex-wrap: wrap; gap: 0.1rem 1.1rem; }
@@ -452,11 +443,10 @@ main { display: block; }
    "In this section" bars (~49px tall) land clear below the bar. */
 @media (min-width: 769px) and (min-height: 601px) {
   [id]:not(.section) { scroll-margin-top: 1rem; }
-  #inference-accuracy, #inference-budget-title, #reward-evaluation, #reward-video-examples,
-  #target-composition, #target-annotations, #supervision-example, #target-algorithm, #target-definitions { scroll-margin-top: 4rem; }
+  #inference-accuracy, #inference-budget-title, #reward-evaluation, #reward-video-examples { scroll-margin-top: 4rem; }
 }
 .method-module-stack > .method-module + .method-module { padding-top: 2rem; border-top: 1px solid var(--line); }
-.method-module > .h4, .supervision-heading .h4 { font-size: var(--fs-h4); margin: 0 0 0.55rem; }
+.method-module > .h4 { font-size: var(--fs-h4); margin: 0 0 0.55rem; }
 .method-module p { max-width: var(--max-prose); color: var(--muted); line-height: 1.7; }
 .method-module p + p { margin-top: 0.65rem; }
 .method-module .module-lede { margin-bottom: 1rem; }
@@ -479,53 +469,6 @@ main { display: block; }
 .method-card { padding: 1.1rem 1.15rem 1.2rem; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-lg); }
 .method-card p { font-size: 0.94rem; margin-bottom: 0.9rem; }
 .method-module-grid > .method-module + .method-module { padding-top: 1.1rem; border-top: 1px solid var(--line); }
-
-/* Annotation qualities */
-.quality-definitions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; margin: 0; }
-.quality { padding: 0.85rem 1rem 0.95rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-tile); }
-.quality dt { margin: 0 0 0.45rem; }
-.quality dd { margin: 0; font-size: 0.92rem; line-height: 1.55; color: var(--muted); }
-.quality .q { font-size: 0.86rem; }
-
-/* Construction parameters and steps */
-.h5 {
-  margin: 1.4rem 0 0.6rem;
-  font: 600 0.74rem/1.4 var(--font-mono);
-  letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--muted);
-}
-.target-parameters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; margin: 0 0 0.75rem; }
-.target-parameters > div { min-width: 0; padding: 0.85rem 1rem 0.95rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-tile); }
-.target-parameters dt { font-size: 1.04rem; color: var(--text); }
-.target-parameters dd { margin: 0.35rem 0 0; font-size: 0.88rem; line-height: 1.5; color: var(--muted); }
-.target-parameter-details, .algorithm-fold { margin-top: 0.6rem; }
-.algorithm-fold > .disclosure-body { padding-top: 0.2rem; }
-
-.target-algorithm-steps { list-style: none; counter-reset: construction; margin: 0; padding: 0; }
-.target-algorithm-steps > li { display: grid; grid-template-columns: 10.5rem minmax(0, 1fr); gap: 0.75rem 1.5rem; padding: 1.1rem 0.5rem 1.15rem 0; border-top: 1px solid var(--line); border-radius: 6px; transition: background 0.2s; }
-.target-algorithm-steps > li:first-child { border-top: 0; padding-top: 0.3rem; }
-.target-algorithm-steps > li > div { min-width: 0; max-width: 72ch; }
-.target-algorithm-steps h5 { margin: 0; font-family: var(--font-serif); font-size: 1.06rem; font-weight: 600; line-height: 1.35; color: var(--text); }
-.target-algorithm-steps h5::before {
-  counter-increment: construction;
-  content: "Step " counter(construction);
-  display: block; margin-bottom: 0.25rem;
-  font: 600 var(--fs-micro)/1.3 var(--font-mono);
-  letter-spacing: 0.06em; text-transform: uppercase;
-  color: var(--muted);
-}
-.target-algorithm-steps p { font-size: 0.94rem; line-height: 1.65; }
-.target-algorithm-steps p + p { margin-top: 0.5rem; }
-.target-algorithm-steps .table-note { font-size: 0.86rem; color: var(--muted); }
-.target-algorithm-steps h6 { margin: 0 0 0.35rem; font-size: 0.9rem; font-weight: 600; color: var(--text); }
-.target-algorithm .math-block { padding: 0.35rem 0; font-size: 1rem; }
-.target-algorithm .math-block .katex-display { width: max-content; min-width: 100%; }
-.target-algorithm-branches { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; margin: 0.9rem 0; }
-.target-algorithm-branches > div { min-width: 0; padding: 0.8rem 0.95rem; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--line-strong); border-radius: 6px; transition: background 0.2s, border-color 0.2s; }
-.target-algorithm-branches > div p { font-size: 0.9rem; }
-.target-algorithm-branches [data-supervision-branch].is-active { border-left-color: var(--supervision-ours); background: color-mix(in srgb, var(--supervision-ours) 7%, var(--surface)); }
-.target-algorithm-accumulate.is-active { background: color-mix(in srgb, var(--supervision-cursor) 6%, transparent); }
-.target-algorithm-accumulate h5 { color: var(--supervision-ours); }
 
 /* --------------------------------------------------------------------------
    Pretraining task gallery
@@ -600,12 +543,9 @@ button.tile-media { cursor: pointer; }
 }
 @media (max-width: 900px) {
   .module-split { grid-template-columns: minmax(0, 1fr); }
-  .target-algorithm-steps > li { grid-template-columns: minmax(0, 1fr); gap: 0.5rem; }
-  .target-algorithm-branches { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 760px) {
   .gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .quality-definitions, .target-parameters { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 640px) {
   .intro-actions .btn { padding: 0.5rem 0.8rem; font-size: 0.88rem; gap: 0.45rem; }
@@ -625,9 +565,5 @@ button.tile-media { cursor: pointer; }
 /* The reader is narrower than the viewport; adapt its content to the space
    available inside the panel, including on large desktop displays. */
 @container method-reader (max-width: 900px) {
-  .method-module-grid, .module-split, .target-algorithm-branches { grid-template-columns: minmax(0, 1fr); }
-  .target-algorithm-steps > li { grid-template-columns: minmax(0, 1fr); gap: 0.5rem; }
-}
-@container method-reader (max-width: 600px) {
-  .quality-definitions, .target-parameters { grid-template-columns: minmax(0, 1fr); }
+  .method-module-grid, .module-split { grid-template-columns: minmax(0, 1fr); }
 }
