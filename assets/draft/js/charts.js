@@ -76,9 +76,9 @@
       note: "30 Tianji test trajectories. Paper Table 5.",
     },
     cost: {
-      type: "stats", title: "88× faster per query, and no API bill",
+      type: "stats", title: "266× faster per query, and no API bill",
       sub: "Grana on one NVIDIA H100 vs GPT6 composition through its API.",
-      stats: [["0.47 s", "41.55 s", "per query (latency over 8,000 calls)"], ["$0", "≈ $38", "per trajectory (API at 1 fps, 340 s trajectories)"]],
+      stats: [["0.16 s", "41.55 s", "per query (GPT6 latency over 8,000 calls)"], ["$0", "≈ $38", "per trajectory (API at 1 fps, 340 s trajectories)"]],
     },
     offlinerl: {
       type: "multiples", dark: true, pct: true, title: "Offline RL with different reward sources",

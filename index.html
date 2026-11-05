@@ -62,7 +62,7 @@
     <script defer src="assets/draft/js/mpc-data.js?v=55e8bcc50571"></script>
     <script defer src="assets/draft/js/mpc-player.js?v=af958b07b3f6"></script>
     <script defer src="assets/draft/js/posttrain-section.js?v=57ca9015c9f7"></script>
-    <script defer src="assets/draft/js/charts.js?v=e0ee193e1ff9"></script>
+    <script defer src="assets/draft/js/charts.js?v=1abfb5552128"></script>
     <script defer src="assets/draft/js/topic-accordion.js?v=c722b43c109f"></script>
     <link rel="stylesheet" href="assets/css/theme-stage.css?v=ef3219a87d49" /><!-- light page; Fig. 1, post-training and MPC as dark stages in the films' graphite -->
   </head>
@@ -102,7 +102,7 @@
           <a class="btn btn--sm" href="assets/paper/reward_Grana_arxiv_v1.pdf?v=7736435cc14e" aria-label="Paper and appendix (PDF)">
             <svg class="btn-ico" aria-hidden="true"><use href="#i-doc" /></svg>Paper
           </a>
-          <button class="btn btn--sm" type="button" data-expand="assets/video/grana-film-long-1080.mp4?v=l7" data-expand-poster="assets/video/grana-film-long.jpg?v=l1" aria-label="Play the Grana film full screen">
+          <button class="btn btn--sm" type="button" data-expand="assets/video/grana-film-long-1080.mp4?v=l10" data-expand-poster="assets/video/grana-film-long.jpg?v=l1" aria-label="Play the Grana film full screen">
             <svg class="btn-ico" aria-hidden="true"><use href="#i-play" /></svg>Video
           </button>
         </div>
@@ -169,7 +169,7 @@
               <svg class="btn-ico" aria-hidden="true"><use href="#i-doc" /></svg>
               Paper + Appendix (PDF)
             </a>
-            <button class="btn" type="button" data-expand="assets/video/grana-film-long-1080.mp4?v=l7" data-expand-poster="assets/video/grana-film-long.jpg?v=l1" aria-label="Play the Grana film full screen">
+            <button class="btn" type="button" data-expand="assets/video/grana-film-long-1080.mp4?v=l10" data-expand-poster="assets/video/grana-film-long.jpg?v=l1" aria-label="Play the Grana film full screen">
               <svg class="btn-ico" aria-hidden="true"><use href="#i-play" /></svg>
               Video
             </button>
@@ -316,7 +316,7 @@
                 <a id="acc-link-07" href="#acc-five"><span class="reader-topic-title">Five long-horizon tasks</span><span class="reader-topic-description">Lowest RMSE among the compared models</span></a>
                 <a id="acc-link-03" href="#acc-composition"><span class="reader-topic-title">Composition and pretraining</span><span class="reader-topic-description">RMSE: 4.54 → 1.38</span></a>
                 <a id="acc-link-04" href="#acc-robot"><span class="reader-topic-title">Transfer to a new robot</span><span class="reader-topic-description">18.7 % lower error than RoboMeter</span></a>
-                <a id="acc-link-05" href="#acc-cost"><span class="reader-topic-title">Inference cost</span><span class="reader-topic-description">88× faster than GPT6, no API fee</span></a>
+                <a id="acc-link-05" href="#acc-cost"><span class="reader-topic-title">Inference cost</span><span class="reader-topic-description">266× faster than GPT6, no API fee</span></a>
                 <a id="acc-link-06" href="#reward-video-examples"><span class="reader-topic-title">Failure videos</span><span class="reader-topic-description">Progress through drops and retries</span></a>
               </div>
             </nav>
@@ -483,10 +483,10 @@
                   <div class="pc-body pc-stats">
                     <div class="pc-stat">
                       <p class="pc-stat-big">
-                        <span class="pc-stat-ours"><small>Grana</small><strong>0.47 s</strong></span>
+                        <span class="pc-stat-ours"><small>Grana</small><strong>0.16 s</strong></span>
                         <span class="pc-stat-other"><small>GPT6 composition</small><strong>41.55 s</strong></span>
                       </p>
-                      <p class="pc-stat-what">2 calls per query (latency over 8,000 calls)</p>
+                      <p class="pc-stat-what">2 calls per query (GPT6 latency over 8,000 calls)</p>
                     </div>
                     <div class="pc-stat">
                       <p class="pc-stat-big pc-stat-big--cost">
@@ -497,7 +497,7 @@
                     </div>
                   </div>
                   <p class="pc-note" id="grana-vram-note"><strong>GPU memory.</strong> Around 10 GB GPU VRAM for 4B model inference in <strong>BF16</strong> at batch size 1, with <strong>8 timesteps × 4 camera views = 32 images per call</strong>. Using fewer camera views, fewer timesteps, or lower numerical precision reduces VRAM usage further.</p>
-                  <p class="pc-note"><strong>Sequential timing.</strong> The 0.47 s latency sums two model calls executed sequentially at batch size 1: subtask selection and local-progress prediction. Processing independent queries in parallel can improve throughput.</p>
+                  <p class="pc-note"><strong>Sequential timing.</strong> The 0.16 s latency, an average on HotWheels episodes, sums two model calls executed sequentially at batch size 1: subtask selection and local-progress prediction. Processing independent queries in parallel can improve throughput.</p>
                   <p class="pc-note"><strong>Image workload.</strong> A typical complete scoring query uses two model calls, each with 8 sampled timesteps × 4 camera views: <strong>2 × 8 × 4 = 64 image inputs</strong> in total (32 per call). This input workload may contribute to GPT6’s longer API latency.</p>
                 </figure>
                 <details class="disclosure pc-fold">
@@ -515,7 +515,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr class="sc-ours-row inference-budget-ours"><th scope="row">Ours <small>NVIDIA H100 · batch size 1</small></th><td class="sc-best"><small>2 × 234.7 ms =</small><strong>469.4</strong> <span class="inference-unit">ms</span></td><td class="sc-best">No API fee</td></tr>
+                      <tr class="sc-ours-row inference-budget-ours"><th scope="row">Ours <small>NVIDIA H100 · batch size 1</small></th><td class="sc-best"><strong>155.95</strong> <span class="inference-unit">ms</span></td><td class="sc-best">No API fee</td></tr>
                     </tbody>
                     <tbody aria-labelledby="inference-gpt6-total">
                       <tr class="inference-budget-total"><th scope="row" id="inference-gpt6-total">GPT6 composition <small>Total</small></th><td><small>29.00 + 12.55 =</small><strong>41.55</strong> <span class="inference-unit">s</span></td><td><strong>≈ $38.08/traj</strong></td></tr>
@@ -524,10 +524,11 @@
                     </tbody>
                   </table>
                 </div>
-                <div class="sr-desc" id="inference-budget-note-desc" hidden>Reported latencies were measured over 8,000 calls. For both Ours and GPT6 composition, the per-query latency sums subtask selection and within-stage progress. Grana was measured on one NVIDIA H100 at batch size 1, executing these two calls sequentially. A typical complete query uses 64 image inputs across the two calls: 8 sampled timesteps and 4 camera views per call. Independent queries can be processed in parallel to improve throughput. API costs use 1 fps on trajectories averaging 340 s in the reported experiment; local GPU costs are not priced.</div>
+                <div class="sr-desc" id="inference-budget-note-desc" hidden>GPT6 latencies were measured over 8,000 calls; Grana's are averages on HotWheels episodes. For both Ours and GPT6 composition, the per-query latency sums subtask selection and within-stage progress. Grana was measured on one NVIDIA H100 at batch size 1, executing these two calls sequentially. A typical complete query uses 64 image inputs across the two calls: 8 sampled timesteps and 4 camera views per call. Independent queries can be processed in parallel to improve throughput. API costs use 1 fps on trajectories averaging 340 s in the reported experiment; local GPU costs are not priced.</div>
               </div>
+              <p class="table-note inference-cost-scope">Grana on other GPUs, per query at batch size 1: RTX 4090 451.06 ms · RTX 5090 334.19 ms · GB300 123.30 ms.</p>
               <p class="table-note inference-cost-scope">API costs use 1 fps on trajectories averaging 340 s; local GPU costs are not priced.</p>
-                  <p class="table-note" id="inference-budget-note">Reported latencies were measured over <strong>8,000 calls</strong>. For both Ours and GPT6 composition, the per-query latency sums subtask selection and within-stage progress. Grana was measured on one NVIDIA H100 at <strong>batch size 1</strong>, executing these two calls sequentially. API costs use 1 fps on trajectories averaging 340 s in the reported experiment; local GPU costs are not priced.</p>
+                  <p class="table-note" id="inference-budget-note">GPT6 latencies were measured over <strong>8,000 calls</strong>; Grana's are averages on HotWheels episodes. For both Ours and GPT6 composition, the per-query latency sums subtask selection and within-stage progress. Grana was measured on one NVIDIA H100 at <strong>batch size 1</strong>, executing these two calls sequentially. API costs use 1 fps on trajectories averaging 340 s in the reported experiment; local GPU costs are not priced.</p>
                 </details>
               </section>
           <section class="subsection evaluation-pane" id="reward-video-examples" data-evaluation-panel aria-labelledby="reward-video-title">
@@ -637,7 +638,7 @@
         </div>
         <nav class="footer-links" aria-label="Footer">
           <a href="assets/paper/reward_Grana_arxiv_v1.pdf?v=7736435cc14e"><svg class="footer-ico" aria-hidden="true"><use href="#i-doc" /></svg>Paper</a>
-          <a href="assets/video/grana-film-long-1080.mp4?v=l7" data-expand="assets/video/grana-film-long-1080.mp4?v=l7" data-expand-poster="assets/video/grana-film-long.jpg?v=l1"><svg class="footer-ico" aria-hidden="true"><use href="#i-play" /></svg>Video</a>
+          <a href="assets/video/grana-film-long-1080.mp4?v=l10" data-expand="assets/video/grana-film-long-1080.mp4?v=l10" data-expand-poster="assets/video/grana-film-long.jpg?v=l1"><svg class="footer-ico" aria-hidden="true"><use href="#i-play" /></svg>Video</a>
           <a href="#bibtex"><svg class="footer-ico" aria-hidden="true"><use href="#i-braces" /></svg>BibTeX</a>
         </nav>
       </div>
