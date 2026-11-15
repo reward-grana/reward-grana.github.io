@@ -82,3 +82,23 @@ main .band-dark.policy-band > .container { max-width: none; padding-left: clamp(
 @media (max-width: 640px) {
   main .band-dark.policy-band { width: calc(100% - 1.5rem); --stage-radius: 16px; }
 }
+
+/* The first screen is the film alone (2026-11-15): no top bar, and on desktop-shaped windows (3:2 and wider) the hero
+   fills the window. The film is contained, never cropped (its title sits near the left edge); the letterbox is the
+   film's own ink. Narrower windows keep the earlier sizing. */
+@media (min-width: 769px) and (min-height: 601px) and (min-aspect-ratio: 3/2) {
+  .hero { --hero-h: 100svh; }
+  .hero-media { object-fit: contain; }
+}
+/* Windows taller than 16:9 (16:10 laptops): the letterbox is above and below the film, so feather the film's top and
+   bottom edges into it, as the side bars are feathered on wider windows. */
+@media (min-width: 769px) and (min-height: 601px) and (min-aspect-ratio: 3/2) and (max-aspect-ratio: 16/9) {
+  .hero { --hero-vbar: calc((100svh - 56.25vw) / 2); }
+  .hero:not(.hero--full)::before,
+  .hero:not(.hero--full)::after {
+    display: block; left: 0; right: 0; width: auto;
+    height: clamp(0px, var(--hero-vbar) * 1000, 48px);
+  }
+  .hero:not(.hero--full)::before { top: var(--hero-vbar); bottom: auto; background: linear-gradient(180deg, var(--hero-bg), rgba(9, 8, 7, 0)); }
+  .hero:not(.hero--full)::after { top: auto; bottom: var(--hero-vbar); background: linear-gradient(0deg, var(--hero-bg), rgba(9, 8, 7, 0)); }
+}
