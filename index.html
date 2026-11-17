@@ -122,7 +122,7 @@
       <section class="section section-overview" id="overview" aria-labelledby="page-title">
         <div class="container container--intro intro">
           <h1 class="page-title" id="page-title"><span id="hero-title"></span>Grana: Compositional Reward Modeling for Long-Horizon Robot Manipulation</h1>
-          <p class="project-summary">Grana estimates whole-task progress by composing subtask progress. It uses subtask and action-quality annotations to construct training targets that account for failures and recovery. A shared predictor learns from short tasks and adapts to longer sequences, providing progress feedback for policy learning.</p>
+          <p class="project-summary">Grana is a compositional reward function that measures how much of a robot task is complete. It tracks progress lost after mistakes while preserving credit for completed steps. On real robots, this feedback supports policy learning through training-time reinforcement learning (RL) and action selection through test-time model predictive control (MPC).</p>
           <div class="page-authors">
             <ol class="author-list" aria-label="Authors in manuscript order">
               <li><span class="author-name">Zi-ang Cao</span><sup>1,2,*</sup></li>
