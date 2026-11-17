@@ -89,7 +89,7 @@
       el("span", { class: "pt-open-ico", "aria-hidden": "true", text: "▶" }), el("span", { text: "All four cameras" }),
       el("span", { class: "pt-open-dur", text: t.dur }));
     const [a, b] = t.bars;
-    const card = el("article", { class: "pt-card", role: "listitem", "data-task": t.id, style: `--i:${i}`, "aria-labelledby": `pt-t-${t.id}` },
+    const card = el("article", { id: `policy-result-${t.id}`, class: "pt-card", role: "listitem", "data-task": t.id, style: `--i:${i}`, "aria-labelledby": `pt-t-${t.id}` },
       el("div", { class: "pt-head" }, el("h3", { class: "pt-card-title", id: `pt-t-${t.id}`, text: t.title }), el("span", { class: "pt-chip", text: t.method })),
       el("div", { class: "pt-media" }, v, el("span", { class: "pt-tag", text: t.tag }), el("span", { class: "pt-speed", text: t.speed })),
       el("div", { class: "pt-bars", role: "img", "aria-label": `Success rate: ${a[0]} ${fmt(a[1])} (${a[2]}), ${b[0]} ${fmt(b[1])} (${b[2]})` }, ...rows),

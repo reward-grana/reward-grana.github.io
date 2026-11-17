@@ -42,28 +42,27 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" crossorigin="anonymous" media="print" onload="this.media='all'" />
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" crossorigin="anonymous" /></noscript>
-    <link rel="stylesheet" href="assets/css/site.css?v=cc09d43d7197" />
-    <link rel="stylesheet" href="assets/css/content.css?v=fcdb72d2ba0d" />
+    <link rel="stylesheet" href="assets/css/site.css?v=218698db3cb5" />
+    <link rel="stylesheet" href="assets/css/content.css?v=fc8b796f91d9" />
     <link rel="stylesheet" href="assets/css/players.css?v=750ba951d95e" />
-    <script defer src="assets/js/site.js?v=ef1d1f9fb6c7"></script>
-    <script defer src="assets/js/data/tasks.js?v=cf22a607a490"></script>
+    <script defer src="assets/js/site.js?v=4d2206449f50"></script>
+    <script defer src="assets/js/data/tasks.js?v=043144fb6ab1"></script>
     <script defer src="assets/js/data/predictions.js?v=aa6c81432c64"></script>
-    <script defer src="assets/js/app.js?v=a38c1dcb0f18"></script>
-    <script defer src="assets/js/evaluation-nav.js?v=ea811ab4557e"></script>
+    <script defer src="assets/js/app.js?v=2da9fb7b0d96"></script>
+    <script defer src="assets/js/evaluation-nav.js?v=c12d79b917e4"></script>
     <script defer src="assets/js/policy.js?v=c9a06673f0be"></script>
     <script defer src="assets/js/prediction-player.js?v=aec858b374bd"></script>
     <!-- DRAFT (step 2): animated Fig. 2 and the MPC examples -->
     <link rel="stylesheet" href="assets/draft/css/fig2.css?v=ee622d631914" />
-    <link rel="stylesheet" href="assets/draft/css/mpc.css?v=4212ef7ef7bf" />
-    <link rel="stylesheet" href="assets/draft/css/posttrain.css?v=4d2dfaa92f84" />
-    <link rel="stylesheet" href="assets/draft/css/charts.css?v=d7b9f4935849" />
+    <link rel="stylesheet" href="assets/draft/css/mpc.css?v=3a8e34565e36" />
+    <link rel="stylesheet" href="assets/draft/css/posttrain.css?v=f2ec19a96b90" />
+    <link rel="stylesheet" href="assets/draft/css/charts.css?v=73660dcb6ef6" />
     <script defer src="assets/draft/js/fig2-data.js?v=2664c0f8422d"></script>
     <script defer src="assets/draft/js/fig2.js?v=19cc12aeafbb"></script>
     <script defer src="assets/draft/js/mpc-data.js?v=55e8bcc50571"></script>
     <script defer src="assets/draft/js/mpc-player.js?v=af958b07b3f6"></script>
-    <script defer src="assets/draft/js/posttrain-section.js?v=57ca9015c9f7"></script>
-    <script defer src="assets/draft/js/charts.js?v=5bae5f68ada4"></script>
-    <script defer src="assets/draft/js/topic-accordion.js?v=c722b43c109f"></script>
+    <script defer src="assets/draft/js/posttrain-section.js?v=9c9e3895adea"></script>
+    <script defer src="assets/draft/js/charts.js?v=7b58d6e71fbe"></script>
     <link rel="stylesheet" href="assets/css/theme-stage.css?v=b0706234f4ba" /><!-- light page; Fig. 1, post-training and MPC as dark stages in the films' graphite -->
   </head>
   <body>
@@ -86,12 +85,26 @@
       </a>
       <div class="nav-links">
         <a class="nav-link" href="#overview">Overview</a>
-        <a class="nav-link" href="#composition">Composition</a>
-        <a class="nav-link" href="#predictions">Accuracy</a>
-        <a class="nav-link" href="#policy">Post-training</a>
-        <a class="nav-link" href="#mpc">MPC</a>
-        <a class="nav-link" href="#tasks">Tasks</a>
-        <a class="nav-link" href="#bibtex">BibTeX</a>
+        <a class="nav-link" href="#composition">Modeling</a>
+        <a class="nav-link" href="#tasks">Pre-training</a>
+        <div class="nav-group" data-nav-group="evaluation">
+          <a class="nav-link nav-group-label" href="#predictions">Evaluation</a>
+          <div class="nav-children">
+            <a class="nav-link nav-sublink" href="#acc-accuracy">Reward accuracy</a>
+            <a class="nav-link nav-sublink" href="#acc-composition">Compositional gains</a>
+            <a class="nav-link nav-sublink" href="#acc-robot">Robot transfer</a>
+            <a class="nav-link nav-sublink" href="#acc-cost">Inference cost</a>
+            <a class="nav-link nav-sublink" href="#reward-video-examples">Failure response</a>
+          </div>
+        </div>
+        <div class="nav-group" data-nav-group="application">
+          <a class="nav-link nav-group-label" href="#application">Application</a>
+          <div class="nav-children">
+            <a class="nav-link nav-sublink" href="#policy">Train-time RL</a>
+            <a class="nav-link nav-sublink" href="#mpc">Test-time MPC</a>
+          </div>
+        </div>
+        <a class="nav-link" href="#bibtex">Citation</a>
       </div>
     </nav>
 
@@ -122,7 +135,7 @@
       <section class="section section-overview" id="overview" aria-labelledby="page-title">
         <div class="container container--intro intro">
           <h1 class="page-title" id="page-title"><span id="hero-title"></span>Grana: Compositional Reward Modeling for Long-Horizon Robot Manipulation</h1>
-          <p class="project-summary">Grana is a compositional reward function that measures how much of a robot task is complete. It tracks progress lost after mistakes while preserving credit for completed steps. On real robots, this feedback supports policy learning through training-time reinforcement learning (RL) and action selection through test-time model predictive control (MPC).</p>
+          <p class="project-summary">Grana is a compositional reward function that measures how much of a long-horizon robot manipulation task is complete. It tracks progress lost after mistakes while preserving credit for completed steps. On real robots, this progress-reward model supports policy learning through training-time reinforcement learning (RL) and action selection through test-time model predictive control (MPC).</p>
           <div class="page-authors">
             <ol class="author-list" aria-label="Authors in manuscript order">
               <li><span class="author-name">Zi-ang Cao</span><sup>1,2,*</sup></li>
@@ -171,9 +184,9 @@
       <section class="section" id="composition" aria-labelledby="composition-title">
         <div class="container container--wide">
           <header class="section-header">
-            <p class="kicker">01 · Compositional progress</p>
+            <p class="kicker">01 · Modeling</p>
             <h2 id="composition-title">Estimating whole-task progress from subtasks.</h2>
-            <p class="lede">Given a task and its subtask descriptions, Grana selects the unfinished subtask and estimates its local progress. It combines this estimate with credit for completed subtasks to obtain whole-task progress.</p>
+            <p class="lede">A failed insertion can erase the progress of the current attempt while leaving an earlier assembly step intact. Grana models these separately: it estimates progress within the unfinished subtask and combines it with credit for completed steps.</p>
           </header>
           <!-- DRAFT: animated Fig. 2 (assets/draft/js/fig2.js + fig2-data.js, assets/draft/css/fig2.css, assets/draft/video/fig2-airplane-*).
                Every module is on screen from the first frame; only the inside moves. The static figure stays one click away. -->
@@ -284,34 +297,47 @@
         </div>
       </section>
 
-      <!-- DRAFT (step 5): reward accuracy as one topic module (assets/js/evaluation-nav.js), one or two charts per topic
-           (assets/draft/js/charts.js; the paper's numbers); the tables are one click away. -->
+      <section class="section" id="tasks" aria-labelledby="tasks-title">
+        <div class="container container--wide">
+          <header class="section-header">
+            <p class="kicker">02 · Pre-training</p>
+            <h2 id="tasks-title">Learn on short tasks. Transfer to new and longer tasks.</h2>
+            <p class="lede">Long-horizon tasks are harder to collect data for and difficult to anticipate in advance. We pretrain Grana on diverse, mostly short manipulation tasks to learn reusable knowledge about task progress. This gives the reward model a foundation for <a href="#acc-unseen">zero-shot prediction on unseen tasks</a> and <a href="#acc-long">efficient adaptation to longer tasks</a> with limited demonstrations.</p>
+            <p class="lede">We use <strong>200 pretraining tasks</strong> with subtask descriptions and action-quality annotations, and <strong>50 held-out tasks</strong> for zero-shot evaluation. The long assembly tasks and both offline-RL tasks are excluded from pretraining.</p>
+          </header>
+          <div class="gallery" id="task-gallery" data-tasks></div>
+        </div>
+      </section>
+
+      <!-- Evaluation topics have direct links in the page sidebar. Accuracy experiments
+           switch locally (assets/js/evaluation-nav.js); tables remain one click away. -->
       <section class="section" id="predictions" aria-labelledby="predictions-title">
         <div class="container container--wide">
           <header class="section-header">
-            <p class="kicker">02 · Reward accuracy</p>
-            <h2 id="predictions-title">Reward prediction before and after task adaptation.</h2>
-            <p class="lede">We compare Grana with SARM, SARM2, RoboMeter, and GPT6 composition. Each experiment specifies the training and adaptation setting.</p>
+            <p class="kicker">03 · Evaluation</p>
+            <h2 id="predictions-title">Reward model evaluation.</h2>
+            <p class="lede">We test whether the progress knowledge learned during pretraining transfers to unseen tasks, longer procedures, and a different robot. We also examine the contribution of composition, the cost of inference, and how predictions respond when execution fails.</p>
           </header>
-          <div class="evaluation-workspace">
-            <nav class="evaluation-nav evaluation-nav--reader" aria-label="Reward accuracy topics">
-              <span class="evaluation-nav-label">Topics</span>
-              <div class="evaluation-nav-links">
-                <a id="acc-link-01" href="#acc-unseen" aria-current="location"><span class="reader-topic-title">Zero-shot on unseen tasks</span><span class="reader-topic-description">20.7 % lower RMSE than fine-tuned RoboMeter</span></a>
-                <a id="acc-link-02" href="#acc-long"><span class="reader-topic-title">Adapting to long tasks</span><span class="reader-topic-description">15-trajectory Grana vs 100-trajectory baselines</span></a>
-                <a id="acc-link-07" href="#acc-five"><span class="reader-topic-title">Five long-horizon tasks</span><span class="reader-topic-description">Lowest RMSE among the compared models</span></a>
-                <a id="acc-link-03" href="#acc-composition"><span class="reader-topic-title">Composition and pretraining</span><span class="reader-topic-description">RMSE: 4.54 → 1.38</span></a>
-                <a id="acc-link-04" href="#acc-robot"><span class="reader-topic-title">Transfer to a new robot</span><span class="reader-topic-description">18.7 % lower error than RoboMeter</span></a>
-                <a id="acc-link-05" href="#acc-cost"><span class="reader-topic-title">Inference cost</span><span class="reader-topic-description">266.4× faster than GPT6, no API fee</span></a>
-                <a id="acc-link-06" href="#reward-video-examples"><span class="reader-topic-title">Failure videos</span><span class="reader-topic-description">Progress through drops and retries</span></a>
-              </div>
-            </nav>
-            <div class="evaluation-reader" id="evaluation-reader" tabindex="0" role="region" aria-label="Reward accuracy">
-              <section class="subsection evaluation-pane" id="acc-unseen" data-evaluation-panel aria-label="Unseen tasks">
+              <section class="subsection evaluation-topic" id="acc-accuracy" aria-labelledby="acc-accuracy-title">
+                <header class="subsection-head">
+                  <h3 id="acc-accuracy-title">Reward prediction accuracy</h3>
+                </header>
+                <div class="evaluation-study-workspace">
+                  <nav class="evaluation-study-links" aria-label="Reward accuracy experiments">
+                    <a id="acc-link-01" href="#acc-unseen"><span class="study-topic-title">Zero-shot on unseen tasks</span><span class="study-topic-description">20.7% lower RMSE than fine-tuned RoboMeter</span></a>
+                    <a id="acc-link-02" href="#acc-long"><span class="study-topic-title">Adapting to long tasks</span><span class="study-topic-description">15-trajectory Grana vs 100-trajectory baselines</span></a>
+                    <a id="acc-link-07" href="#acc-five"><span class="study-topic-title">Five long-horizon tasks</span><span class="study-topic-description">Lowest RMSE among the compared models</span></a>
+                  </nav>
+                  <div class="evaluation-study-reader" role="region" aria-label="Reward accuracy results" tabindex="0">
+              <section class="evaluation-study" id="acc-unseen" aria-labelledby="acc-unseen-title">
+                <h4 class="evaluation-study-title" id="acc-unseen-title">Zero-shot on unseen tasks</h4>
+                <p class="pc-note pc-note--finding">Across the four reward sources shared by these evaluations, <strong>lower held-out RMSE corresponds to higher or tied policy success</strong> on <a href="#policy-result-star">Star insertion</a> and <a href="#policy-result-tube">Tube transfer</a>. See <a href="assets/paper/reward_Grana_arxiv_v1.pdf?v=ae055513ada4#page=8">Fig. 5</a> and <a href="assets/paper/reward_Grana_arxiv_v1.pdf?v=ae055513ada4#page=12">Fig. 6</a>.</p>
                 <figure class="pc" data-pc="zeroshot"></figure>
                 <figure class="pc" data-pc="pretrain"></figure>
               </section>
-              <section class="subsection evaluation-pane" id="acc-long" data-evaluation-panel aria-label="Long tasks, little data">
+              <section class="evaluation-study" id="acc-long" aria-labelledby="acc-long-title">
+                <h4 class="evaluation-study-title" id="acc-long-title">Adapting to long tasks</h4>
+                <p class="pc-note pc-note--finding">With the architecture and adaptation data held fixed, reward-model pretraining reduces Grana’s RMSE by <strong>15.8–28.3%</strong> across airplane and car assembly at both adaptation budgets. See <a href="assets/paper/reward_Grana_arxiv_v1.pdf?v=ae055513ada4#page=10">Table 6</a>.</p>
                 <figure class="pc" data-pc="longtask"></figure>
                 <details class="disclosure pc-fold">
                   <summary>Show the table</summary>
@@ -335,7 +361,8 @@
                   </div>
                 </details>
               </section>
-              <section class="subsection evaluation-pane" id="acc-five" data-evaluation-panel aria-label="Five long tasks">
+              <section class="evaluation-study" id="acc-five" aria-labelledby="acc-five-title">
+                <h4 class="evaluation-study-title" id="acc-five-title">Five long-horizon tasks</h4>
                 <figure class="pc" data-pc="fivetask"></figure>
                 <details class="disclosure pc-fold">
                   <summary>Show the table</summary>
@@ -374,97 +401,74 @@
             </div>
                 </details>
               </section>
-              <section class="subsection evaluation-pane" id="acc-composition" data-evaluation-panel aria-label="Composition">
-                <figure class="pc" data-pc="composition"></figure>
-                <details class="disclosure pc-fold">
-                  <summary>Show the tables · selection accuracy and RMSE</summary>
-                  <p class="inference-accuracy-caption mono-meta" id="inference-accuracy-caption">Car model assembly · RMSE in subtask units ↓ · paper Table 9</p>
-              <div class="inference-accuracy-content">
-                <section class="inference-accuracy-group" aria-labelledby="accuracy-qwen-title">
-                  <h4 class="h4 group-title" id="accuracy-qwen-title"><span class="group-index" aria-hidden="true">A</span>Zero-shot · Qwen3.5-4B</h4>
-                  <div class="group-grid">
-                    <div class="scorecard-card">
-                      <div class="scorecard-wrap" role="region" aria-labelledby="accuracy-qwen-title" tabindex="0">
-                        <table class="scorecard scorecard--labels inference-accuracy-table" style="--sc-min: 0px" aria-labelledby="accuracy-qwen-title" aria-describedby="accuracy-qwen-desc inference-accuracy-caption inference-accuracy-note-desc">
-                          <colgroup><col class="col-label" /><col /><col /></colgroup>
-                          <thead>
-                            <tr><th scope="col" class="sc-left">Model / procedure</th><th scope="col" data-col="0">Selection<br />acc. ↑</th><th scope="col" data-col="1">RMSE ↓</th></tr>
-                          </thead>
-                          <tbody>
-                            <tr><th scope="row">Base Qwen3.5-4B: direct prediction</th><td>—</td><td>4.541</td></tr>
-                            <tr><th scope="row">Base Qwen3.5-4B: composition (our workflow)</th><td>25.37%</td><td>3.068</td></tr>
-                            <tr class="sc-ours-row inference-accuracy-ours"><th scope="row">Ours (pretrained from Qwen3.5-4B; self-selected subtask)</th><td class="sc-best"><strong>69.46%</strong></td><td class="sc-best"><strong>1.380</strong></td></tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                    <div class="inference-interpretation">
-                      <!-- Keep the full table interpretations available to assistive technology. -->
-                      <div class="sr-desc" id="accuracy-qwen-desc" hidden>Composition improves whole-task progress prediction. With the same base Qwen3.5-4B model, our compositional workflow lowers RMSE from 4.541 to 3.068. Pretraining improves zero-shot transfer to car assembly. Our pretrained compositional predictor lowers RMSE further, from 3.068 to 1.380, without task-related adaptation.</div>
-                      <div class="sr-desc" id="inference-accuracy-note-desc" hidden>For the composition, pretraining, and adaptation comparisons, see Sec. 4.4 and Table 9 of the paper. GPT6-selected results combine API subtask selection with local progress prediction.</div>
-                    </div>
                   </div>
-                </section>
-
-                <section class="inference-accuracy-group" aria-labelledby="accuracy-gpt6-title">
-                  <h4 class="h4 group-title" id="accuracy-gpt6-title"><span class="group-index" aria-hidden="true">B</span>Zero-shot · GPT6</h4>
-                  <div class="group-grid">
-                    <div class="scorecard-card">
-                      <div class="scorecard-wrap" role="region" aria-labelledby="accuracy-gpt6-title" tabindex="0">
-                        <table class="scorecard scorecard--labels inference-accuracy-table" style="--sc-min: 0px" aria-labelledby="accuracy-gpt6-title" aria-describedby="accuracy-gpt6-desc inference-accuracy-caption inference-accuracy-note-desc">
-                          <colgroup><col class="col-label" /><col /><col /></colgroup>
-                          <thead>
-                            <tr><th scope="col" class="sc-left">Model / procedure</th><th scope="col" data-col="0">Selection<br />acc. ↑</th><th scope="col" data-col="1">RMSE ↓</th></tr>
-                          </thead>
-                          <tbody>
-                            <tr><th scope="row">GPT6: direct prediction</th><td>—</td><td>1.578</td></tr>
-                            <tr><th scope="row">GPT6: composition (our workflow)</th><td class="sc-best"><strong>86.56%</strong></td><td>0.524</td></tr>
-                            <tr class="sc-ours-row inference-accuracy-ours"><th scope="row">Ours (pretrained; GPT6-selected subtask)</th><td class="sc-best"><strong>86.56%</strong></td><td class="sc-best"><strong>0.494</strong></td></tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                    <div class="inference-interpretation">
-                      <div class="sr-desc" id="accuracy-gpt6-desc" hidden>Composition also helps a frontier VLM. GPT6's whole-task RMSE falls from 1.578 to 0.524, supporting subtask-based composition as a useful formulation for this long-horizon task. Our pretrained local-progress predictor improves accuracy while reducing API cost. Keeping GPT6's selected subtask fixed, replacing its progress predictor with ours lowers RMSE from 0.524 to 0.494 and avoids the GPT6 progress API call. The subtask-selection API call remains.</div>
-                      <p class="inference-explanation gpt6-note" id="gpt6-reference"><strong>GPT6</strong> refers to <strong>GPT6-Astra-high</strong> throughout this page by 2026/09/15.</p>
-                    </div>
-                  </div>
-                </section>
-
-                <section class="inference-accuracy-group" aria-labelledby="accuracy-adaptation-title">
-                  <h4 class="h4 group-title" id="accuracy-adaptation-title"><span class="group-index" aria-hidden="true">C</span>Task-related adaptation (15 trajectories)</h4>
-                  <div class="group-grid">
-                    <div class="scorecard-card">
-                      <div class="scorecard-wrap" role="region" aria-labelledby="accuracy-adaptation-title" tabindex="0">
-                        <table class="scorecard scorecard--labels inference-accuracy-table" style="--sc-min: 0px" aria-labelledby="accuracy-adaptation-title" aria-describedby="accuracy-adaptation-desc inference-accuracy-caption inference-accuracy-note-desc">
-                          <colgroup><col class="col-label" /><col /><col /></colgroup>
-                          <thead>
-                            <tr><th scope="col" class="sc-left">Model / procedure</th><th scope="col" data-col="0">Selection<br />acc. ↑</th><th scope="col" data-col="1">RMSE ↓</th></tr>
-                          </thead>
-                          <tbody>
-                            <tr><th scope="row">GPT6: composition (zero-shot reference)</th><td>86.56%</td><td>0.524</td></tr>
-                            <tr><th scope="row">Ours, no pretraining + adaptation</th><td>93.33%</td><td>0.502</td></tr>
-                            <tr class="sc-ours-row inference-accuracy-ours"><th scope="row">Ours, pretrained + adaptation</th><td class="sc-best"><strong>94.70%</strong></td><td class="sc-best"><strong>0.394</strong></td></tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                    <div class="inference-interpretation">
-                      <div class="sr-desc" id="accuracy-adaptation-desc" hidden>With 15 adaptation trajectories, our pretrained Qwen3.5-4B model outperforms zero-shot GPT6 composition on car assembly. Whole-task RMSE is 0.394 versus 0.524, and subtask-selection accuracy is 94.70% versus 86.56%.</div>
-                    </div>
-                  </div>
-                </section>
-              </div>
-                </details>
+                </div>
               </section>
-              <section class="subsection evaluation-pane" id="acc-robot" data-evaluation-panel aria-label="New robot">
+              <section class="subsection evaluation-topic" id="acc-composition" aria-labelledby="acc-composition-title">
+                <header class="subsection-head">
+                  <h3 id="acc-composition-title">Gains from compositional modeling</h3>
+                </header>
+                <div class="composition-comparisons">
+                  <div class="composition-comparison">
+                    <figure class="pc" data-pc="composition" aria-describedby="gpt6-model-note"></figure>
+                    <details class="disclosure pc-fold">
+                      <summary>Show comparison table · Table 9</summary>
+                      <div class="scorecard-card">
+                        <div class="scorecard-wrap" role="region" aria-label="Zero-shot direct prediction versus composition" tabindex="0">
+                          <table class="scorecard scorecard--labels" style="--sc-min: 320px">
+                            <caption>Zero-shot car assembly · RMSE in subtask units ↓ · selected rows from Table 9</caption>
+                            <colgroup><col style="width: 42%" /><col style="width: 29%" /><col style="width: 29%" /></colgroup>
+                            <thead>
+                              <tr><th scope="col">Model</th><th scope="col">Direct prediction</th><th scope="col">+ Composition</th></tr>
+                            </thead>
+                            <tbody>
+                              <tr><th scope="row">Base Qwen3.5-4B</th><td>4.541</td><td class="sc-best"><strong>3.068</strong></td></tr>
+                              <tr><th scope="row">GPT6</th><td>1.578</td><td class="sc-best"><strong>0.524</strong></td></tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </details>
+                    <p class="pc-gpt6 pc-note" id="gpt6-model-note">GPT6 refers to GPT6-Astra-high throughout this page by 2026/09/15.</p>
+                  </div>
+                  <div class="composition-comparison">
+                    <figure class="pc" data-pc="compositionAdapted"></figure>
+                    <details class="disclosure pc-fold">
+                      <summary>Show comparison table · Table 8</summary>
+                      <div class="scorecard-card">
+                        <div class="scorecard-wrap" role="region" aria-label="Subtask composition on airplane model assembly" tabindex="0">
+                          <table class="scorecard scorecard--labels" style="--sc-min: 320px" aria-describedby="composition-adaptation-scope">
+                            <caption>Airplane assembly · RMSE in subtask units ↓ · Table 8</caption>
+                            <colgroup><col style="width: 50%" /><col style="width: 25%" /><col style="width: 25%" /></colgroup>
+                            <thead>
+                              <tr><th scope="col">Configuration</th><th scope="col">D15</th><th scope="col">D100</th></tr>
+                            </thead>
+                            <tbody>
+                              <tr><th scope="row">Direct whole-task</th><td>0.462</td><td>0.359</td></tr>
+                              <tr class="sc-ours-row"><th scope="row">Subtask composition (Grana)</th><td class="sc-best"><strong>0.382</strong></td><td class="sc-best"><strong>0.311</strong></td></tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <p class="table-note" id="composition-adaptation-scope">D15 and D100 use 15 and 100 adaptation trajectories, respectively. Within each budget, both predictors use the same base Qwen initialization and matched adaptation data, without reward-model pretraining. Composition uses automatic subtask selection; RMSE includes selection errors.</p>
+                    </details>
+                  </div>
+                </div>
+              </section>
+              <section class="subsection evaluation-topic" id="acc-robot" aria-labelledby="acc-robot-title">
+                <header class="subsection-head">
+                  <h3 id="acc-robot-title">Transfer to new robots</h3>
+                </header>
                 <figure class="pc" data-pc="embodiment"></figure>
               </section>
-              <section class="subsection evaluation-pane" id="acc-cost" data-evaluation-panel aria-label="Cost">
-                <figure class="pc pc--stats" aria-labelledby="cost-title">
+              <section class="subsection evaluation-topic" id="acc-cost" aria-labelledby="acc-cost-title">
+                <header class="subsection-head">
+                  <h3 id="acc-cost-title">Inference cost</h3>
+                </header>
+                <figure class="pc pc--stats" aria-labelledby="cost-title" aria-describedby="cost-gpt6-model-note">
                   <figcaption class="pc-head">
                     <h4 class="pc-title" id="cost-title">Inference latency and API fees</h4>
-                    <p class="pc-sub">Grana on one NVIDIA H100 (batch size 1, sequential execution) vs GPT6 composition through its API.</p>
+                    <p class="pc-sub">Reward scoring is repeated across recorded trajectories and candidate futures, making latency and deployment cost important. Grana’s 4B model runs locally with ≤10 GB GPU memory and no API fee; a complete query takes 0.156 s on one H100, compared with 41.55 s for GPT6 composition through its API.</p>
                   </figcaption>
                   <div class="pc-body pc-stats">
                     <div class="pc-stat">
@@ -520,29 +524,29 @@
               <p class="table-note inference-cost-scope">Speedup is 41.55 s divided by the complete query latency. Dashes indicate unreported API-side memory or speedups not defined for component-only calls.</p>
                   <p class="table-note" id="inference-budget-note">GPT6 latencies were measured over <strong>8,000 calls</strong>; Grana's are averages on HotWheels episodes. For both Grana and GPT6 composition, the per-query latency sums sequential subtask selection and local-progress prediction. Grana was measured on one GPU in <strong>BF16</strong> at <strong>batch size 1</strong>. API costs use 1 fps on trajectories averaging 340 s in the reported experiment; local GPU costs are not priced.</p>
                 </details>
+                <p class="pc-gpt6 pc-note" id="cost-gpt6-model-note">GPT6 refers to GPT6-Astra-high throughout this page by 2026/09/15.</p>
               </section>
-          <section class="subsection evaluation-pane" id="reward-video-examples" data-evaluation-panel aria-labelledby="reward-video-title">
+          <section class="subsection evaluation-topic" id="reward-video-examples" aria-labelledby="reward-video-title">
             <header class="subsection-head prediction-examples-heading">
-              <h3 id="reward-video-title">How predictions respond to setbacks</h3>
-              <p>Watch the contact-rich interactions, failures, and retries alongside each model's progress curve.</p>
+              <h3 id="reward-video-title">How progress predictions respond to failure actions</h3>
+              <p>A useful progress reward should reflect what a mistake actually undoes. These examples compare whether predictions drop when local progress is lost, retain credit for completed steps that remain intact, and rise again during recovery.</p>
             </header>
             <div id="prediction-player"></div>
             <p class="prediction-section-note">Progress is shown in accumulated subtask units; pink marks annotated failure, and boundary triangles mark predictions outside the plotted range.</p>
           </section>
-            </div>
-          </div>
-          <p class="pc-gpt6 mono-meta">GPT6 refers to GPT6-Astra-high throughout this page by 2026/09/15.</p>
         </div>
       </section>
 
       <!-- DRAFT (step 3): post-training with Grana (assets/draft/js/posttrain-section.js): the film, one card per task, and the
            four-camera player (assets/js/policy.js, #policy-player) in a dialog. Without the script, the player stays here. -->
+      <section id="application" aria-label="Application">
       <section class="section section--band" id="policy" aria-labelledby="policy-title">
         <div class="container container--wide">
           <header class="section-header">
-            <p class="kicker">03 · Post-training with Grana</p>
-            <h2 id="policy-title">Policy learning with Grana progress estimates.</h2>
-            <p class="lede">Grana turns recorded robot attempts into feedback for learning better policies. Changes in predicted progress provide rewards for offline RL and help imitation learning emphasize actions that move the task forward.</p>
+            <p class="kicker">04.1 · Application</p>
+            <h2 id="policy-title">Train-time RL.</h2>
+            <p class="lede">Grana turns changes in predicted progress into learning signals for real robot policies. Its zero-shot rewards improve offline RL on Star insertion and Tube transfer; task-adapted rewards also improve long-horizon assembly through progress-weighted behavioral cloning.</p>
+            <p class="lede pc-note pc-note--finding">Across four reward sources, <a href="#acc-unseen">lower held-out RMSE corresponds to higher or tied policy success</a> on both offline-RL tasks.</p>
           </header>
         </div>
         <div class="band-dark policy-band pt-band">
@@ -564,9 +568,9 @@
       <section class="section section--band" id="mpc" aria-labelledby="mpc-title">
         <div class="container container--wide">
           <header class="section-header">
-            <p class="kicker">04 · Planning with Grana</p>
-            <h2 id="mpc-title">Model predictive control with Grana.</h2>
-            <p class="lede">Grana decides when to switch MPC on and off and scores batches of four futures predicted by GR00T-WAM. When predicted progress trends downward for all four candidates, it rejects the batch and requests new futures.</p>
+            <p class="kicker">04.2 · Application · Test-time MPC</p>
+            <h2 id="mpc-title">Improve execution without updating the policy.</h2>
+            <p class="lede">A policy can get stuck or move on before finishing a step. Grana uses progress estimates to decide when planning is needed and to select among imagined futures. On tractor assembly, Grana-guided MPC improves success from <strong>2/10 to 9/10</strong> across ten initial layouts, without updating the policy.</p>
           </header>
         </div>
         <div class="band-dark policy-band mpc-band">
@@ -575,29 +579,21 @@
             <details class="disclosure pc-fold pc-fold--dark">
               <summary>Action selection and tractor results · Appendix E</summary>
               <div class="disclosure-body">
+                <p>Grana decides when to switch MPC on and off. While MPC is on, it scores batches of four futures predicted by GR00T-WAM. When predicted progress trends downward for all four candidates, it rejects the batch and requests new futures.</p>
                 <p>From an accepted batch, the robot executes the candidate with the highest final predicted whole-task progress, composed from the selected subtask and its local progress. It then replans from the new observation.</p>
-                <p>In tractor assembly, GR00T-WAM samples four action chunks per round, each with a predicted 1.6 s video. A Grana variant with a Qwen3.5-0.8B backbone scores the futures. With the same GR00T-WAM policy run from 10 different initial layouts, success rises from 2/10 without MPC to 9/10 with MPC, without any policy update. See <a href="assets/paper/reward_Grana_arxiv_v1.pdf?v=ae055513ada4#page=23">Appendix E and Figure 9</a>.</p>
+                <p>In tractor assembly, GR00T-WAM samples four action chunks per round, each with a predicted 1.6 s video. A Grana variant with a Qwen3.5-0.8B backbone, adapted to this task, scores the futures. With the same GR00T-WAM policy run from 10 different initial layouts, success rises from 2/10 without MPC to 9/10 with MPC, without any policy update. See <a href="assets/paper/reward_Grana_arxiv_v1.pdf?v=ae055513ada4#page=23">Appendix E and Figure 9</a>.</p>
               </div>
             </details>
           </div>
         </div>
       </section>
 
-      <section class="section" id="tasks" aria-labelledby="tasks-title">
-        <div class="container container--wide">
-          <header class="section-header">
-            <p class="kicker">05 · Pretraining task examples</p>
-            <h2 id="tasks-title">200 pretraining tasks; 50 held-out evaluation tasks.</h2>
-            <p class="lede">Examples from the mostly short manipulation tasks used for pretraining, with subtask descriptions and action-quality annotations. The long assembly tasks and the two offline-RL tasks are excluded from pretraining.</p>
-          </header>
-          <div class="gallery" id="task-gallery" data-tasks></div>
-        </div>
       </section>
 
       <section class="section" id="bibtex" aria-labelledby="bibtex-title">
         <div class="container">
           <header class="section-header">
-            <p class="kicker">06 · BibTeX</p>
+            <p class="kicker">05 · Citation</p>
             <h2 id="bibtex-title">Citation.</h2>
           </header>
           <div class="bibtex-block bibtex">

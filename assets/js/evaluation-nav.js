@@ -4,31 +4,16 @@
  */
 (() => {
   function init() {
-    const groups = [...document.querySelectorAll('.evaluation-nav')].map(nav => {
-      const links = [...nav.querySelectorAll('a[href^="#"]')];
-      const targets = links.map(link => targetOf(link.hash));
-      const scroller = nav.querySelector('.evaluation-nav-links');
-      return { nav, links, targets, scroller, current: -1 };
-    }).filter(group => group.targets.length && group.targets.every(Boolean));
-    if (!groups.length) return;
-
-    const topbarQuery = window.matchMedia('(max-width: 768px), (max-height: 600px)');
-    const reduceQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const readerQuery = window.matchMedia('(min-width: 1100px) and (min-height: 700px)');
-    const readers = groups.filter(group => group.nav.classList.contains('evaluation-nav--reader')).map(group => {
-      const workspace = group.nav.closest('.evaluation-workspace');
-      const reader = workspace?.querySelector('.evaluation-reader');
-      const panels = reader ? [...reader.querySelectorAll('[data-evaluation-panel]')] : [];
-      return { group, workspace, reader, panels, selectedPanel: panels[0], active: false };
-    }).filter(state => state.reader && state.panels.length);
-    readers.forEach(state => {
-      state.selectedPanel = panelOf(state, targetOf(location.hash)) || state.selectedPanel;
-    });
-    groups.forEach(group => {
-      group.readerState = readers.find(state => state.group === group || state.reader.contains(group.nav));
-    });
-    let frame = 0;
-    let hashFrame = 0;
+    const topic = document.getElementById('acc-accuracy');
+    const nav = topic?.querySelector('.evaluation-study-links');
+    if (!nav) return;
+    const reader = topic.querySelector('.evaluation-study-reader');
+    const sideTopics = window.matchMedia('(min-width: 1100px)');
+    const tabs = [...nav.querySelectorAll('a[href^="#"]')];
+    const panels = tabs.map(tab => targetOf(tab.hash));
+    if (!tabs.length || panels.some(panel => !panel?.matches('.evaluation-study') || !topic.contains(panel))) return;
+    let current = 0;
+    let scrollFrame = 0;
 
     function targetOf(hash) {
       if (!hash || hash === '#') return null;
@@ -36,55 +21,103 @@
       catch (_) { return null; }
     }
 
-    function panelOf(state, target) {
-      if (!target) return null;
-      if (target === state.reader.querySelector('.inference-context')) return state.panels[0];
-      return state.panels.find(panel => panel === target || panel.contains(target));
-    }
-
-    function markReader(state) {
-      const { group, selectedPanel } = state;
-      group.links.forEach((link, index) => {
-        if (panelOf(state, group.targets[index]) === selectedPanel) link.setAttribute('aria-current', 'location');
-        else link.removeAttribute('aria-current');
-      });
-    }
-
-    function selectPanel(state, panel, reset = false) {
-      if (!panel) return;
-      state.selectedPanel = panel;
-      if (!state.active) return;
-      state.panels.forEach(item => {
-        const hide = item !== panel;
-        if (hide && !item.hidden) item.querySelectorAll('video').forEach(video => video.pause());
-        item.hidden = hide;
-      });
-      if (reset) state.reader.scrollTop = 0;
-      markReader(state);
-      schedule();
-    }
-
-    function setReaderMode() {
-      readers.forEach(state => {
-        const active = readerQuery.matches;
-        if (active === state.active) return;
-        state.active = active;
-        state.workspace.classList.toggle('is-reader', active);
-        if (active) selectPanel(state, state.selectedPanel, true);
-        else {
-          state.panels.forEach(panel => { panel.hidden = false; });
-          state.group.current = -1;
-        }
-      });
-      schedule();
+    function indexOf(target) {
+      return target ? panels.findIndex(panel => panel === target || panel.contains(target)) : -1;
     }
 
     function openDetails(target) {
       for (let details = target.closest('details'); details; details = details.parentElement?.closest('details')) details.open = true;
     }
 
-    /* Let normal fragment links work even when their target lives in another
-       reader panel. Menu clicks keep the page in place and restart the reader. */
+    // A study's own fragment lands above the tabs, including during app.js's
+    // initial layout stabilization. Descendant fragments keep their own target.
+    function updateLanding() {
+      const contentTop = reader ? reader.getBoundingClientRect().top + (parseFloat(getComputedStyle(reader).paddingTop) || 0) : panels[current].getBoundingClientRect().top;
+      const offset = Math.max(0, contentTop - topic.getBoundingClientRect().top);
+      topic.style.setProperty('--evaluation-study-offset', `${offset}px`);
+      nav.setAttribute('aria-orientation', sideTopics.matches ? 'vertical' : 'horizontal');
+    }
+
+    function revealTab(tab) {
+      const box = nav.getBoundingClientRect();
+      const rect = tab.getBoundingClientRect();
+      if (rect.left < box.left) nav.scrollLeft -= box.left - rect.left;
+      else if (rect.right > box.right) nav.scrollLeft += rect.right - box.right;
+    }
+
+    function select(index, focus = false) {
+      current = index;
+      tabs.forEach((tab, i) => {
+        tab.setAttribute('aria-selected', String(i === index));
+        tab.tabIndex = i === index ? 0 : -1;
+        panels[i].hidden = i !== index;
+      });
+      if (reader) reader.scrollTop = 0;
+      updateLanding();
+      revealTab(tabs[index]);
+      if (focus) tabs[index].focus({ preventScroll: true });
+    }
+
+    function keepTabsVisible() {
+      const rect = nav.getBoundingClientRect();
+      const top = (parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0) + 8;
+      if (rect.top < top || rect.bottom > window.innerHeight - 8) {
+        topic.scrollIntoView({ block: 'start', behavior: 'instant' });
+      }
+    }
+
+    function activate(index, focus = false) {
+      cancelAnimationFrame(scrollFrame);
+      select(index, focus);
+      if (location.hash !== tabs[index].hash) history.pushState(null, '', tabs[index].hash);
+      keepTabsVisible();
+    }
+
+    function followHash(scroll = true) {
+      cancelAnimationFrame(scrollFrame);
+      const target = targetOf(location.hash);
+      const index = indexOf(target);
+      if (index < 0) {
+        if (!location.hash || target === topic) select(0);
+        return;
+      }
+      select(index);
+      openDetails(target);
+      if (scroll) scrollFrame = requestAnimationFrame(() => {
+        (target === panels[index] ? topic : target).scrollIntoView({ block: 'start', behavior: 'instant' });
+      });
+    }
+
+    nav.setAttribute('role', 'tablist');
+    nav.setAttribute('aria-orientation', 'horizontal');
+    tabs.forEach((tab, index) => {
+      if (!tab.id) tab.id = `${panels[index].id}-tab`;
+      tab.setAttribute('role', 'tab');
+      tab.setAttribute('aria-controls', panels[index].id);
+      tab.removeAttribute('aria-current');
+      panels[index].setAttribute('role', 'tabpanel');
+      panels[index].setAttribute('aria-labelledby', tab.id);
+      panels[index].tabIndex = 0;
+    });
+    topic.classList.add('is-study-switcher');
+    select(Math.max(0, indexOf(targetOf(location.hash))));
+
+    nav.addEventListener('keydown', event => {
+      const index = tabs.indexOf(event.target);
+      if (index < 0 || event.altKey || event.ctrlKey || event.metaKey) return;
+      let next;
+      if (event.key === 'ArrowRight' || (sideTopics.matches && event.key === 'ArrowDown')) next = (index + 1) % tabs.length;
+      else if (event.key === 'ArrowLeft' || (sideTopics.matches && event.key === 'ArrowUp')) next = (index + tabs.length - 1) % tabs.length;
+      else if (event.key === 'Home') next = 0;
+      else if (event.key === 'End') next = tabs.length - 1;
+      else if (event.key === ' ') next = index;
+      else return;
+      event.preventDefault();
+      activate(next, true);
+    });
+
+    // Reveal a study before the browser or another script scrolls to any of
+    // its fragments. Ordinary modified clicks retain native link behavior.
     document.addEventListener('click', event => {
       if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       const link = event.target.closest('a[href]');
@@ -92,113 +125,27 @@
       const url = new URL(link.href, location.href);
       if (url.origin !== location.origin || url.pathname !== location.pathname || url.search !== location.search) return;
       const target = targetOf(url.hash);
-      const state = readers.find(item => panelOf(item, target));
-      if (!state) return;
-      const panel = panelOf(state, target);
-      if (!state.active) { state.selectedPanel = panel; return; }
-      const menuClick = state.group.nav.contains(link);
-      const left = window.scrollX;
-      const top = window.scrollY;
-      selectPanel(state, panel, menuClick);
-      openDetails(target);
-      if (!menuClick) return;
-      event.preventDefault();
-      if (location.hash !== url.hash) history.pushState(null, '', url.hash);
-      window.scrollTo({ left, top, behavior: 'instant' });
+      const index = indexOf(target);
+      if (index < 0) return;
+      if (target === panels[index]) {
+        event.preventDefault();
+        activate(index, nav.contains(link));
+      } else {
+        select(index);
+        openDetails(target);
+      }
     }, true);
 
-    function followHash() {
-      cancelAnimationFrame(hashFrame);
-      const target = targetOf(location.hash);
-      const state = readers.find(item => panelOf(item, target));
-      if (!state) return;
-      const panel = panelOf(state, target);
-      state.selectedPanel = panel;
-      if (!state.active) return;
-      selectPanel(state, panel, true);
-      openDetails(target);
-      hashFrame = requestAnimationFrame(() => target.scrollIntoView({ block: 'start', behavior: 'instant' }));
-    }
-
-    function pinnedTop() {
-      const bar = document.querySelector('.navbar');
-      if (!bar || !topbarQuery.matches || !bar.classList.contains('scrolled')) return 0;
-      return bar.getBoundingClientRect().height;
-    }
-
-    function landing(target) {
-      const pad = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
-      const margin = parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
-      return pad + margin;
-    }
-
-    function updateFades(group) {
-      const s = group.scroller;
-      if (!s) return;
-      const max = s.scrollWidth - s.clientWidth;
-      s.classList.toggle('fade-l', max > 1 && s.scrollLeft > 2);
-      s.classList.toggle('fade-r', max > 1 && s.scrollLeft < max - 2);
-    }
-
-    function reveal(group, link) {
-      const s = group.scroller;
-      if (!s || s.scrollWidth <= s.clientWidth + 1) return;
-      const box = s.getBoundingClientRect();
-      const r = link.getBoundingClientRect();
-      const delta = (r.left + r.width / 2) - (box.left + box.width / 2);
-      const left = Math.max(0, Math.min(s.scrollLeft + delta, s.scrollWidth - s.clientWidth));
-      if (Math.abs(left - s.scrollLeft) < 1) return;
-      s.scrollTo({ left, behavior: reduceQuery.matches ? 'auto' : 'smooth' });
-    }
-
-    /* Stacked layouts and the supervision section retain the original scroll
-       navigation, including the sideways overflow hints on narrower screens. */
-    function update() {
-      frame = 0;
-      const headerHeight = pinnedTop();
-      groups.forEach(group => {
-        const { nav, links, targets, readerState } = group;
-        if (readerState?.active && group === readerState.group) return;
-        if (!nav.getClientRects().length) return;
-        const visibleTop = readerState?.active ? Math.max(headerHeight, readerState.reader.getBoundingClientRect().top) : headerHeight;
-        const probe = visibleTop + nav.getBoundingClientRect().height + 32;
-        let selected = 0;
-        targets.forEach((target, index) => {
-          if (target.getBoundingClientRect().top <= Math.max(probe, landing(target) + 12)) selected = index;
-        });
-        links.forEach((link, index) => {
-          if (index === selected) link.setAttribute('aria-current', 'location');
-          else link.removeAttribute('aria-current');
-        });
-        if (selected !== group.current) {
-          group.current = selected;
-          reveal(group, links[selected]);
-        }
-        updateFades(group);
-      });
-    }
-
-    function schedule() {
-      if (!frame) frame = requestAnimationFrame(update);
-    }
-
-    window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', () => { groups.forEach(group => { group.current = -1; }); schedule(); });
-    window.addEventListener('hashchange', () => { followHash(); schedule(); });
-    window.addEventListener('popstate', followHash);
-    window.addEventListener('load', schedule, { once: true });
-    readerQuery.addEventListener('change', setReaderMode);
-    readers.forEach(state => state.reader.addEventListener('scroll', schedule, { passive: true }));
-    groups.forEach(group => {
-      group.nav.closest('details')?.addEventListener('toggle', () => { group.current = -1; schedule(); });
-      group.scroller?.addEventListener('scroll', () => updateFades(group), { passive: true });
-    });
-    setReaderMode();
-    if (location.hash) followHash();
-    update();
+    // Capture runs before app.js's existing fragment listener. Initializing
+    // during deferred execution also precedes its DOMContentLoaded scroll.
+    window.addEventListener('hashchange', () => followHash(), true);
+    window.addEventListener('popstate', () => followHash(), true);
+    document.addEventListener('DOMContentLoaded', () => followHash(false), { capture: true, once: true });
+    window.addEventListener('resize', updateLanding, { passive: true });
+    if ('ResizeObserver' in window) new ResizeObserver(updateLanding).observe(topic);
+    followHash(false);
   }
 
-  // Deferred player scripts create fragment targets before DOMContentLoaded.
-  if (document.readyState !== 'complete') document.addEventListener('DOMContentLoaded', init, { once: true });
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { capture: true, once: true });
   else init();
 })();

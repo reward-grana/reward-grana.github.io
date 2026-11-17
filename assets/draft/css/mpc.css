@@ -257,7 +257,7 @@
 }
 .mpc-gcard:hover { border-color: rgba(255, 255, 255, 0.28); transform: translateY(-2px); box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45); }
 .mpc-gcard:focus-within { border-color: rgba(118, 218, 140, 0.6); }
-.mpc-gcard-title { margin: 0.1rem 0.15rem 0; font: 600 1.125rem/1.3 Inter, system-ui, sans-serif; color: #f2f4f7; letter-spacing: -0.005em; }
+.mpc-gcard-title { margin: 0.1rem 0.15rem 0; font: 600 1.125rem/1.3 Inter, system-ui, sans-serif; color: #f2f4f7; letter-spacing: -0.005em; text-align: center; text-wrap: balance; }
 .mpc-pair { display: grid; gap: 0.7rem; }
 .mpc-half { margin: 0; display: grid; gap: 0.4rem; }
 .mpc-half-media {

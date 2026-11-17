@@ -20,7 +20,7 @@
     return node;
   }
 
-  /* Pretraining gallery. A tile whose instruction differs from its caption gets a
+  /* Training and held-out task examples. A tile whose instruction differs from its caption gets a
      button that reveals the full instruction on hover, keyboard focus or tap. */
   function renderTasks() {
     const host = $("#task-gallery");
@@ -43,7 +43,9 @@
       } else {
         media = el("div", { class: "tile-media" }, img);
       }
-      const tile = el("figure", { class: "tile" }, media, caption);
+      const heldOut = it.split === "held-out";
+      if (heldOut) media.append(el("span", { class: "tile-split", text: "Held-out" }));
+      const tile = el("figure", { class: `tile${heldOut ? " tile--held-out" : ""}`, "data-split": it.split }, media, caption);
       if (hasMore) {
         media.addEventListener("click", () => {
           const open = !tile.classList.contains("is-open");

@@ -121,18 +121,84 @@
     var navLinks = nav ? nav.querySelector(".nav-links") : null;
     var darks = $$(".band-dark, [data-band='dark']");
     var railItems = nav ? $$(".nav-link, .nav-foot, .nav-brand", nav) : [];
+    var groups = navLinks ? $$(".nav-group", navLinks).map(function (el) {
+      return { el: el, label: el.querySelector(".nav-group-label"), children: [] };
+    }) : [];
     var spy = [];
-    if (nav) {
-      $$(".nav-link[href^='#']", nav).forEach(function (a) {
-        var id = a.getAttribute("data-spy") || decodeURIComponent(a.hash.slice(1));
-        var el = id ? doc.getElementById(id) : null;
-        if (el) spy.push({ a: a, el: el });
+    if (navLinks) {
+      $$(".nav-link[href^='#']", navLinks).forEach(function (a) {
+        var el = targetOf(a.getAttribute("data-spy") ? "#" + a.getAttribute("data-spy") : a.hash);
+        var group = null;
+        groups.forEach(function (item) { if (item.el.contains(a)) group = item; });
+        if (!el) return;
+        var entry = { a: a, el: el, group: group };
+        spy.push(entry);
+        if (group && a !== group.label) group.children.push(entry);
       });
+    }
+    var context = null;
+    var contextGroup = null;
+    var contextCopies = [];
+    if (nav && groups.length) {
+      context = doc.createElement("div");
+      context.className = "nav-context";
+      context.setAttribute("role", "group");
+      context.hidden = true;
+      nav.appendChild(context);
     }
     var current = null;
     var ticking = false;
 
+    function targetOf(hash) {
+      try { return hash ? doc.getElementById(decodeURIComponent(hash.slice(1))) : null; }
+      catch (e) { return null; }
+    }
     function docTop(el) { return el.getBoundingClientRect().top + window.pageYOffset; }
+
+    /* Keep fragment targets below both phone rows, including when a click adds
+       the contextual row before the browser performs its native anchor jump. */
+    function syncOffset() {
+      if (!nav) return;
+      if (!topbarMQ.matches) { root.style.removeProperty("--scroll-offset"); return; }
+      var offset = Math.ceil(nav.getBoundingClientRect().height + 8) + "px";
+      if (root.style.getPropertyValue("--scroll-offset") !== offset) root.style.setProperty("--scroll-offset", offset);
+    }
+
+    function setContext(group, active) {
+      if (!context) return;
+      var show = topbarMQ.matches && group && group.children.length;
+      context.hidden = !show;
+      if (show && contextGroup !== group) {
+        context.textContent = "";
+        contextCopies = group.children.map(function (entry) {
+          var copy = entry.a.cloneNode(true);
+          copy.removeAttribute("id");
+          $$("[id]", copy).forEach(function (el) { el.removeAttribute("id"); });
+          copy.removeAttribute("aria-current");
+          copy.classList.remove("active", "on-dark");
+          context.appendChild(copy);
+          return { a: copy, entry: entry };
+        });
+        contextGroup = group;
+        context.setAttribute("aria-label", (group.label ? group.label.textContent.trim() : "Section") + " subsections");
+        context.scrollLeft = 0;
+      }
+      contextCopies.forEach(function (copy) {
+        var on = !!show && copy.entry === active;
+        copy.a.classList.toggle("active", on);
+        if (on) copy.a.setAttribute("aria-current", "location");
+        else copy.a.removeAttribute("aria-current");
+      });
+      syncOffset();
+    }
+
+    function groupForTarget(target) {
+      var group = null;
+      if (target) spy.forEach(function (entry) {
+        if (entry.el === target || entry.el.contains(target)) group = entry.group;
+      });
+      return group;
+    }
 
     function overDark(el) {
       var r = el.getBoundingClientRect();
@@ -145,18 +211,35 @@
     }
 
     function updateFades() {
-      if (!navLinks) return;
-      var canScroll = topbarMQ.matches && navLinks.scrollWidth > navLinks.clientWidth + 1;
-      navLinks.classList.toggle("fade-l", canScroll && navLinks.scrollLeft > 2);
-      navLinks.classList.toggle("fade-r", canScroll && navLinks.scrollLeft + navLinks.clientWidth < navLinks.scrollWidth - 2);
+      [navLinks, context].forEach(function (scroller) {
+        if (!scroller) return;
+        var canScroll = topbarMQ.matches && !scroller.hidden && scroller.scrollWidth > scroller.clientWidth + 1;
+        scroller.classList.toggle("fade-l", canScroll && scroller.scrollLeft > 2);
+        scroller.classList.toggle("fade-r", canScroll && scroller.scrollLeft + scroller.clientWidth < scroller.scrollWidth - 2);
+      });
     }
 
-    function centerActive(a) {
-      if (!navLinks || !topbarMQ.matches || navLinks.scrollWidth <= navLinks.clientWidth) return;
-      var left = a.offsetLeft - navLinks.offsetLeft - (navLinks.clientWidth - a.offsetWidth) / 2;
-      left = Math.max(0, Math.min(left, navLinks.scrollWidth - navLinks.clientWidth));
-      if (navLinks.scrollTo) navLinks.scrollTo({ left: left, behavior: reduceMQ.matches ? "auto" : "smooth" });
-      else navLinks.scrollLeft = left;
+    function centerLink(scroller, a) {
+      if (!scroller || !a || scroller.scrollWidth <= scroller.clientWidth) return;
+      var box = scroller.getBoundingClientRect();
+      var item = a.getBoundingClientRect();
+      var left = scroller.scrollLeft + item.left - box.left - (box.width - item.width) / 2;
+      left = Math.max(0, Math.min(left, scroller.scrollWidth - scroller.clientWidth));
+      if (scroller.scrollTo) scroller.scrollTo({ left: left, behavior: reduceMQ.matches ? "auto" : "smooth" });
+      else scroller.scrollLeft = left;
+    }
+
+    function revealActive(active) {
+      if (!navLinks) return;
+      if (topbarMQ.matches) {
+        centerLink(navLinks, active.group ? active.group.label : active.a);
+        contextCopies.forEach(function (copy) { if (copy.entry === active) centerLink(context, copy.a); });
+      } else if (navLinks.scrollHeight > navLinks.clientHeight) {
+        var box = navLinks.getBoundingClientRect();
+        var item = active.a.getBoundingClientRect();
+        if (item.top < box.top) navLinks.scrollTop += item.top - box.top;
+        else if (item.bottom > box.bottom) navLinks.scrollTop += item.bottom - box.bottom;
+      }
     }
 
     function update() {
@@ -192,19 +275,30 @@
       if (spy.length) {
         var line = y + vh * 0.32;
         var active = spy[0];
-        for (var j = 0; j < spy.length; j++) if (docTop(spy[j].el) <= line) active = spy[j];
+        var lastTop = -Infinity;
+        for (var j = 0; j < spy.length; j++) {
+          if (!spy[j].el.getClientRects().length) continue;
+          var top = docTop(spy[j].el);
+          if (top <= line && top >= lastTop) { active = spy[j]; lastTop = top; }
+        }
         if (max > 0 && y >= max - 2) active = spy[spy.length - 1];
-        if (active !== current) {
+        if (active.group && active.a === active.group.label && active.group.children.length) active = active.group.children[0];
+        var changed = active !== current;
+        if (changed) {
           current = active;
           spy.forEach(function (s) {
             var on = s === active;
-            s.a.classList.toggle("active", on);
-            if (on) s.a.setAttribute("aria-current", "true");
+            var parent = s.group === active.group && s.group && s.a === s.group.label;
+            s.a.classList.toggle("active", !!(on || parent));
+            if (on && !(topbarMQ.matches && active.group)) s.a.setAttribute("aria-current", "location");
             else s.a.removeAttribute("aria-current");
           });
-          centerActive(active.a);
+          groups.forEach(function (group) { group.el.classList.toggle("active-group", group === active.group); });
         }
+        setContext(active.group, active);
+        if (changed) revealActive(active);
       }
+      syncOffset();
       updateFades();
     }
 
@@ -214,11 +308,30 @@
     window.addEventListener("scroll", request, { passive: true });
     window.addEventListener("resize", request);
     window.addEventListener("load", request);
+    function prepareFragment() {
+      if (topbarMQ.matches) setContext(groupForTarget(targetOf(window.location.hash)), current);
+      request();
+    }
+    window.addEventListener("hashchange", prepareFragment);
+    window.addEventListener("popstate", prepareFragment);
+    doc.addEventListener("DOMContentLoaded", prepareFragment, { once: true });
+    doc.addEventListener("click", function (event) {
+      if (!topbarMQ.matches || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      var link = event.target.closest("a[href]");
+      if (!link || link.hasAttribute("download") || (link.target && link.target !== "_self")) return;
+      var url;
+      try { url = new URL(link.href, window.location.href); } catch (e) { return; }
+      if (url.origin !== location.origin || url.pathname !== location.pathname || url.search !== location.search || !url.hash) return;
+      setContext(groupForTarget(targetOf(url.hash)), current);
+    }, true);
     /* Rail geometry is only final once its slide-in ends: re-check dark overlap then. */
     if (nav) nav.addEventListener("transitionend", function (e) { if (e.target === nav) request(); });
     if (nav) { nav.addEventListener("focusin", request); nav.addEventListener("focusout", request); }
-    if (navLinks) navLinks.addEventListener("scroll", updateFades, { passive: true });
+    if (navLinks) navLinks.addEventListener("scroll", function () { updateFades(); request(); }, { passive: true });
+    if (context) context.addEventListener("scroll", updateFades, { passive: true });
+    if (nav && window.ResizeObserver) new ResizeObserver(function () { syncOffset(); request(); }).observe(nav);
     onMQChange(topbarMQ, function () { current = null; request(); });
+    prepareFragment();
     update();
   }
 

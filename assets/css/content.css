@@ -17,7 +17,7 @@ main { display: block; }
 .overview-film { max-width: 60rem; margin: 0 auto; }
 .overview-film .media-float video { object-fit: contain; background: #000; }
 .overview-film .cap-title { font-weight: 600; }
-.abstract { text-align: center; max-width: 44rem; }
+.abstract { text-align: left; max-width: none; }
 .supplement-intro { color: var(--muted); }
 .explore-links {
   display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem 1.6rem;
@@ -49,9 +49,7 @@ main { display: block; }
 }
 .callout--inline span { min-width: 0; }
 
-/* Short introductions and captions share the width of their media. Keep the
-   prose limit for long-form text inside the overview and method details. */
-.container--wide > .section-header > .lede,
+/* Captions and introductions follow the full width of their content region. */
 .container--wide > .figure > figcaption,
 .container--wide > .callout--inline { max-width: none; }
 
@@ -235,7 +233,7 @@ main { display: block; }
    -------------------------------------------------------------------------- */
 .subsection { margin-top: clamp(2.5rem, 5vw, 3.75rem); }
 .inference-context > .subsection:first-child { margin-top: 1.75rem; }
-.subsection-head { max-width: var(--max-prose); margin: 0 0 1.25rem; }
+.subsection-head { max-width: none; margin: 0 0 1.25rem; text-align: left; }
 .subsection-head h3 { font-size: clamp(1.4rem, 2.2vw, 1.8rem); letter-spacing: -0.02em; margin: 0 0 0.45rem; }
 .subsection-head p { color: var(--muted); line-height: 1.6; }
 .subsection-head p + p { margin-top: 0.3rem; }
@@ -422,7 +420,7 @@ main { display: block; }
 .disclosure--section:target > summary { color: var(--accent-text); }
 .disclosure--section > .details-body { padding: 0.2rem 0 2.5rem; color: var(--text-2); }
 .details-body > p { max-width: var(--max-prose); color: var(--muted); line-height: 1.7; }
-.policy-setup-body { display: grid; gap: 1rem; max-width: 52rem; }
+.policy-setup-body { display: grid; gap: 1rem; max-width: none; }
 .policy-setup-body > p { margin: 0; }
 
 .disclosure--card > summary { font-size: 0.95rem; }
@@ -474,6 +472,8 @@ main { display: block; }
 /* --------------------------------------------------------------------------
    Pretraining task gallery
    -------------------------------------------------------------------------- */
+#tasks .lede + .lede { margin-top: 0.75rem; }
+#task-gallery .tile > figcaption { text-align: center; text-wrap: balance; }
 .gallery { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1.35rem 0.9rem; }
 .tile { margin: 0; min-width: 0; }
 .tile-media {
@@ -526,6 +526,14 @@ button.tile-media { cursor: pointer; }
 .tile-media:focus-visible .tile-instruction,
 .tile.is-open .tile-instruction { opacity: 1; visibility: visible; }
 .tile figcaption { margin-top: 0.5rem; font-size: 0.85rem; line-height: 1.4; color: var(--text-2); }
+.tile--held-out .tile-media { border-color: var(--accent); outline: 2px solid var(--accent); outline-offset: 1px; }
+.tile--held-out figcaption { color: var(--accent-text); }
+.tile-split {
+  position: absolute; top: 0.4rem; left: 0.4rem; z-index: 2;
+  padding: 0.2rem 0.4rem; border-radius: 4px;
+  background: var(--accent-text); color: #fff; font: 600 0.7rem/1.35 var(--font-sans);
+  pointer-events: none;
+}
 .gallery-hint { margin-top: 1.1rem; font-family: var(--font-sans); font-size: var(--fs-small); }
 
 /* --------------------------------------------------------------------------

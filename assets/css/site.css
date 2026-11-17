@@ -147,11 +147,11 @@
   --fs-nav: 0.98rem;                                 /* compact alternative: 0.9rem */
 
   /* Layout */
-  --max: 880px;               /* text container (816px content)  */
+  --max: 1100px;              /* shared content container */
   --max-wide: 1100px;         /* wide container (1036px content) */
-  --max-intro: 64rem;         /* title block */
-  --max-prose: 46rem;         /* abstract, lede, body copy */
-  --max-code: 52rem;          /* BibTeX */
+  --max-intro: var(--max-wide); /* title block follows the section grid */
+  --max-prose: none;          /* body copy fills its containing layout */
+  --max-code: none;           /* BibTeX follows the section grid */
   --row-max: 61.5rem;         /* 2-up / 3-up video rows (984px) */
   --gutter: 2rem;             /* 1.25rem on phones */
   --rail-w: 200px;
@@ -160,7 +160,7 @@
   /* Rhythm (compact default; see [data-density="airy"]) */
   --section-pad: clamp(2.25rem, 4vw, 3.5rem);
   --head-pt: 1rem;
-  --head-mb: 1.25rem;
+  --head-mb: clamp(1.75rem, 3vw, 2.5rem);
   --subhead-mt: 1.75rem;
 
   /* Radii */
@@ -380,13 +380,13 @@ sub, sup { line-height: 0; }
 
 .nav-links {
   display: flex; flex-direction: column; align-items: stretch;
-  width: 100%;
+  width: 100%; min-height: 0;
   border-left: 1px solid var(--line);
 }
 .nav-link {
   position: relative;
   display: block;
-  width: fit-content;
+  width: fit-content; max-width: 100%;
   padding: 0.46rem 0 0.46rem 0.95rem;
   margin-left: -1px;
   border-left: 2px solid transparent;
@@ -394,10 +394,14 @@ sub, sup { line-height: 0; }
   font-weight: 500;
   line-height: 1.65;
   color: var(--muted);
-  white-space: nowrap;
+  white-space: normal;
   transition: color var(--t-fast) ease, border-color var(--t-fast) ease, transform var(--t-fast) ease;
 }
 .nav-link:hover { color: var(--text); transform: translateX(3px); }
+.nav-group { min-width: 0; }
+.nav-children { margin: 0 0 0.35rem 1rem; border-left: 1px solid var(--line); }
+.nav-sublink { padding-top: 0.34rem; padding-bottom: 0.34rem; font-size: 0.88rem; line-height: 1.45; }
+.nav-context { display: none; }
 .nav-link.active {
   color: var(--accent-text);               /* 5.2:1 on cream; the bar stays --accent */
   font-weight: 600;
@@ -432,20 +436,19 @@ sub, sup { line-height: 0; }
 @media (min-width: 769px) and (min-height: 601px) {
   /* Rail mode: the rail starts with its first link (the mark stays in the phone top bar) */
   .navbar > .nav-brand { display: none; }
+  .nav-links {
+    overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
+    scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent;
+  }
 }
 
 /* Static rail gutter (769px to 1435px, rail mode): below 1436px the wide
    container would run under the 200px rail, so main and the footer keep a
    permanent left gutter. It never changes on scroll, so docking causes no
    reflow, anchors land where they should and nothing shifts sideways.
-   The overview (title block) stays centred on the viewport, under the film,
-   inside symmetric rail-width margins; dark bands still run full-bleed. */
+   The overview shares the section grid; dark bands still run full-bleed. */
 @media (min-width: 769px) and (max-width: 1435px) and (min-height: 601px) {
   main, body > .footer { --rail-pad: var(--rail-w); padding-left: var(--rail-w); }
-  main > .section-overview { margin-left: calc(-1 * var(--rail-w)); }
-  main > .section-overview > .container {
-    max-width: min(var(--max-intro), calc(100% - 2 * var(--rail-w) + 2 * var(--gutter)));
-  }
   main .band-dark { margin-left: calc(-1 * var(--rail-w)); padding-left: var(--rail-w); }
 }
 
@@ -593,6 +596,7 @@ sub, sup { line-height: 0; }
   margin: 0 0 var(--head-mb);
   padding-top: var(--head-pt);
   border-top: 1px solid var(--line);
+  text-align: left;
 }
 .section-header h2 {
   font-family: var(--font-serif);
@@ -601,8 +605,9 @@ sub, sup { line-height: 0; }
   line-height: 1.12;
   letter-spacing: -0.005em;
   font-optical-sizing: auto;
-  margin: 0.55rem 0 0.6rem;
-  text-wrap: balance;
+  max-width: none;
+  margin: 0.55rem 0 0.85rem;
+  text-wrap: wrap;
 }
 .kicker {
   font-family: var(--font-mono);
@@ -620,9 +625,10 @@ sub, sup { line-height: 0; }
   font-size: var(--fs-lede);
   line-height: 1.6;
   color: var(--muted);
-  max-width: var(--max-prose);
-  text-wrap: pretty;
+  max-width: none;
+  text-wrap: wrap;
 }
+.section-header > p:not(.kicker) { margin-inline: 0; }
 .section-subhead { margin-top: var(--subhead-mt); }
 .section-subhead h2 { font-size: var(--fs-h2-sub); letter-spacing: -0.02em; }
 /* A subhead that directly follows a section title sits under it without a rule */
@@ -665,7 +671,7 @@ h3, .h3 {
 }
 .page-authors {
   display: grid; gap: 0.9rem;
-  max-width: 62rem;
+  max-width: none;
   margin: 0 auto 1.6rem;
   font-size: 1.02rem;
   line-height: 1.55;
@@ -679,7 +685,7 @@ h3, .h3 {
 .author-list > li { display: inline-block; margin: 0 0.45rem 0.35rem; }
 .author-list > li, .affiliation-list > li { white-space: nowrap; }
 .author-name { white-space: nowrap; }
-.project-summary { max-width: var(--max-prose); margin: 0 auto 1.5rem; color: var(--muted); font-size: 1rem; line-height: 1.65; text-wrap: pretty; }
+.project-summary { max-width: var(--max-prose); margin: 0 0 1.5rem; color: var(--muted); font-size: 1rem; line-height: 1.65; text-align: left; text-wrap: wrap; }
 .page-authors sup { color: var(--accent-text); font-size: 0.7em; font-weight: 600; margin-left: 0.12em; line-height: 0; }
 .affiliation-list { font-size: 0.88rem; color: var(--muted); }
 .affiliation-list sup { margin-left: 0; margin-right: 0.25em; }
@@ -1151,7 +1157,7 @@ dialog.media-modal[open], div.media-modal.open { display: flex; }
 .q--warn { color: var(--q-warn); background: var(--q-warn-bg); }
 .q--bad { color: var(--q-bad); background: var(--q-bad-bg); }
 
-.bullets { margin: 0; padding: 0; list-style: none; max-width: 52rem; }
+.bullets { margin: 0; padding: 0; list-style: none; max-width: none; }
 .bullets li { position: relative; padding-left: 1.5rem; margin-bottom: 1.1rem; color: var(--muted); line-height: 1.7; }
 .bullets li:last-child { margin-bottom: 0; }
 .bullets li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 6px; height: 6px; background: var(--accent); border-radius: 1px; }
@@ -1307,7 +1313,7 @@ html.brand-ui .brand-switch { display: inline-flex; }
   .navbar {
     inset: 0 0 auto 0;
     width: 100%; height: auto;
-    flex-direction: row; align-items: center;
+    flex-direction: row; flex-wrap: wrap; align-items: center;
     padding: 0.55rem 1rem 0.5rem;
     background: rgba(247, 246, 242, 0.93);
     -webkit-backdrop-filter: blur(14px) saturate(1.2);
@@ -1319,7 +1325,7 @@ html.brand-ui .brand-switch { display: inline-flex; }
   .nav-links {
     flex-direction: row; gap: 0.95rem;
     border-left: 0;
-    overflow-x: auto; scrollbar-width: none;
+    overflow-x: auto; overflow-y: hidden; scrollbar-width: none;
     --fade-l: 0px; --fade-r: 0px;
     -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent 100%);
     mask-image: linear-gradient(90deg, transparent 0, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent 100%);
@@ -1327,18 +1333,32 @@ html.brand-ui .brand-switch { display: inline-flex; }
   .nav-links.fade-l { --fade-l: 1.75rem; }
   .nav-links.fade-r { --fade-r: 1.75rem; }
   .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links > .nav-group { display: contents; }
+  .nav-links .nav-children { display: none; }
   .nav-link, .nav-link.on-dark {
     flex: none;
     margin-left: 0; padding: 0.2rem 0 0.25rem;
     border-left: 0; border-bottom: 2px solid transparent;
-    font-size: 0.86rem; color: var(--muted); text-shadow: none;
+    font-size: 0.86rem; color: var(--muted); text-shadow: none; white-space: nowrap;
   }
   .nav-link:hover { transform: none; }
   .nav-link.active, .nav-link.on-dark.active { color: var(--accent-text); border-bottom-color: var(--accent); }
   .nav-foot { display: none; }
   .nav-brand, .nav-brand.on-dark { margin: 0 0.85rem 0 0; flex: none; color: var(--text); }
   .nav-brand span { display: none; }
-  .nav-links { flex: 1 1 auto; min-width: 0; }
+  .nav-links { flex: 1 1 0%; width: 0; min-width: 0; }
+  .nav-context:not([hidden]) {
+    display: flex; flex: 0 0 100%; align-items: center; gap: 1rem;
+    min-width: 0; max-width: 100%; overflow-x: auto; overflow-y: hidden;
+    margin-top: 0.35rem; padding-top: 0.35rem; border-top: 1px solid var(--line);
+    scrollbar-width: none; --fade-l: 0px; --fade-r: 0px;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent 100%);
+  }
+  .nav-context.fade-l { --fade-l: 1.25rem; }
+  .nav-context.fade-r { --fade-r: 1.25rem; }
+  .nav-context::-webkit-scrollbar { display: none; }
+  .nav-context .nav-sublink { max-width: none; line-height: 1.65; }
 }
 @media (max-width: 720px) {
   [data-density="airy"] { --section-pad: 3.75rem; }

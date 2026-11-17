@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 /* Grana draft · result charts (HTML + CSS; labels are text, so they stay readable on phones).
- * Every number is the paper's (Figs. 5-7 and Tables 3-5 and 9); the five-task chart reports Table 3,
+ * Every number is the paper's (Figs. 5-7 and Tables 3-5, 8-9); the five-task chart reports Table 3,
  * with 15 adaptation trajectories (D15) for learned reward models and 24-30 test trajectories per task.
  * Readability rules (the user, 2026-10-24: "I can't tell at a glance what it is"): one message per chart, at most ~6 bars,
  * plain-language labels at 16 px, the value on every bar, Grana in the accent colour with a callout, axes from 0.
@@ -21,11 +21,12 @@
       note: "All models except the official release are trained on the same 200 tasks. Paper Fig. 5(a).",
     },
     pretrain: {
-      title: "Effect of pretraining task count",
-      sub: "Grana pretrained on 15, 30 or 200 tasks, tested on the same 50 unseen tasks.",
+      title: "More pretraining tasks lower zero-shot prediction error",
+      sub: "15 → 30 → 200 training tasks reduce progress RMSE from 0.278 → 0.222 → 0.180 on the same 50 held-out tasks. Lower is better.",
       max: 0.3, fmt: 3,
       rows: [{ label: "15 tasks", v: 0.278 }, { label: "30 tasks", v: 0.222 }, { label: "200 tasks", v: 0.180, kind: "ours", callout: "−35.3 %" }],
       note: "Paper Fig. 5(b).",
+      noteHref: "assets/paper/reward_Grana_arxiv_v1.pdf?v=ae055513ada4#page=8",
     },
     longtask: {
       title: "Lower RMSE with 15 adaptation trajectories",
@@ -57,15 +58,34 @@
       note: "All five tasks are reported in paper Table 3, with 24–30 test trajectories per task. Comparison models are named beside each bar.",
     },
     composition: {
-      title: "Effect of subtask composition and Grana pretraining",
-      sub: "Zero-shot progress RMSE on car assembly with Qwen3.5-4B. Values are in subtask units; lower is better.",
+      title: "Direct prediction vs. + Composition",
+      sub: "Zero-shot car assembly with the same model within each pair. RMSE in subtask units; lower is better.",
       max: 5, fmt: 3,
-      rows: [
-        { label: "Direct prediction", meta: "predict whole-task progress directly", v: 4.541 },
-        { label: "+ Composition", meta: "select the subtask, predict its progress", v: 3.068, kind: "best", callout: "−32 %" },
-        { label: "+ Grana pretraining", meta: "same procedure with Grana-pretrained weights", v: 1.380, kind: "ours", callout: "−55 %" },
+      groups: [
+        { title: "Qwen3.5-4B", meta: "base model", rows: [
+          { label: "Direct prediction", v: 4.541 },
+          { label: "+ Composition", v: 3.068, kind: "ours", callout: "−32.4 %" }] },
+        { title: "GPT6", rows: [
+          { label: "Direct prediction", v: 1.578 },
+          { label: "+ Composition", v: 0.524, kind: "ours", callout: "−66.8 %" }] },
       ],
-      note: "With GPT6, composition reduces RMSE from 1.578 to 0.524. Paper Table 9.",
+      note: "Paper Table 9 · zero-shot car assembly.",
+      noteHref: "assets/paper/reward_Grana_arxiv_v1.pdf?v=ae055513ada4#page=11",
+    },
+    compositionAdapted: {
+      title: "Grana: gains at matched adaptation budgets",
+      sub: "Airplane assembly. Both predictors start from base Qwen, without reward-model pretraining. RMSE in subtask units; lower is better.",
+      max: 0.5, fmt: 3,
+      groups: [
+        { title: "D15", meta: "15 adaptation trajectories", rows: [
+          { label: "Direct prediction", v: 0.462 },
+          { label: "+ Composition (Grana)", v: 0.382, kind: "ours", callout: "−17.3 %" }] },
+        { title: "D100", meta: "100 adaptation trajectories", rows: [
+          { label: "Direct prediction", v: 0.359 },
+          { label: "+ Composition (Grana)", v: 0.311, kind: "ours", callout: "−13.4 %" }] },
+      ],
+      note: "Paper Table 8 · includes automatic subtask-selection errors.",
+      noteHref: "assets/paper/reward_Grana_arxiv_v1.pdf?v=ae055513ada4#page=11",
     },
     embodiment: {
       title: "18.7 % lower RMSE than RoboMeter on Tianji",
@@ -173,7 +193,13 @@
     if (type === "bars") renderBars(fig, spec);
     if (type === "multiples") renderMultiples(fig, spec);
     if (type === "stats") renderStats(fig, spec);
-    if (spec.note) fig.append(el("p", "pc-note", spec.note));
+    if (spec.note) {
+      const note = el("p", "pc-note");
+      if (spec.noteHref) {
+        const link = el("a", null, spec.note); link.href = spec.noteHref; note.append(link);
+      } else note.textContent = spec.note;
+      fig.append(note);
+    }
   }
 
   const figs = [...document.querySelectorAll("[data-pc]")];
