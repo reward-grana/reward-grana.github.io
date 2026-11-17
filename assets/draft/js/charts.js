@@ -14,7 +14,7 @@
   const CHARTS = {
     zeroshot: {
       title: "20.7 % lower RMSE than fine-tuned RoboMeter",
-      sub: "Progress RMSE on 50 tasks held out from reward-model training. Lower is better.",
+      sub: "Progress RMSE on 50 held-out tasks, with no target-task reward labels or fine-tuning. Lower is better.",
       max: 0.3, fmt: 3,
       rows: [{ label: "RoboMeter", meta: "official release", v: 0.279, kind: "ref" }, { label: "SARM", v: 0.268 }, { label: "SARM2", v: 0.237 },
              { label: "RoboMeter", meta: "fine-tuned on our 200 tasks", v: 0.227, kind: "best" }, { label: "Grana", v: 0.180, kind: "ours", callout: "−20.7 %" }],
@@ -25,8 +25,7 @@
       sub: "15 → 30 → 200 training tasks reduce progress RMSE from 0.278 → 0.222 → 0.180 on the same 50 held-out tasks. Lower is better.",
       max: 0.3, fmt: 3,
       rows: [{ label: "15 tasks", v: 0.278 }, { label: "30 tasks", v: 0.222 }, { label: "200 tasks", v: 0.180, kind: "ours", callout: "−35.3 %" }],
-      note: "Paper Fig. 5(b).",
-      noteHref: "assets/paper/reward_Grana_arxiv_v1.pdf?v=ae055513ada4#page=8",
+      note: "Pretraining scaling behavior. Paper Fig. 5(b).",
     },
     longtask: {
       title: "Lower RMSE with 15 adaptation trajectories",
@@ -70,7 +69,6 @@
           { label: "+ Composition", v: 0.524, kind: "ours", callout: "−66.8 %" }] },
       ],
       note: "Paper Table 9 · zero-shot car assembly.",
-      noteHref: "assets/paper/reward_Grana_arxiv_v1.pdf?v=ae055513ada4#page=11",
     },
     compositionAdapted: {
       title: "Grana: gains at matched adaptation budgets",
@@ -85,7 +83,6 @@
           { label: "+ Composition (Grana)", v: 0.311, kind: "ours", callout: "−13.4 %" }] },
       ],
       note: "Paper Table 8 · includes automatic subtask-selection errors.",
-      noteHref: "assets/paper/reward_Grana_arxiv_v1.pdf?v=ae055513ada4#page=11",
     },
     embodiment: {
       title: "18.7 % lower RMSE than RoboMeter on Tianji",
@@ -194,11 +191,7 @@
     if (type === "multiples") renderMultiples(fig, spec);
     if (type === "stats") renderStats(fig, spec);
     if (spec.note) {
-      const note = el("p", "pc-note");
-      if (spec.noteHref) {
-        const link = el("a", null, spec.note); link.href = spec.noteHref; note.append(link);
-      } else note.textContent = spec.note;
-      fig.append(note);
+      fig.append(el("p", "pc-note", spec.note));
     }
   }
 

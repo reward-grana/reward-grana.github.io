@@ -155,7 +155,8 @@
   --row-max: 61.5rem;         /* 2-up / 3-up video rows (984px) */
   --gutter: 2rem;             /* 1.25rem on phones */
   --rail-w: 200px;
-  --rail-pad: 0px;            /* --rail-w where main/footer keep a static rail gutter */
+  --rail-pad: 0px;
+  --desktop-scale: 0.9;      /* scale copy and figures together, preserving their line widths */
 
   /* Rhythm (compact default; see [data-density="airy"]) */
   --section-pad: clamp(2.25rem, 4vw, 3.5rem);
@@ -433,23 +434,21 @@ sub, sup { line-height: 0; }
 .navbar.focus-reveal :focus-visible,
 .nav-link.on-dark:focus-visible { outline-color: var(--accent-dark); }
 
-@media (min-width: 769px) and (min-height: 601px) {
+@media (min-width: 1380px) and (min-height: 601px) {
   /* Rail mode: the rail starts with its first link (the mark stays in the phone top bar) */
   .navbar > .nav-brand { display: none; }
+  .navbar { zoom: var(--desktop-scale); height: auto; }
   .nav-links {
     overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
     scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent;
   }
 }
 
-/* Static rail gutter (769px to 1435px, rail mode): below 1436px the wide
-   container would run under the 200px rail, so main and the footer keep a
-   permanent left gutter. It never changes on scroll, so docking causes no
-   reflow, anchors land where they should and nothing shifts sideways.
-   The overview shares the section grid; dark bands still run full-bleed. */
-@media (min-width: 769px) and (max-width: 1435px) and (min-height: 601px) {
-  main, body > .footer { --rail-pad: var(--rail-w); padding-left: var(--rail-w); }
-  main .band-dark { margin-left: calc(-1 * var(--rail-w)); padding-left: var(--rail-w); }
+/* Keep the content centered on the whole window. A compact desktop scale
+   preserves the existing text/figure proportions and leaves room for the rail.
+   Below 1380px the navigation moves above the content instead of shifting it. */
+@media screen and (min-width: 769px) {
+  main, body > .footer { zoom: var(--desktop-scale); }
 }
 
 /* --------------------------------------------------------------------------
@@ -1165,7 +1164,7 @@ dialog.media-modal[open], div.media-modal.open { display: flex; }
 /* --------------------------------------------------------------------------
    15. Collapsible details
    -------------------------------------------------------------------------- */
-.disclosure { border-top: 1px solid var(--line); }
+.disclosure { border-top: 1px solid var(--line); scroll-margin-block: 0.75rem; }
 .disclosure:last-of-type { border-bottom: 1px solid var(--line); }
 .disclosure > summary {
   display: flex; align-items: center; gap: 0.75rem;
@@ -1308,7 +1307,7 @@ html.brand-ui .brand-switch { display: inline-flex; }
 /* Narrow or short viewports: the rail becomes a slim top bar, still hidden
    until the hero is scrolled past. Keep this query in sync with
    TOPBAR_QUERY in the kit script. */
-@media (max-width: 768px), (max-height: 600px) {
+@media (max-width: 1379px), (max-height: 600px) {
   :root { --scroll-offset: 3.6rem; }
   .navbar {
     inset: 0 0 auto 0;

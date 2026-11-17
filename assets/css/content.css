@@ -160,7 +160,7 @@ main { display: block; }
 .evaluation-nav a:hover { color: var(--text); }
 .evaluation-nav a[aria-current="location"] { color: var(--text); border-bottom-color: var(--accent); }
 
-@media (max-width: 768px), (max-height: 600px) {
+@media (max-width: 1379px), (max-height: 600px) {
   .evaluation-nav { position: static; flex-wrap: wrap; gap: 0.1rem 1.1rem; }
   .evaluation-nav-links { flex-wrap: wrap; overflow: visible; gap: 0.1rem 1.1rem; flex-basis: 100%; }
   .evaluation-nav-links:is(.fade-l, .fade-r) { -webkit-mask-image: none; mask-image: none; }
@@ -440,7 +440,7 @@ main { display: block; }
 /* Anchor landing in rail mode (scroll-padding is 0 there): sections land
    flush, any other target 1rem below the edge, and the targets of the sticky
    "In this section" bars (~49px tall) land clear below the bar. */
-@media (min-width: 769px) and (min-height: 601px) {
+@media (min-width: 1380px) and (min-height: 601px) {
   [id]:not(.section) { scroll-margin-top: 1rem; }
   #inference-accuracy, #inference-budget-title, #reward-evaluation, #reward-video-examples { scroll-margin-top: 4rem; }
 }

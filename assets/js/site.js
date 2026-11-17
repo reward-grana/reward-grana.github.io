@@ -26,6 +26,8 @@
  *  - "Read more" toggles swap to "Show less"; header paper notes close on
  *    Escape / outside click while shown as popovers; printing opens every
  *    <details> and restores them afterwards.
+ *  - Disclosures share Show / Hide labels and reveal expanded content with
+ *    minimal scrolling, including inside bounded readers and player dialogs.
  */
 (function () {
   "use strict";
@@ -47,7 +49,7 @@
   } catch (e) { /* old browser: keep the markup default */ }
 
   /* Keep TOPBAR_QUERY in sync with the top-bar media query in the kit stylesheet. */
-  var TOPBAR_QUERY = "(max-width: 768px), (max-height: 600px)";
+  var TOPBAR_QUERY = "(max-width: 1379px), (max-height: 600px)";
   var reduceMQ = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : { matches: false };
   var topbarMQ = window.matchMedia ? window.matchMedia(TOPBAR_QUERY) : { matches: false };
   function onMQChange(mq, fn) {
@@ -82,6 +84,7 @@
      DOMContentLoaded fires once every deferred script has executed (KaTeX is
      loaded by app.js outside that chain, so a slow CDN cannot delay this). */
   doc.addEventListener("DOMContentLoaded", function () {
+    initDisclosures();
     initRanges();
     initTableFades();
   });
@@ -793,6 +796,38 @@
       function sync() { summary.textContent = d.open ? "Show less" : closedLabel; }
       d.addEventListener("toggle", sync);
       sync();
+    });
+  }
+
+  /* ---------- Expanded results stay in view without moving keyboard focus ---------- */
+  function initDisclosures() {
+    $$("details.disclosure").forEach(function (d) {
+      var summary = d.querySelector("summary");
+      if (!summary) return;
+      var label = summary.textContent.replace(/^\s*(?:Show|Hide)\s+/, "").trim();
+      var closedLabel = "Show " + label;
+      var openLabel = "Hide " + label;
+      var frame = 0;
+      function syncLabel() {
+        summary.textContent = d.open ? openLabel : closedLabel;
+      }
+      d.addEventListener("toggle", syncLabel);
+      syncLabel();
+
+      /* Native summary clicks cover pointer, Enter and Space activation. Only
+         user activation scrolls: hash navigation and printing also open details. */
+      summary.addEventListener("click", function (event) {
+        window.cancelAnimationFrame(frame);
+        if (d.open || event.defaultPrevented) return;
+        frame = window.requestAnimationFrame(function () {
+          if (!d.open || event.defaultPrevented || !d.getClientRects().length) return;
+          syncLabel();
+          /* Let the browser handle nested scrollers, CSS zoom and the top-bar
+             scroll padding. Nearest keeps the page still when the reader alone
+             can reveal the table, and shows the beginning of oversized results. */
+          d.scrollIntoView({ behavior: reduceMQ.matches ? "instant" : "smooth", block: "nearest", inline: "nearest" });
+        });
+      });
     });
   }
 

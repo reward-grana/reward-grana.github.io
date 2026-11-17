@@ -116,7 +116,7 @@
     ["plain", "×N · fast-forward · MPC idle", "Sped up, or no planning in that stretch."],
   ];
   const legend = el("details", { class: "disclosure mpc-legend" },
-    el("summary", { text: "How to read the clips" }),
+    el("summary", { text: "Show clip guide" }),
     el("div", { class: "disclosure-body" },
       el("dl", { class: "mpc-legend-list" }, ...legendRows.map(([tone, term, def]) => el("div", { "data-tone": tone }, el("dt", { text: term }), el("dd", { text: def })))),
       el("p", { class: "mpc-legend-strip" },

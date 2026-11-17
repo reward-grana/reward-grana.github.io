@@ -42,10 +42,10 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" crossorigin="anonymous" media="print" onload="this.media='all'" />
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" crossorigin="anonymous" /></noscript>
-    <link rel="stylesheet" href="assets/css/site.css?v=218698db3cb5" />
-    <link rel="stylesheet" href="assets/css/content.css?v=fc8b796f91d9" />
+    <link rel="stylesheet" href="assets/css/site.css?v=68a106d07098" />
+    <link rel="stylesheet" href="assets/css/content.css?v=b05d44713d02" />
     <link rel="stylesheet" href="assets/css/players.css?v=750ba951d95e" />
-    <script defer src="assets/js/site.js?v=4d2206449f50"></script>
+    <script defer src="assets/js/site.js?v=a859581a6fc0"></script>
     <script defer src="assets/js/data/tasks.js?v=043144fb6ab1"></script>
     <script defer src="assets/js/data/predictions.js?v=aa6c81432c64"></script>
     <script defer src="assets/js/app.js?v=2da9fb7b0d96"></script>
@@ -60,9 +60,9 @@
     <script defer src="assets/draft/js/fig2-data.js?v=2664c0f8422d"></script>
     <script defer src="assets/draft/js/fig2.js?v=19cc12aeafbb"></script>
     <script defer src="assets/draft/js/mpc-data.js?v=55e8bcc50571"></script>
-    <script defer src="assets/draft/js/mpc-player.js?v=af958b07b3f6"></script>
+    <script defer src="assets/draft/js/mpc-player.js?v=2ed9ca1aec90"></script>
     <script defer src="assets/draft/js/posttrain-section.js?v=9c9e3895adea"></script>
-    <script defer src="assets/draft/js/charts.js?v=7b58d6e71fbe"></script>
+    <script defer src="assets/draft/js/charts.js?v=11b3896471b7"></script>
     <link rel="stylesheet" href="assets/css/theme-stage.css?v=b0706234f4ba" /><!-- light page; Fig. 1, post-training and MPC as dark stages in the films' graphite -->
   </head>
   <body>
@@ -135,7 +135,7 @@
       <section class="section section-overview" id="overview" aria-labelledby="page-title">
         <div class="container container--intro intro">
           <h1 class="page-title" id="page-title"><span id="hero-title"></span>Grana: Compositional Reward Modeling for Long-Horizon Robot Manipulation</h1>
-          <p class="project-summary">Grana is a compositional reward function that measures how much of a long-horizon robot manipulation task is complete. It tracks progress lost after mistakes while preserving credit for completed steps. On real robots, this progress-reward model supports policy learning through training-time reinforcement learning (RL) and action selection through test-time model predictive control (MPC).</p>
+          <p class="project-summary">Grana is a compositional reward function that measures how much of a long-horizon robot manipulation task is complete. It tracks progress lost after mistakes while preserving credit for completed steps. On real robots, this progress-based reward model supports policy learning through training-time reinforcement learning (RL) and action selection through test-time model predictive control (MPC).</p>
           <div class="page-authors">
             <ol class="author-list" aria-label="Authors in manuscript order">
               <li><span class="author-name">Zi-ang Cao</span><sup>1,2,*</sup></li>
@@ -331,13 +331,13 @@
                   <div class="evaluation-study-reader" role="region" aria-label="Reward accuracy results" tabindex="0">
               <section class="evaluation-study" id="acc-unseen" aria-labelledby="acc-unseen-title">
                 <h4 class="evaluation-study-title" id="acc-unseen-title">Zero-shot on unseen tasks</h4>
-                <p class="pc-note pc-note--finding">Across the four reward sources shared by these evaluations, <strong>lower held-out RMSE corresponds to higher or tied policy success</strong> on <a href="#policy-result-star">Star insertion</a> and <a href="#policy-result-tube">Tube transfer</a>. See <a href="assets/paper/reward_Grana_arxiv_v1.pdf?v=ae055513ada4#page=8">Fig. 5</a> and <a href="assets/paper/reward_Grana_arxiv_v1.pdf?v=ae055513ada4#page=12">Fig. 6</a>.</p>
+                <p class="pc-note pc-note--finding">Across the four reward sources shared by these evaluations, <strong>lower held-out RMSE corresponds to higher or tied policy success</strong> on <a href="#policy-result-star">Star insertion</a> and <a href="#policy-result-tube">Tube transfer</a>. Paper Figs. 5–6.</p>
                 <figure class="pc" data-pc="zeroshot"></figure>
                 <figure class="pc" data-pc="pretrain"></figure>
               </section>
               <section class="evaluation-study" id="acc-long" aria-labelledby="acc-long-title">
                 <h4 class="evaluation-study-title" id="acc-long-title">Adapting to long tasks</h4>
-                <p class="pc-note pc-note--finding">With the architecture and adaptation data held fixed, reward-model pretraining reduces Grana’s RMSE by <strong>15.8–28.3%</strong> across airplane and car assembly at both adaptation budgets. See <a href="assets/paper/reward_Grana_arxiv_v1.pdf?v=ae055513ada4#page=10">Table 6</a>.</p>
+                <p class="pc-note pc-note--finding">With the architecture and adaptation data held fixed, reward-model pretraining reduces Grana’s RMSE by <strong>15.8–28.3%</strong> across airplane and car assembly at both adaptation budgets. Paper Table 6.</p>
                 <figure class="pc" data-pc="longtask"></figure>
                 <details class="disclosure pc-fold">
                   <summary>Show the table</summary>
@@ -553,7 +553,7 @@
           <div class="container container--wide">
             <div id="pt-section"></div>
             <details class="disclosure pc-fold pc-fold--dark">
-              <summary>Compare reward sources and training iterations · Figs. 6–7</summary>
+              <summary>Show reward comparisons and training iterations · Figs. 6–7</summary>
               <div class="pc-stack">
                 <figure class="pc" data-pc="offlinerl"></figure>
                 <figure class="pc" data-pc="weightedbc"></figure>
@@ -577,11 +577,11 @@
           <div class="container container--wide">
             <div id="mpc-player"></div>
             <details class="disclosure pc-fold pc-fold--dark">
-              <summary>Action selection and tractor results · Appendix E</summary>
+              <summary>Show action selection and tractor results · Appendix E</summary>
               <div class="disclosure-body">
                 <p>Grana decides when to switch MPC on and off. While MPC is on, it scores batches of four futures predicted by GR00T-WAM. When predicted progress trends downward for all four candidates, it rejects the batch and requests new futures.</p>
                 <p>From an accepted batch, the robot executes the candidate with the highest final predicted whole-task progress, composed from the selected subtask and its local progress. It then replans from the new observation.</p>
-                <p>In tractor assembly, GR00T-WAM samples four action chunks per round, each with a predicted 1.6 s video. A Grana variant with a Qwen3.5-0.8B backbone, adapted to this task, scores the futures. With the same GR00T-WAM policy run from 10 different initial layouts, success rises from 2/10 without MPC to 9/10 with MPC, without any policy update. See <a href="assets/paper/reward_Grana_arxiv_v1.pdf?v=ae055513ada4#page=23">Appendix E and Figure 9</a>.</p>
+                <p>In tractor assembly, GR00T-WAM samples four action chunks per round, each with a predicted 1.6 s video. A Grana variant with a Qwen3.5-0.8B backbone, adapted to this task, scores the futures. With the same GR00T-WAM policy run from 10 different initial layouts, success rises from 2/10 without MPC to 9/10 with MPC, without any policy update. Paper Appendix E and Fig. 9.</p>
               </div>
             </details>
           </div>
