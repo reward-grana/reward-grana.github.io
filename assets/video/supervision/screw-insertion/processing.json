@@ -1,0 +1,47 @@
+{
+  "method": "Paper Fig. 8 white-anchored linear-light gain and soft highlight rolloff; fixed per-camera gains with a sampled clipping guard.",
+  "source_sha256": "b7a153a1b97ceadda8933e21091406f82f10a9a6eb8304ae51aba6fc55ded503",
+  "output_sha256": "e5491f86dbca4802170c2428bf5a1924f0c246d28328d907ab01f0bccef10b41",
+  "target_white": 225,
+  "calibration_frames": 74,
+  "max_added_clipping": 0.01,
+  "views": {
+    "top": {
+      "estimated_gain": 2.2014696379995193,
+      "applied_gain": 2.2014696379995193,
+      "original_white_median": 158.021728001481,
+      "max_original_clipping": 0.0016782407407407408,
+      "max_corrected_clipping": 0.008912037037037038
+    },
+    "left": {
+      "estimated_gain": 2.000956844783141,
+      "applied_gain": 1.7370817278810387,
+      "original_white_median": 165.00627188645296,
+      "max_original_clipping": 0.013136574074074075,
+      "max_corrected_clipping": 0.0
+    },
+    "right": {
+      "estimated_gain": 1.8828301487955086,
+      "applied_gain": 1.8828301487955086,
+      "original_white_median": 169.60295323742065,
+      "max_original_clipping": 0.0012152777777777778,
+      "max_corrected_clipping": 0.003935185185185185
+    },
+    "bottom": {
+      "estimated_gain": 2.460601836431792,
+      "applied_gain": 2.460601836431792,
+      "original_white_median": 150.2265639274219,
+      "max_original_clipping": 0.0,
+      "max_corrected_clipping": 0.0
+    }
+  },
+  "video": {
+    "width": 1280,
+    "height": 960,
+    "r_frame_rate": "30/1",
+    "time_base": "1/15360",
+    "start_time": "0.000000",
+    "duration": "37.233333",
+    "nb_frames": "1117"
+  }
+}

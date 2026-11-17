@@ -52,6 +52,9 @@
     <script defer src="assets/js/evaluation-nav.js?v=c12d79b917e4"></script>
     <script defer src="assets/js/policy.js?v=c9a06673f0be"></script>
     <script defer src="assets/js/prediction-player.js?v=aec858b374bd"></script>
+    <link rel="stylesheet" href="assets/css/supervision-example.css?v=f5536b555698" />
+    <script defer src="assets/js/data/supervision.js?v=1c09ff6d6b77"></script>
+    <script defer src="assets/js/supervision-example.js?v=202f6106df6b"></script>
     <!-- DRAFT (step 2): animated Fig. 2 and the MPC examples -->
     <link rel="stylesheet" href="assets/draft/css/fig2.css?v=ee622d631914" />
     <link rel="stylesheet" href="assets/draft/css/mpc.css?v=3a8e34565e36" />
@@ -73,6 +76,7 @@
       <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="8" y1="13" x2="16" y2="13" /><line x1="8" y1="17" x2="13" y2="17" /></symbol>
       <symbol id="i-play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><polygon points="10 8 16 12 10 16 10 8" /></symbol>
       <symbol id="i-braces" viewBox="0 0 24 24"><path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5a2 2 0 0 0 2 2h1" /><path d="M16 21h1a2 2 0 0 0 2-2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1" /></symbol>
+      <symbol id="i-code" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" /></symbol>
       <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></symbol>
       <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></symbol>
       <symbol id="i-expand" viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9" /><polyline points="9 21 3 21 3 15" /><line x1="21" y1="3" x2="14" y2="10" /><line x1="3" y1="21" x2="10" y2="14" /></symbol>
@@ -85,7 +89,13 @@
       </a>
       <div class="nav-links">
         <a class="nav-link" href="#overview">Overview</a>
-        <a class="nav-link" href="#composition">Modeling</a>
+        <div class="nav-group" data-nav-group="modeling">
+          <a class="nav-link nav-group-label" href="#composition">Modeling</a>
+          <div class="nav-children">
+            <a class="nav-link nav-sublink" href="#model-architecture">Compositional modeling</a>
+            <a class="nav-link nav-sublink" href="#supervision">Progress supervision</a>
+          </div>
+        </div>
         <a class="nav-link" href="#tasks">Reusable Knowledge</a>
         <div class="nav-group" data-nav-group="evaluation">
           <a class="nav-link nav-group-label" href="#predictions">Evaluation</a>
@@ -168,6 +178,10 @@
               <svg class="btn-ico" aria-hidden="true"><use href="#i-doc" /></svg>
               Paper
             </a>
+            <a class="btn" href="https://github.com/NVlabs/Grana" target="_blank" rel="noopener noreferrer" aria-label="Grana code on GitHub (opens in a new tab)">
+              <svg class="btn-ico" aria-hidden="true"><use href="#i-code" /></svg>
+              Code
+            </a>
             <button class="btn" type="button" data-expand="assets/video/grana-film-long-1080.mp4?v=l10" data-expand-poster="assets/video/grana-film-long.jpg?v=l1" aria-label="Play the Grana film full screen">
               <svg class="btn-ico" aria-hidden="true"><use href="#i-play" /></svg>
               Video
@@ -188,6 +202,8 @@
             <h2 id="composition-title">Estimating whole-task progress from subtasks.</h2>
             <p class="lede">A failed insertion can erase the progress of the current attempt while leaving an earlier assembly step intact. Grana models these separately: it estimates progress within the unfinished subtask and combines it with credit for completed steps.</p>
           </header>
+          <section class="modeling-module" id="model-architecture" aria-labelledby="architecture-title">
+          <header class="subsection-head"><h3 id="architecture-title">Compositional model architecture</h3></header>
           <!-- DRAFT: animated Fig. 2 (assets/draft/js/fig2.js + fig2-data.js, assets/draft/css/fig2.css, assets/draft/video/fig2-airplane-*).
                Every module is on screen from the first frame; only the inside moves. The static figure stays one click away. -->
           <figure class="figure figure--method f2d" id="fig2" data-f2d data-no-reveal>
@@ -294,6 +310,82 @@
             <p class="sr-only" id="f2d-desc">Task context (assemble an airplane model, with its nine subtask descriptions) and four camera views go into a frozen vision–language model with trainable LoRA. By default, Grana’s own VLM selects the unfinished subtask and passes its description to the model; any other subtask selector can be used. A trainable progress head, shared across subtasks, predicts that subtask’s local progress from 0 to 1. Composition adds one share of credit for every completed subtask: global progress equals k plus local progress, divided by K. The animation replays the outputs of Grana, adapted to airplane assembly, on one selected held-out episode at nine times speed by default, with light smoothing; this episode is not in the paper. Grana moves through all nine subtasks, its local progress restarts at each new subtask, and global progress climbs to 0.99 without losing the credit of completed subtasks.</p>
             <figcaption><b>From local to global task progress.</b> By default, Grana’s own vision–language model selects the unfinished subtask; any other subtask selector can be used. The shared model estimates progress for the selected description, and composition adds credit for completed subtasks. <span class="f2d-cap-live">Playback: 9× real time. Grana is adapted to airplane assembly; this replay uses one held-out episode (<i>K</i>&nbsp;=&nbsp;9) with lightly smoothed scores and is not included in the paper.</span> <button class="f2d-link" type="button" data-expand="assets/img/fig2-method-2500.webp?v=2292831df7dc" data-expand-alt="Architecture overview: task and subtask descriptions plus multi-view observations feed a shared vision-language model; subtask selection and local progress are composed into whole-task progress." aria-label="View the static figure">View the static figure</button></figcaption>
           </figure>
+          </section>
+          <section class="modeling-module supervision-module" id="supervision" aria-labelledby="supervision-heading">
+            <header class="subsection-head">
+              <h3 id="supervision-heading">Constructing progress supervision</h3>
+              <p class="supervision-intro">We construct <strong>dense progress targets from sparse annotations</strong> of subtask boundaries, action-quality intervals, and subtask completion. Annotators mark suboptimal and regressed intervals; unmarked intervals are nominal. No frame-by-frame numerical progress scores are needed.</p>
+              <p class="supervision-intro">Progress supervision in this work comes from human annotations; our <a href="https://github.com/NVlabs/Grana" target="_blank" rel="noopener noreferrer" aria-label="Released Grana codebase on GitHub (opens in a new tab)">released codebase</a> also supports GPT-assisted annotation for future use.</p>
+            </header>
+            <dl class="supervision-quality" aria-label="Three action-quality categories and their effect on the target">
+              <div class="supervision-quality-nominal">
+                <dt>Nominal <svg viewBox="0 0 80 32" aria-hidden="true"><path d="M4 28 L76 4" /></svg></dt>
+                <dd>Execution follows the task normally.<strong>Progress increases.</strong></dd>
+              </div>
+              <div class="supervision-quality-suboptimal">
+                <dt>Suboptimal <svg viewBox="0 0 80 32" aria-hidden="true"><path d="M4 24 L76 17" /></svg></dt>
+                <dd>Degraded execution without physical failure, such as a misaligned screw that remains held.<strong>Progress increases more slowly.</strong></dd>
+              </div>
+              <div class="supervision-quality-regressed">
+                <dt>Regressed <svg viewBox="0 0 80 32" aria-hidden="true"><path d="M4 9 L29 4 L29 28 L76 28" /></svg></dt>
+                <dd>Physical failure loses local progress, such as dropping the screw.<strong>Local progress resets to zero.</strong></dd>
+              </div>
+            </dl>
+            <p class="supervision-composition"><strong>Then compose:</strong> whole-task target = (completed subtasks + local progress) / total subtasks. A local reset keeps credit for earlier steps that remain complete.</p>
+
+            <figure class="supervision-example" id="supervision-example" aria-labelledby="supervision-example-title">
+              <div class="supervision-heading">
+                <h4 id="supervision-example-title">Reset local progress. Preserve completed work.</h4>
+                <p>Airplane assembly · Insert the screw · Subtask 7 of 9</p>
+                <p>After the screw is lost, handling the drill does not restore insertion progress. The target stays at <strong>6/9</strong> until insertion resumes, then reaches <strong>7/9</strong> when the screw is inserted.</p>
+              </div>
+              <div class="supervision-media">
+                <video id="supervision-video" src="assets/video/supervision/screw-insertion/cameras.mp4?v=e5491f86dbca" poster="assets/video/supervision/screw-insertion/cameras.jpg?v=6b6e43eafc02" width="1280" height="960" controls muted playsinline preload="metadata" aria-label="Four synchronized camera views of screw insertion, failure, and recovery"></video>
+                <div class="supervision-plot">
+                  <div class="supervision-legend" aria-label="Curve legend">
+                    <span><i class="supervision-swatch supervision-swatch--ours"></i>Constructed target</span>
+                    <span><i class="supervision-swatch supervision-swatch--credit"></i>Completed credit</span>
+                    <span><i class="supervision-swatch supervision-swatch--failure"></i>Regressed</span>
+                  </div>
+                  <div data-supervision-chart></div>
+                  <div class="supervision-target-link" role="group" aria-label="Current local and whole-task progress">
+                    <span>Local <i>p</i> <strong data-supervision-local-value>= 0</strong></span>
+                    <span aria-hidden="true">→</span>
+                    <span>Whole-task <i>P</i> <strong data-supervision-whole-value>= 6/9</strong></span>
+                  </div>
+                </div>
+              </div>
+              <div class="supervision-segments" role="group" aria-label="Jump to an annotated phase">
+                <button type="button" class="supervision-segment" data-supervision-segment="attempt" aria-pressed="true" aria-controls="supervision-video">
+                  <span class="supervision-segment-label">1 · Before failure</span>
+                  <strong>Insertion progress builds</strong>
+                  <span data-supervision-window="attempt">0.00 → 8.33 s</span>
+                </button>
+                <button type="button" class="supervision-segment" data-supervision-segment="failure" aria-pressed="false" aria-controls="supervision-video">
+                  <span class="supervision-segment-label">2 · Screw lost</span>
+                  <strong>Local progress resets to 0</strong>
+                  <span>Completed credit stays at 6/9</span>
+                </button>
+                <button type="button" class="supervision-segment" data-supervision-segment="recovery" aria-pressed="false" aria-controls="supervision-video">
+                  <span class="supervision-segment-label">3 · Recovery</span>
+                  <strong>Insertion resumes → 7/9</strong>
+                  <span data-supervision-window="recovery">27.33 → 37.20 s</span>
+                </button>
+              </div>
+              <div class="supervision-transport transport">
+                <button class="btn btn--primary" type="button" data-supervision-play aria-controls="supervision-video">Play</button>
+                <button class="btn" type="button" data-supervision-replay aria-controls="supervision-video">Replay</button>
+                <input type="range" min="0" max="1116" step="1" value="0" data-supervision-seek aria-label="Elapsed time within the screw insertion subtask" aria-controls="supervision-video" />
+                <output data-supervision-time>0:00.0 / 0:37.2</output>
+                <span class="supervision-speed">4× playback</span>
+              </div>
+              <p class="supervision-state" data-supervision-status role="status">Nominal execution · Six completed subtasks retain their credit.</p>
+              <p class="supervision-error" data-supervision-error role="status" hidden></p>
+              <figcaption><strong>Constructed supervision, not a model prediction.</strong> This example contains nominal and regressed intervals; suboptimal execution follows the slower-growth rule above. Paper Fig. 8.</figcaption>
+            </figure>
+
+            <p class="supervision-reference">Target-construction details: Paper Sec. 3.2 and Appendix A.</p>
+          </section>
         </div>
       </section>
 

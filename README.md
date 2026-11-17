@@ -19,6 +19,30 @@ font families are served locally.
 
 ## Integration and publication
 
+The Modeling section's progress-supervision example reuses the Grana project's
+previous website's screw-insertion video and annotations. Its 1,117 frames at
+30 fps and target-construction rules match paper Fig. 8 and Appendix A. The
+video is in `assets/video/supervision/screw-insertion/`; the annotations,
+synchronized player, and theme styles are in `assets/js/data/supervision.js`,
+`assets/js/supervision-example.js`, and `assets/css/supervision-example.css`.
+This example contains nominal and regressed intervals; the three category
+illustrations describe the general rules rather than additional measured data.
+
+The displayed video uses the paper's white-anchored exposure correction with
+soft highlight rolloff, applied at a fixed gain per camera to avoid added
+exposure flicker. Camera geometry, all 1,117 frames, and timestamps are retained.
+The selected gains and source/output hashes are recorded in
+`assets/video/supervision/screw-insertion/processing.json`. Regenerate the video
+and its matching poster from the original four-camera footage with NumPy and
+FFmpeg installed:
+
+```bash
+python3 tools/brighten_supervision_video.py /path/to/original/cameras.mp4 \
+  assets/video/supervision/screw-insertion/cameras.mp4 \
+  --poster assets/video/supervision/screw-insertion/cameras.jpg \
+  --report assets/video/supervision/screw-insertion/processing.json
+```
+
 Keep relative asset paths and script loading order consistent with `index.html`.
 When changing an asset referenced with a `?v=` cache version, update its
 references. `assets/draft/` is part of the deployed site despite its name.
