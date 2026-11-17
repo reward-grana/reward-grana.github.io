@@ -86,7 +86,7 @@
       <div class="nav-links">
         <a class="nav-link" href="#overview">Overview</a>
         <a class="nav-link" href="#composition">Modeling</a>
-        <a class="nav-link" href="#tasks">Pre-training</a>
+        <a class="nav-link" href="#tasks">Reusable Knowledge</a>
         <div class="nav-group" data-nav-group="evaluation">
           <a class="nav-link nav-group-label" href="#predictions">Evaluation</a>
           <div class="nav-children">
@@ -300,10 +300,10 @@
       <section class="section" id="tasks" aria-labelledby="tasks-title">
         <div class="container container--wide">
           <header class="section-header">
-            <p class="kicker">02 · Pre-training</p>
-            <h2 id="tasks-title">Learn on short tasks. Transfer to new and longer tasks.</h2>
-            <p class="lede">Long-horizon tasks are harder to collect data for and difficult to anticipate in advance. We pretrain Grana on diverse, mostly short manipulation tasks to learn reusable knowledge about task progress. This gives the reward model a foundation for <a href="#acc-unseen">zero-shot prediction on unseen tasks</a> and <a href="#acc-long">efficient adaptation to longer tasks</a> with limited demonstrations.</p>
-            <p class="lede">We use <strong>200 pretraining tasks</strong> with subtask descriptions and action-quality annotations, and <strong>50 held-out tasks</strong> for zero-shot evaluation. The long assembly tasks and both offline-RL tasks are excluded from pretraining.</p>
+            <p class="kicker">02 · Reusable Knowledge</p>
+            <h2 id="tasks-title">Learn reusable progress knowledge from shorter tasks.</h2>
+            <p class="lede">Long-horizon tasks are harder to collect data for and difficult to anticipate in advance. We therefore learn reusable knowledge about task progress from diverse, mostly short manipulation tasks. This knowledge supports <a href="#acc-unseen">zero-shot prediction on unseen tasks</a> and <a href="#acc-long">efficient adaptation to longer tasks</a> with limited demonstrations.</p>
+            <p class="lede">We pretrain the reward model on <strong>200 tasks</strong> with subtask descriptions and action-quality annotations, and evaluate zero-shot predictions on <strong>50 held-out tasks</strong>. The long assembly tasks and both offline-RL tasks are excluded from pretraining.</p>
           </header>
           <div class="gallery" id="task-gallery" data-tasks></div>
         </div>
