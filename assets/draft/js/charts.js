@@ -21,8 +21,9 @@
       note: "All models except the official release are trained on the same 200 tasks. Paper Fig. 5(a).",
     },
     pretrain: {
-      title: "More pretraining tasks lower zero-shot prediction error",
-      sub: "15 → 30 → 200 training tasks reduce progress RMSE from 0.278 → 0.222 → 0.180 on the same 50 held-out tasks. Lower is better.",
+      title: "More pretraining tasks → lower zero-shot error",
+      highlight: "35.3% lower RMSE",
+      sub: "from 15 to 200 pretraining tasks, evaluated on the same 50 held-out tasks. Lower is better.",
       max: 0.3, fmt: 3,
       rows: [{ label: "15 tasks", v: 0.278 }, { label: "30 tasks", v: 0.222 }, { label: "200 tasks", v: 0.180, kind: "ours", callout: "−35.3 %" }],
       note: "Pretraining scaling behavior. Paper Fig. 5(b).",
@@ -44,22 +45,22 @@
       note: "Paper Table 4. The table below lists every method and budget.",
     },
     fivetask: {
-      title: "RMSE reduction across five long-horizon tasks",
-      sub: "Relative reduction in subtask-unit RMSE against the lowest-error baseline on each task. Learned reward models use 15 adaptation trajectories (D15).",
-      max: 40, pctlower: true,
+      type: "comparison",
+      title: "Lower RMSE across five long-horizon tasks",
+      sub: "RMSE relative to the lowest-error baseline on each task; lower is better. Learned reward models use 15 adaptation trajectories (D15).",
       rows: [
-        { label: "Circuit assembly", meta: "3 subtasks · vs RoboMeter", v: 16.1, kind: "ours" },
-        { label: "Firetruck assembly", meta: "9 subtasks · vs GPT6 composition", v: 22.3, kind: "ours" },
-        { label: "Airplane assembly", meta: "9 subtasks · vs GPT6 composition", v: 31.6, kind: "ours" },
-        { label: "Red car assembly", meta: "10 subtasks · vs GPT6 composition", v: 24.8, kind: "ours" },
-        { label: "Pupgo car assembly", meta: "18 subtasks · vs RoboMeter", v: 19.7, kind: "ours" },
+        { label: "Circuit assembly", meta: "3 subtasks · vs RoboMeter", v: 0.1563, baseline: 0.1864 },
+        { label: "Firetruck assembly", meta: "9 subtasks · vs GPT6 composition", v: 0.2264, baseline: 0.2914 },
+        { label: "Airplane assembly", meta: "9 subtasks · vs GPT6 composition", v: 0.3080, baseline: 0.4505 },
+        { label: "Red car assembly", meta: "10 subtasks · vs GPT6 composition", v: 0.3940, baseline: 0.5240 },
+        { label: "Pupgo car assembly", meta: "18 subtasks · vs RoboMeter", v: 0.2561, baseline: 0.3189 },
       ],
       note: "All five tasks are reported in paper Table 3, with 24–30 test trajectories per task. Comparison models are named beside each bar.",
     },
     composition: {
       title: "Direct prediction vs. + Composition",
       sub: "Zero-shot car assembly with the same model within each pair. RMSE in subtask units; lower is better.",
-      max: 5, fmt: 3,
+      max: 5, fmt: 3, scale: "composition",
       groups: [
         { title: "Qwen3.5-4B", meta: "base model", rows: [
           { label: "Direct prediction", v: 4.541 },
@@ -68,12 +69,12 @@
           { label: "Direct prediction", v: 1.578 },
           { label: "+ Composition", v: 0.524, kind: "ours", callout: "−66.8 %" }] },
       ],
-      note: "Paper Table 9 · zero-shot car assembly.",
+      note: "Paper Table 9 · zero-shot car assembly. Nonlinear bar scale.",
     },
     compositionAdapted: {
       title: "Grana: gains at matched adaptation budgets",
       sub: "Airplane assembly. Both predictors start from base Qwen, without reward-model pretraining. RMSE in subtask units; lower is better.",
-      max: 0.5, fmt: 3,
+      max: 5, fmt: 3, scale: "composition",
       groups: [
         { title: "D15", meta: "15 adaptation trajectories", rows: [
           { label: "Direct prediction", v: 0.462 },
@@ -82,7 +83,7 @@
           { label: "Direct prediction", v: 0.359 },
           { label: "+ Composition (Grana)", v: 0.311, kind: "ours", callout: "−13.4 %" }] },
       ],
-      note: "Paper Table 8 · includes automatic subtask-selection errors.",
+      note: "Paper Table 8 · includes automatic subtask-selection errors. Nonlinear bar scale.",
     },
     embodiment: {
       title: "18.7 % lower RMSE than RoboMeter on Tianji",
@@ -119,6 +120,20 @@
 
   const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
 
+  // Shared piecewise-linear scale: expand the low-RMSE range, put 0.524 near
+  // the middle, and use the upper range without crowding the value labels.
+  const compositionStops = [[0, 0], [0.30, 0.025], [0.524, 0.56], [1.5, 0.75], [3.1, 0.81], [4.6, 1]];
+  function compositionPosition(value) {
+    for (let i = 1; i < compositionStops.length; i++) {
+      const [hi, end] = compositionStops[i];
+      if (value <= hi) {
+        const [lo, start] = compositionStops[i - 1];
+        return Math.max(0, start + (value - lo) / (hi - lo) * (end - start));
+      }
+    }
+    return 1;
+  }
+
   /* one horizontal bar: label (+ meta) | bar with its value | callout */
   function bar(spec, r, max, i) {
     const row = el("div", "pc-row" + (r.kind ? ` is-${r.kind}` : ""));
@@ -127,9 +142,9 @@
     lab.append(el("span", "pc-name", r.label));
     if (r.meta) lab.append(el("span", "pc-meta", r.meta));
     const track = el("span", "pc-track");
-    const f = Math.min(1, r.v / max);
+    const f = spec.scale === "composition" ? compositionPosition(r.v) : Math.min(1, r.v / max);
     const b = el("i"); b.style.setProperty("--v", f.toFixed(4)); track.append(b);
-    const txt = spec.pctlower ? `−${r.v.toFixed(1)} %` : spec.pct ? `${r.v.toFixed(1)} %` : r.v.toFixed(spec.fmt || 3);
+    const txt = spec.pct ? `${r.v.toFixed(1)} %` : r.v.toFixed(spec.fmt || 3);
     const end = el("span", "pc-end"); end.style.setProperty("--v", f.toFixed(4));   // the value (and Grana's callout) past the end;
     end.append(el("b", "pc-val", txt));                                              // bars use at most --span of the track, so it fits
     if (r.callout) end.append(el("em", "pc-callout", r.callout));
@@ -153,6 +168,37 @@
       spec.rows.forEach((r, i) => rows.append(bar(spec, r, spec.max, i)));
       body.append(rows);
     }
+    fig.append(body);
+  }
+  /* Each task's best baseline is 100%; the gap to its marker is the reduction. */
+  function renderComparisons(fig, spec) {
+    const key = el("div", "pc-comparison-key");
+    key.append(el("span", "pc-key-ours", "Grana"), el("span", "pc-key-baseline", "Best baseline per task (including GPT6) = 100%"));
+    const rows = el("div", "pc-rows");
+    spec.rows.forEach((r, i) => {
+      const ratio = r.v / r.baseline;
+      const reduction = ((1 - ratio) * 100).toFixed(1);
+      const row = el("div", "pc-row is-ours");
+      row.style.setProperty("--i", i);
+      const lab = el("span", "pc-label");
+      lab.append(el("span", "pc-name", r.label), el("span", "pc-meta", r.meta));
+      const track = el("span", "pc-track");
+      track.setAttribute("role", "img");
+      track.setAttribute("aria-label", `Grana RMSE ${r.v.toFixed(4)} versus baseline ${r.baseline.toFixed(4)}; ${reduction}% lower RMSE.`);
+      const fill = el("i");
+      fill.style.setProperty("--v", ratio.toFixed(6));
+      const marker = el("span", "pc-baseline-marker");
+      marker.setAttribute("aria-hidden", "true");
+      const end = el("span", "pc-end");
+      end.style.setProperty("--v", "1");
+      end.setAttribute("aria-hidden", "true");
+      end.append(el("b", "pc-val", `−${reduction} %`));
+      track.append(fill, marker, end);
+      row.append(lab, track);
+      rows.append(row);
+    });
+    const body = el("div", "pc-body");
+    body.append(key, rows);
     fig.append(body);
   }
   function renderMultiples(fig, spec) {                 // (the post-training fold: every reward source)
@@ -185,9 +231,15 @@
     if (spec.dark) fig.classList.add("pc--dark");
     const head = el("figcaption", "pc-head");
     head.append(el("h4", "pc-title", spec.title));
-    if (spec.sub) head.append(el("p", "pc-sub", spec.sub));
+    if (spec.sub) {
+      const sub = el("p", "pc-sub");
+      if (spec.highlight) sub.append(el("strong", "pc-highlight", spec.highlight), " ");
+      sub.append(spec.sub);
+      head.append(sub);
+    }
     fig.append(head);
     if (type === "bars") renderBars(fig, spec);
+    if (type === "comparison") renderComparisons(fig, spec);
     if (type === "multiples") renderMultiples(fig, spec);
     if (type === "stats") renderStats(fig, spec);
     if (spec.note) {
