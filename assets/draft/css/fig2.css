@@ -53,7 +53,7 @@
 .f2d-card {
   position: relative;
   container: f2d / inline-size;
-  border-radius: 0;
+  border-radius: 20px;
   overflow: hidden;
   isolation: isolate;
   color: var(--f2d-ink);
@@ -92,7 +92,7 @@
 /* Without the script (or if it cannot run): the paper's static figure, on a white plate. */
 html:not(.f2d-js) .f2d-in, html:not(.f2d-js) .f2d-wires, html:not(.f2d-js) .f2d-fx { display: none; }
 html:not(.f2d-js) .f2d-fallback { display: block; }
-html:not(.f2d-js) .f2d-card { background: #fff; border-radius: 0; box-shadow: 0 0 0 1px var(--line); }
+html:not(.f2d-js) .f2d-card { background: #fff; border-radius: var(--r-md); box-shadow: 0 0 0 1px var(--line); }
 html:not(.f2d-js) .f2d-card::before, html:not(.f2d-js) .f2d-card::after { display: none; }
 html:not(.f2d-js) .f2d-link, html:not(.f2d-js) .f2d-cap-live { display: none; }  /* the static figure is on the page */
 
@@ -101,7 +101,7 @@ html:not(.f2d-js) .f2d-link, html:not(.f2d-js) .f2d-cap-live { display: none; } 
   position: relative;
   min-width: 0;
   padding: 10px 13px;
-  border-radius: 0;
+  border-radius: 14px;
   background: linear-gradient(180deg, var(--f2d-panel), var(--f2d-panel-2));
   border: 1px solid var(--f2d-edge);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 14px 34px -16px rgba(0, 0, 0, 0.7);
@@ -131,10 +131,10 @@ html:not(.f2d-js) .f2d-link, html:not(.f2d-js) .f2d-cap-live { display: none; } 
 .f2d-obs .f2d-tiles { margin-bottom: auto; }
 .f2d-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-top: 8px; }
 .f2d-tile { position: relative; margin: 0; min-width: 0; }
-.f2d-tile::before { content: ""; display: block; aspect-ratio: 4 / 3; border-radius: 0; background: #05060a; }
+.f2d-tile::before { content: ""; display: block; aspect-ratio: 4 / 3; border-radius: 8px; background: #05060a; }
 .f2d-tile canvas, .f2d-crop {
   position: absolute; left: 0; top: 0; width: 100%; aspect-ratio: 4 / 3; height: auto;
-  border-radius: 0; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.13), 0 8px 18px -10px rgba(0, 0, 0, 0.8);
+  border-radius: 8px; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.13), 0 8px 18px -10px rgba(0, 0, 0, 0.8);
 }
 .f2d-crop { overflow: hidden; }
 /* The loop is a 2 x 2 grid (Top | Bottom / Left wrist | Right wrist). The Top tile is the <video> itself,
@@ -168,7 +168,7 @@ html:not(.f2d-js) .f2d-link, html:not(.f2d-js) .f2d-cap-live { display: none; } 
 .f2d-pill {
   --c: var(--f2d-s1);
   flex: 1 1 auto; min-width: 0; height: 32px; padding: 0;
-  border-radius: 0; border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 9px; border: 1px solid rgba(255, 255, 255, 0.16);
   background: rgba(255, 255, 255, 0.03);
   color: var(--f2d-ink-3);
   font: 600 14px/1 var(--font-mono);
@@ -191,7 +191,7 @@ html:not(.f2d-js) .f2d-link, html:not(.f2d-js) .f2d-cap-live { display: none; } 
   100% { transform: scale(1); box-shadow: 0 0 0 0 transparent; }
 }
 .f2d-halo {                                    /* slides from pill to pill; the script sets its x and width */
-  position: absolute; left: 0; top: -2px; height: 36px; width: 36px; border-radius: 0;
+  position: absolute; left: 0; top: -2px; height: 36px; width: 36px; border-radius: 11px;
   border: 1.5px solid var(--c);
   box-shadow: 0 0 18px -2px var(--c), inset 0 0 14px -6px var(--c);
   pointer-events: none; z-index: 2;
@@ -204,7 +204,7 @@ html:not(.f2d-js) .f2d-link, html:not(.f2d-js) .f2d-cap-live { display: none; } 
 .f2d-desc {
   position: absolute; left: 0; top: 0; z-index: 3;
   display: inline-flex; align-items: flex-start; gap: 8px; box-sizing: border-box;
-  min-height: 32px; padding: 6px 13px 6px 11px; border-radius: 0;
+  min-height: 32px; padding: 6px 13px 6px 11px; border-radius: 16px;
   background: rgba(19, 17, 34, 0.94);
   border: 1px solid color-mix(in srgb, var(--c) 62%, transparent);
   box-shadow: 0 0 0 4px rgba(11, 10, 22, 0.55), 0 0 26px -8px var(--c);
@@ -232,7 +232,7 @@ html:not(.f2d-js) .f2d-link, html:not(.f2d-js) .f2d-cap-live { display: none; } 
 }
 .f2d-frost { position: absolute; top: 7px; right: 7px; width: 15px; height: 15px; fill: none; stroke: rgb(var(--f2d-frozen-rgb)); stroke-width: 1.5; stroke-linecap: round; opacity: 0.85; }
 .f2d-lora {
-  margin-top: 8px !important; padding: 5px 11px; border-radius: 0;
+  margin-top: 8px !important; padding: 5px 11px; border-radius: 9px;
   background: linear-gradient(180deg, rgba(var(--f2d-train-rgb), 0.3), rgba(var(--f2d-train-rgb), 0.12));
   border: 1px solid rgba(var(--f2d-train-rgb), 0.62);
   color: var(--f2d-train-ink); font: 600 15px/1.2 var(--font-sans); white-space: nowrap;
@@ -246,7 +246,7 @@ html:not(.f2d-js) .f2d-link, html:not(.f2d-js) .f2d-cap-live { display: none; } 
 .f2d-fp .f2d-m { font-weight: 600; }
 .f2d-shared { font-size: 14px; line-height: 1.25; color: var(--f2d-ink-2); }
 .f2d-feats { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; }
-.f2d-feats i { width: 13px; height: 13px; border-radius: 0; border: 1px solid rgba(255, 255, 255, 0.3); background: rgba(232, 228, 255, 0.16); }
+.f2d-feats i { width: 13px; height: 13px; border-radius: 3.5px; border: 1px solid rgba(255, 255, 255, 0.3); background: rgba(232, 228, 255, 0.16); }
 .f2d-feats b { font: 700 14px/0.55 var(--font-sans); color: var(--f2d-ink-3); }
 .f2d-featcap { grid-column: 1 / -1; margin: 0; text-align: center; font-size: 14px; color: var(--f2d-ink-3); display: none; }
 
@@ -284,11 +284,11 @@ html:not(.f2d-js) .f2d-link, html:not(.f2d-js) .f2d-cap-live { display: none; } 
 }
 .f2d-comp { display: flex; flex-direction: column; justify-content: center; }
 .f2d-eq { margin: 6px 0 0 !important; font: 500 15px/1.3 var(--font-mono); color: var(--f2d-ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.f2d-eq b { font-weight: 600; color: var(--f2d-ink); border-radius: 0; }
+.f2d-eq b { font-weight: 600; color: var(--f2d-ink); border-radius: 4px; }
 .f2d-eq-k.is-flash { animation: f2d-kflash 0.8s ease-out; }
 @keyframes f2d-kflash { 0% { background: color-mix(in srgb, var(--c) 55%, transparent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 55%, transparent); } 100% { background: transparent; box-shadow: 0 0 0 3px transparent; } }
 .f2d-segs { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px; margin-top: 9px; }
-.f2d-segs i { position: relative; height: 11px; border-radius: 0; overflow: hidden; background: rgba(255, 255, 255, 0.07); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08); }
+.f2d-segs i { position: relative; height: 11px; border-radius: 3px; overflow: hidden; background: rgba(255, 255, 255, 0.07); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08); }
 .f2d-segs b { position: absolute; inset: 0; transform-origin: 0 50%; transform: scaleX(var(--f, 0)); background: var(--sc, var(--f2d-s1)); }
 .f2d-segs i:nth-child(1) { --sc: var(--f2d-s1); } .f2d-segs i:nth-child(2) { --sc: var(--f2d-s2); }
 .f2d-segs i:nth-child(3) { --sc: var(--f2d-s3); } .f2d-segs i:nth-child(4) { --sc: var(--f2d-s4); }
@@ -307,7 +307,7 @@ html:not(.f2d-js) .f2d-link, html:not(.f2d-js) .f2d-cap-live { display: none; } 
 }
 .f2d-legend { display: flex; gap: 14px; margin: 0; padding: 0; list-style: none; }
 .f2d-legend li { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
-.f2d-sw { width: 14px; height: 14px; border-radius: 0; }
+.f2d-sw { width: 14px; height: 14px; border-radius: 4px; }
 .f2d-sw--frozen { background: rgba(var(--f2d-frozen-rgb), 0.2); border: 1px solid rgba(var(--f2d-frozen-rgb), 0.7); }
 .f2d-sw--train { background: rgba(var(--f2d-train-rgb), 0.3); border: 1px solid rgba(var(--f2d-train-rgb), 0.8); }
 .f2d-src { display: none; margin: 0; }
@@ -393,7 +393,7 @@ html:not(.f2d-js) .f2d-link, html:not(.f2d-js) .f2d-cap-live { display: none; } 
   .f2d-node { padding: 12px 14px; }
   .f2d-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
   .f2d-tile-l {
-    position: absolute; left: 6px; bottom: 6px; margin: 0; padding: 3px 7px; border-radius: 0;
+    position: absolute; left: 6px; bottom: 6px; margin: 0; padding: 3px 7px; border-radius: 6px;
     background: rgba(8, 9, 16, 0.74); color: #fff;
   }
   .f2d-long { display: inline; }
