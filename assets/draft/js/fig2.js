@@ -163,12 +163,14 @@
   const dirty = { wires: true, dyn: true };
 
   /* ------------------------------------------------------------------ geometry */
-  let L = "wide", W = 0, H = 0, DPR = 1, FXDPR = 1, box = null;
+  let L = "wide", W = 0, H = 0, DPR = 1, FXDPR = 1, SCALE = 1, box = null;
   const G = {};
   const anim = { hx: 0, hw: 40, cx: 0, tx: 0, tw: 40, tcx: 0, chipW: 120, chipH: 32 };
   function rect(el) {
-    const r = el.getBoundingClientRect(), x = r.left - box.left, y = r.top - box.top;
-    return { x, y, w: r.width, h: r.height, r: x + r.width, b: y + r.height, cx: x + r.width / 2, cy: y + r.height / 2 };
+    // DOM rects include the page's desktop CSS zoom; styles and canvas coordinates do not.
+    const r = el.getBoundingClientRect(), x = (r.left - box.left) / SCALE, y = (r.top - box.top) / SCALE;
+    const w = r.width / SCALE, h = r.height / SCALE;
+    return { x, y, w, h, r: x + w, b: y + h, cx: x + w / 2, cy: y + h / 2 };
   }
   function sizeCanvas(cv, w, h, dpr) {
     const bw = Math.max(1, Math.round(w * dpr)), bh = Math.max(1, Math.round(h * dpr));
@@ -180,7 +182,7 @@
   function fitChip() {
     const ics = getComputedStyle(inner);
     const w = L === "narrow" ? inner.clientWidth - (parseFloat(ics.paddingLeft) || 16) - (parseFloat(ics.paddingRight) || 16)
-                             : NODES.sel.getBoundingClientRect().width;
+                             : NODES.sel.getBoundingClientRect().width / SCALE;
     if (!(w > 0)) return;
     chip.style.maxWidth = Math.floor(w) + "px";
     const keep = chipText.textContent;
@@ -191,9 +193,11 @@
   }
   function measure() {
     L = getComputedStyle(grid).getPropertyValue("--f2d-layout").trim() || "wide";
+    const cssWidth = parseFloat(getComputedStyle(card).width);
+    SCALE = cssWidth > 0 ? card.getBoundingClientRect().width / cssWidth : 1;
     fitChip();
     box = card.getBoundingClientRect();
-    W = box.width; H = box.height;
+    W = box.width / SCALE; H = box.height / SCALE;
     if (!W || !H) return false;
     DPR = Math.min(2, window.devicePixelRatio || 1);
     FXDPR = Math.min(1.5, DPR);
@@ -221,7 +225,7 @@
   function aim(snap) {
     if (curK < 0 || !G.pills) return;
     const p = G.pills[curK];
-    anim.tx = p.cx; anim.tw = p.w + 8;
+    anim.tx = p.cx; anim.tw = p.w + 4;
     anim.chipW = chip.offsetWidth || anim.chipW; anim.chipH = chip.offsetHeight || 32;
     const lo = L === "narrow" ? G.inner.x + G.padL : G.sel.x, hi = L === "narrow" ? G.inner.r - G.padR : G.sel.r;
     anim.tcx = clamp(p.cx, lo + anim.chipW / 2, hi - anim.chipW / 2);
@@ -481,7 +485,8 @@
     c.globalCompositeOperation = "destination-out"; c.globalAlpha = 1; c.fillStyle = "#000";
     HOLES.forEach((el) => {
       const r = el.getBoundingClientRect();
-      if (r.width && r.height) c.fillRect(r.left - cb.left - pad, r.top - cb.top - pad, r.width + 2 * pad, r.height + 2 * pad);
+      if (r.width && r.height) c.fillRect((r.left - cb.left) / SCALE - pad, (r.top - cb.top) / SCALE - pad,
+        r.width / SCALE + 2 * pad, r.height / SCALE + 2 * pad);
     });
     if (WIRES.k && WIRES.k.on && BEAD) {
       c.beginPath(); c.arc(BEAD[0], BEAD[1], (L === "narrow" ? 9 : 11.5) + pad, 0, 6.2832); c.fill();
@@ -881,7 +886,8 @@
   /* scrub along the global plot */
   function scrubTo(e) {
     const r = globCv.getBoundingClientRect(), padL = 36, padR = 12;
-    seekEp(clamp((e.clientX - r.left - padL) / (r.width - padL - padR), 0, 1) * DUR);
+    const x = (e.clientX - r.left) / SCALE, w = r.width / SCALE;
+    seekEp(clamp((x - padL) / (w - padL - padR), 0, 1) * DUR);
   }
   globCv.addEventListener("pointerdown", (e) => {
     scrubbing = true; loops = 0;
