@@ -338,6 +338,25 @@
     update();
   }
 
+  /* Both films are HEVC Main 10, level 5. Select one encoding before fetching. */
+  function setFilmSource(video, primary, fallback, resume) {
+    video.onerror = null;
+    if (fallback && !video.canPlayType('video/mp4; codecs="hvc1.2.4.L150.90"')) {
+      video.src = fallback;
+      return;
+    }
+    if (fallback) {
+      /* Some devices advertise the codec but cannot decode the stream. */
+      video.onerror = function () {
+        video.onerror = null;
+        if (video.getAttribute("src") !== primary) return;
+        video.src = fallback;
+        resume();
+      };
+    }
+    video.src = primary;
+  }
+
   /* ---------- Hero video ---------- */
   function initHeroVideo() {
     var hero = doc.querySelector("[data-hero]") || doc.querySelector(".hero");
@@ -363,19 +382,10 @@
        autoplaying video from fetching through a slow preview tunnel. */
     function ensureSource() {
       if (v.currentSrc || v.getAttribute("src")) return;
-      var small = window.matchMedia && window.matchMedia("(max-width: 900px), (max-height: 500px)").matches;
-      var pick = null;
-      $$("source", v).forEach(function (s) {
-        var url = s.getAttribute("data-cover-src") || s.getAttribute("src");
-        var isSmall = /720/.test(url || "");
-        if (!pick && isSmall === small) pick = url;
-      });
-      /* A cover with one source serves that file at every viewport size. */
-      if (!pick) {
-        var fallback = v.querySelector("source[data-cover-src], source[src]");
-        if (fallback) pick = fallback.getAttribute("data-cover-src") || fallback.getAttribute("src");
-      }
-      if (pick) { v.preload = "auto"; v.src = pick; }
+      v.preload = "auto";
+      var small = window.matchMedia("(max-width: 900px), (max-height: 500px)").matches;
+      var fallback = v.getAttribute(small ? "data-cover-fallback-small" : "data-cover-fallback");
+      setFilmSource(v, v.getAttribute("data-cover-src"), fallback, sync);
     }
     function wantPlay() {
       if (userChoice === "pause") return false;
@@ -575,7 +585,9 @@
       });
       /* A sound-on inline copy that is part-way through continues from there. */
       var from = inline && !inline.muted && !inline.ended && inline.currentTime > 0.5 ? inline.currentTime : 0;
-      full.src = url;
+      setFilmSource(full, url, t.getAttribute("data-expand-fallback"), function () {
+        if (modal.classList.contains("open")) safePlay(full);
+      });
       full.poster = t.getAttribute("data-expand-poster") || (inline ? (inline.getAttribute("poster") || "") : "");
       full.muted = false;
       show();
@@ -598,6 +610,7 @@
         var t = full.currentTime || 0;
         var ended = full.ended;
         full.pause();
+        full.onerror = null;
         full.removeAttribute("src");
         full.load();
         /* The sound-on inline copy picks up where the lightbox stopped (paused). */
