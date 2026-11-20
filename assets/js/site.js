@@ -338,23 +338,23 @@
     update();
   }
 
-  /* Both films are HEVC Main 10, level 5. Select one encoding before fetching. */
-  function setFilmSource(video, primary, fallback, resume) {
-    video.onerror = null;
-    if (fallback && !video.canPlayType('video/mp4; codecs="hvc1.2.4.L150.90"')) {
-      video.src = fallback;
-      return;
-    }
-    if (fallback) {
-      /* Some devices advertise the codec but cannot decode the stream. */
-      video.onerror = function () {
-        video.onerror = null;
-        if (video.getAttribute("src") !== primary) return;
-        video.src = fallback;
+  /* Assign one URL at a time so alternative encodings are only fetched on error. */
+  function setFilmSource(video, primary, avc, lowRes, resume) {
+    var sources = [];
+    if (!avc || video.canPlayType('video/mp4; codecs="hvc1.2.4.L150.90"')) sources.push(primary);
+    if (avc) sources.push(avc);
+    if (lowRes) sources.push(lowRes);
+
+    function selectNext() {
+      var url = sources.shift();
+      video.onerror = sources.length ? function () {
+        if (video.getAttribute("src") !== url) return;
+        selectNext();
         resume();
-      };
+      } : null;
+      video.src = url;
     }
-    video.src = primary;
+    selectNext();
   }
 
   /* ---------- Hero video ---------- */
@@ -383,9 +383,12 @@
     function ensureSource() {
       if (v.currentSrc || v.getAttribute("src")) return;
       v.preload = "auto";
-      var small = window.matchMedia("(max-width: 900px), (max-height: 500px)").matches;
-      var fallback = v.getAttribute(small ? "data-cover-fallback-small" : "data-cover-fallback");
-      setFilmSource(v, v.getAttribute("data-cover-src"), fallback, sync);
+      var connection = navigator.connection;
+      var lowRes = v.getAttribute("data-cover-low-res");
+      var saveData = window.matchMedia("(prefers-reduced-data: reduce)").matches ||
+        (connection && (connection.saveData || connection.effectiveType === "slow-2g" || connection.effectiveType === "2g"));
+      if (lowRes && (lightPreview || saveData)) v.src = lowRes;
+      else setFilmSource(v, v.getAttribute("data-cover-src"), v.getAttribute("data-cover-fallback"), lowRes, sync);
     }
     function wantPlay() {
       if (userChoice === "pause") return false;
@@ -585,7 +588,7 @@
       });
       /* A sound-on inline copy that is part-way through continues from there. */
       var from = inline && !inline.muted && !inline.ended && inline.currentTime > 0.5 ? inline.currentTime : 0;
-      setFilmSource(full, url, t.getAttribute("data-expand-fallback"), function () {
+      setFilmSource(full, url, t.getAttribute("data-expand-fallback"), t.getAttribute("data-expand-low-res"), function () {
         if (modal.classList.contains("open")) safePlay(full);
       });
       full.poster = t.getAttribute("data-expand-poster") || (inline ? (inline.getAttribute("poster") || "") : "");
